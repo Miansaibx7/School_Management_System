@@ -1,0 +1,196 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}Confirm Teacher Deletion{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="tf-sidebar flex-shrink-0">
+        {% include "sidebar.html" %}
+    </aside>
+
+    <div class="main-content">
+        <div class="delete-card">
+            <div class="warning-icon">⚠️</div>
+            <h2>Confirm Deletion</h2>
+            <p>Are you absolutely sure you want to delete <br>
+                <span class="teacher-highlight">{{ teacher.full_name }}</span>? <br><br>
+                This action is permanent and will also remove their user portal access.
+            </p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="action-buttons">
+                    <a href="{% url 'teacher_list' %}" class="btn btn-cancel">No, Go Back</a>
+                    <button type="submit" class="btn btn-danger">Yes, Delete Teacher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<style>
+   /* --- Design Tokens --- */
+:root {
+    --primary-bg: #f4f7f6;
+    --sidebar-bg: #2c3e50;
+    --card-bg: #ffffff;
+    --danger: #d9534f;
+    --danger-hover: #c9302c;
+    --secondary: #6c757d;
+    --secondary-hover: #5a6268;
+    --text-main: #333333;
+    --text-muted: #666666;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* --- Layout & Reset --- */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--primary-bg);
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.sidebar-wrapper {
+    width: 260px;
+    background: var(--sidebar-bg);
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    transition: width var(--transition-smooth);
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+/* --- The Deletion Card --- */
+.delete-card {
+    background: var(--card-bg);
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    border-top: 5px solid var(--danger);
+    
+    /* Animation: Subtle Fade and Slide Up */
+    animation: fadeInUp 0.6s var(--transition-smooth) forwards;
+    opacity: 0;
+}
+
+.warning-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    /* Animation: Soft pulse to draw attention */
+    animation: pulse 2s infinite;
+}
+
+h2 {
+    color: var(--text-main);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+.teacher-highlight {
+    font-weight: 700;
+    color: var(--text-main);
+    background: #fff3f3;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* --- Buttons & Actions --- */
+.action-buttons {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.btn-cancel {
+    background: var(--secondary);
+    color: white;
+}
+
+.btn-cancel:hover {
+    background: var(--secondary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: var(--danger-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(217, 83, 79, 0.3);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* --- Animations --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    .sidebar-wrapper {
+        width: 100%;
+        display: none; /* Usually hidden or a hamburger menu on mobile */
+    }
+    .main-content {
+        padding: 20px;
+    }
+    .action-buttons {
+        flex-direction: column-reverse;
+    }
+    .btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}

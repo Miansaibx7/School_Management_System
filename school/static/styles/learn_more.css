@@ -1,0 +1,316 @@
+/* ================= LEARN MORE PAGE ================= */
+
+.learn-more-container {
+    width: 100%;
+    min-height: 100vh;
+    background: #ffffff;
+    overflow-x: hidden;
+}
+
+/* Hero Section */
+.lm-hero {
+    position: relative;
+    padding: 120px 20px 100px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+.lm-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.lm-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+    backdrop-filter: blur(10px);
+}
+
+.lm-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.lm-hero-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.95;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.lm-hero-shape {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: white;
+    clip-path: ellipse(60% 100% at 50% 100%);
+}
+
+/* Features Section */
+.lm-features {
+    padding: 100px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.lm-section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.lm-section-header h2 {
+    font-size: 2.5rem;
+    color: #1e293b;
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+.lm-section-header p {
+    font-size: 1.125rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.lm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.lm-card {
+    background: #f8fafc;
+    border-radius: 20px;
+    padding: 40px;
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+}
+
+.lm-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.lm-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+.lm-card:hover::before {
+    transform: scaleX(1);
+}
+
+.lm-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 24px;
+    transition: transform 0.3s ease;
+}
+
+.lm-card:hover .lm-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.lm-card h3 {
+    font-size: 1.5rem;
+    color: #1e293b;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.lm-card p {
+    color: #64748b;
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+/* Stats Section */
+.lm-stats {
+    background: #1e293b;
+    padding: 80px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    max-width: 100%;
+    text-align: center;
+}
+
+.lm-stat-item {
+    color: white;
+}
+
+.lm-stat-number {
+    display: block;
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.lm-stat-label {
+    font-size: 1.125rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* CTA Section */
+.lm-cta {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    text-align: center;
+}
+
+.lm-cta-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.lm-cta h2 {
+    font-size: 2.5rem;
+    color: #1e293b;
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+.lm-cta p {
+    font-size: 1.25rem;
+    color: #64748b;
+    margin-bottom: 40px;
+}
+
+.lm-cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.lm-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.lm-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.lm-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 16px 40px;
+    background: transparent;
+    color: #667eea;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: 2px solid #667eea;
+    transition: all 0.3s ease;
+}
+
+.lm-btn-secondary:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* WhatsApp Button Enhancement */
+.whatsapp-btn svg {
+    margin-right: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .lm-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .lm-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .lm-card {
+        padding: 30px;
+    }
+    
+    .lm-stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .lm-cta h2 {
+        font-size: 2rem;
+    }
+    
+    .lm-cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .lm-btn-primary,
+    .lm-btn-secondary {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .lm-hero {
+        padding: 80px 20px 60px;
+    }
+    
+    .lm-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .lm-section-header h2 {
+        font-size: 1.75rem;
+    }
+}

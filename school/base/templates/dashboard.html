@@ -1,0 +1,436 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-app">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar-wrapper">
+        {% include "sidebar.html" %}
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="dashboard-header">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="header-search">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" placeholder="Search students, teachers..." class="search-input">
+            </div>
+
+            <div class="header-actions">
+                <button class="action-btn" aria-label="Notifications">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span class="notification-dot"></span>
+                </button>
+
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        {% if request.user.avatar %}
+                        <img src="{{ request.user.avatar.url }}" alt="{{ request.user.name }}">
+                        {% else %}
+                        <span>{{ request.user.name|first|upper }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">{{ request.user.name }}</span>
+                        <span class="user-role">{{ user_role }}</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Welcome Section -->
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h1>Welcome back, {{ request.user.name|default:"Admin" }}! 👋</h1>
+                    <p>Here's what's happening in your school today.</p>
+                </div>
+                <div class="welcome-date">
+                    <span class="date-day">{{ now|date:"d" }}</span>
+                    <span class="date-month">{{ now|date:"F Y" }}</span>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card students" data-count="{{ stats.students }}">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-details">
+                        <span class="stat-label">Total Students</span>
+                        <h3 class="stat-value" data-target="{{ stats.students }}">0</h3>
+                        <span class="stat-trend up">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                            +12% this month
+                        </span>
+                    </div>
+                </div>
+
+                <div class="stat-card teachers" data-count="{{ stats.teachers }}">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="stat-details">
+                        <span class="stat-label">Total Teachers</span>
+                        <h3 class="stat-value" data-target="{{ stats.teachers }}">{{ stats.teachers }}</h3>
+                        
+                        {% if stats.teachers_trend > 0 %}
+                        <span class="stat-trend up">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                            +{{ stats.teachers_trend }} this month
+                        </span>
+                        {% else %}
+                        <span class="stat-trend neutral">
+                            No new additions this month
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="stat-card classes" data-count="{{ stats.classes }}">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-details">
+                        <span class="stat-label">Active Classes</span>
+                        <h3 class="stat-value" data-target="{{ stats.classes }}">{{ stats.classes }}</h3>
+                    </div>
+                </div>
+
+                <div class="stat-card revenue" data-count="{{ stats.monthly_revenue }}">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-details">
+                        <span class="stat-label">Monthly Revenue</span>
+                        <h3 class="stat-value" data-target="{{ stats.monthly_revenue }}">0</h3>
+                        <span class="stat-trend {% if stats.profit > 0 %}up{% else %}down{% endif %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                {% if stats.profit > 0 %}
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                                {% else %}
+                                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+                                <polyline points="17 18 23 18 23 12"></polyline>
+                                {% endif %}
+                            </svg>
+                            {% if stats.profit > 0 %}Profit{% else %}Loss{% endif %} ${{ stats.profit|default:"0" }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Recent Students Table -->
+                <div class="content-card recent-students">
+                    <div class="card-header">
+                        <h3>Recent Admissions</h3>
+                        <a href="#" class="view-all">View All →</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Class</th>
+                                    <th>Admission Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in recent_students %}
+                                <tr class="table-row-animated">
+                                    <td>
+                                        <div class="user-cell">
+                                            <div class="avatar-sm">
+                                                {% if student.photo %}
+                                                <img src="{{ student.photo.url }}" alt="{{ student.first_name }}">
+                                                {% else %}
+                                                <span>{{ student.first_name|first }}{{ student.last_name|first }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="user-details">
+                                                <span class="name">{{ student.full_name }}</span>
+                                                <span class="meta">{{ student.admission_number }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge-class">{{ student.class_room.name }}</span>
+                                        {% if student.section %}
+                                        <span class="badge-section">{{ student.section.name }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ student.admission_date|date:"M d, Y" }}</td>
+                                    <td>
+                                        <span
+                                            class="status-badge {% if student.is_active %}active{% else %}inactive{% endif %}">
+                                            {% if student.is_active %}Active{% else %}Inactive{% endif %}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="empty-state">
+                                        <div class="empty-content">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="9" cy="7" r="4"></circle>
+                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                            </svg>
+                                            <p>No recent admissions</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Fee Defaulters -->
+                <div class="content-card defaulters">
+                    <div class="card-header">
+                        <h3>Fee Defaulters</h3>
+                        <span class="badge-alert">{{ defaulters|length }} Pending</span>
+                    </div>
+                    <div class="defaulters-list">
+                        {% for student in defaulters %}
+                        <div class="defaulter-item">
+                            <div class="defaulter-info">
+                                <div class="avatar-sm warning">{{ student.first_name|first }}</div>
+                                <div class="info-text">
+                                    <span class="name">{{ student.full_name }}</span>
+                                    <span class="class">{{ student.class_room.name }}</span>
+                                </div>
+                            </div>
+                            <div class="defaulter-amount">
+                                <span class="amount">${{ student.total_fee_due }}</span>
+                                <span class="label">Due</span>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="empty-state-small">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <p>No pending dues!</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <div class="actions-grid">
+                    <a href="#" class="action-card">
+                        <div class="action-icon blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <line x1="19" y1="8" x2="19" y2="14"></line>
+                                <line x1="22" y1="11" x2="16" y2="11"></line>
+                            </svg>
+                        </div>
+                        <span>Add Student</span>
+                    </a>
+
+                    <a href="{% url 'teacher_create' %}" class="action-card">
+                        <div class="action-icon purple">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                                <line x1="19" y1="8" x2="19" y2="14"></line>
+                                <line x1="22" y1="11" x2="16" y2="11"></line>
+                            </svg>
+                        </div>
+                        <span>Add Teacher</span>
+                    </a>
+
+                    <a href="#" class="action-card">
+                        <div class="action-icon green">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                        </div>
+                        <span>Record Fee</span>
+                    </a>
+
+                    <a href="#" class="action-card">
+                        <div class="action-icon orange">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <span>Reports</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Dashboard JavaScript -->
+<script>
+    (function () {
+        'use strict';
+
+        // --- 1. DOM Elements ---
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebarClose = document.getElementById('sidebarClose');
+        const statValues = document.querySelectorAll('.stat-value');
+        // FIX: Select the <a> inside .has-submenu instead of non-existent .submenu-toggle
+        const submenuToggles = document.querySelectorAll('.has-submenu > a');
+        const searchInput = document.querySelector('.search-input');
+        const notificationBtn = document.querySelector('.action-btn');
+        const tableRows = document.querySelectorAll('.table-row-animated');
+
+        // --- 2. Sidebar Logic ---
+        const toggleSidebar = (e) => {
+            if (e) e.stopPropagation(); // Prevent event bubbling
+            if (sidebar) sidebar.classList.toggle('active');
+            if (menuToggle) menuToggle.classList.toggle('active');
+            document.body.classList.toggle('sidebar-open');
+        };
+
+        if (menuToggle) menuToggle.addEventListener('click', toggleSidebar);
+        if (sidebarClose) sidebarClose.addEventListener('click', toggleSidebar);
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const isMobile = window.innerWidth <= 1024;
+            const isSidebarActive = sidebar && sidebar.classList.contains('active');
+
+            if (isMobile && isSidebarActive) {
+                // If click is outside sidebar and not on the toggle button
+                if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                    if (menuToggle) menuToggle.classList.remove('active');
+                    document.body.classList.remove('sidebar-open');
+                }
+            }
+        });
+
+        // --- 3. Submenu Accordion ---
+        submenuToggles.forEach(toggle => {
+            toggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                const parent = this.parentElement;
+
+                // Optional: Close other open submenus for a clean accordion effect
+                document.querySelectorAll('.has-submenu').forEach(item => {
+                    if (item !== parent) item.classList.remove('open');
+                });
+
+                parent.classList.toggle('open');
+            });
+        });
+
+        // --- 4. Optimized Counter Animation ---
+        function animateCounter(element, target) {
+            let start = 0;
+            const duration = 250; 
+            const startTime = performance.now();
+
+            const update = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Ease out function for smoother finish
+                const currentVal = Math.floor(progress * target);
+                element.textContent = currentVal.toLocaleString();
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    element.textContent = target.toLocaleString();
+                }
+            };
+            requestAnimationFrame(update);
+        }
+
+        // Intersection Observer for counters
+        const observerOptions = { threshold: 0.2 };
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseFloat(entry.target.getAttribute('data-target')) || 0;
+                    animateCounter(entry.target, target);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        statValues.forEach(el => counterObserver.observe(el));
+
+        // --- 5. UI Enhancements ---
+
+        // Table Row Stagger
+        tableRows.forEach((row, index) => {
+            row.style.animationDelay = `${index * 0.05}s`;
+        });
+
+        // Search Focus
+        if (searchInput) {
+            searchInput.addEventListener('focus', () => {
+                searchInput.parentElement.classList.add('focused');
+            });
+            searchInput.addEventListener('blur', () => {
+                searchInput.parentElement.classList.remove('focused');
+            });
+        }
+
+        // Notification Pulse
+        if (notificationBtn) {
+            setInterval(() => {
+                notificationBtn.classList.add('pulse');
+                setTimeout(() => notificationBtn.classList.remove('pulse'), 2000);
+            }, 10000);
+        }
+
+    })();
+</script>
+{% endblock %}

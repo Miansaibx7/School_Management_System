@@ -1,0 +1,114 @@
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="brand-logo">
+            <div class="logo-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z" />
+                    <path d="M12 12l-7-3.82M12 12l7-3.82M12 12v9" />
+                </svg>
+            </div>
+            <span class="brand-text">EduManager Pro</span>
+        </div>
+        <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+
+    <div class="sidebar-menu">
+        <div class="menu-category">Main</div>
+        <ul>
+            <li>
+                <a href="{% url 'dashboard' %}" class="active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-category">Students</div>
+        <ul>
+            <li class="has-submenu">
+                <a href="#">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="#"><i class="fas fa-list"></i> All Students</a></li>
+                    <li><a href="#"><i class="fas fa-plus"></i> Add Student</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Fee Payments</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-category">Teachers</div>
+        <ul>
+            <li class="has-submenu">
+                <a href="#">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teachers</span>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="{% url 'teacher_list' %}"><i class="fas fa-list"></i> All Teachers</a></li>
+                    <li><a href="{% url 'teacher_create' %}"><i class="fas fa-plus"></i> Add Teacher</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Salary Payments</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-category">Academic</div>
+        <ul>
+            <li class="has-submenu">
+                <a href="#">
+                    <i class="fas fa-school"></i>
+                    <span>Classes</span>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="{% url 'class_list' %}"><i class="fas fa-list"></i> All Classes</a></li>
+                    <li><a href="{%url 'class_create'%}"><i class="fas fa-plus"></i> Add Class</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="menu-category">Finance</div>
+        <ul>
+            <li>
+                <a href="#">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Expenses</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Financial Reports</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-category">Settings</div>
+        <ul>
+            <li>
+                <a href="{% url 'logoutPage' %}">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>

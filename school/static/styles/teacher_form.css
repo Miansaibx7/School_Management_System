@@ -1,0 +1,157 @@
+:root {
+    --tf-primary: #4e73df;
+    --tf-success: #1cc88a;
+    --tf-bg-light: #f8f9fc;
+    --tf-text-dark: #2e384d;
+    --tf-border: #e3e6f0;
+    --tf-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+}
+
+/* Layout - Removes the "gap" between sidebar and content */
+.tf-dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--tf-bg-light);
+}
+
+.tf-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+}
+
+/* Content Area - Uses all available horizontal space */
+.tf-main-content {
+    flex-grow: 1;
+    padding: 1.5rem; /* Reduced padding to bring form closer to edges */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form Card - Expanded to 100% width */
+.tf-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: var(--tf-shadow);
+    width: 100%; /* Expands to fill the right side */
+    margin: 0; /* Removes centering margins */
+    overflow: hidden;
+}
+
+.tf-header-box {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    color: #fff;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tf-header-text h1 { margin: 0; font-size: 1.8rem; font-weight: 700; }
+.tf-header-text p { margin: 5px 0 0; opacity: 0.9; }
+
+.tf-body {
+    padding: 2rem;
+}
+
+.tf-section-block {
+    margin-bottom: 2rem;
+}
+
+.tf-section-block h3 {
+    border-bottom: 2px solid var(--tf-border);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    color: var(--tf-primary);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 3-Column Grid for Form Fields */
+.tf-fields-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.tf-field-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.tf-span-2 { grid-column: span 2; }
+.tf-span-3 { grid-column: 1 / -1; }
+
+.tf-field-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--tf-text-dark);
+    font-size: 0.9rem;
+}
+
+.tf-field-group input,
+.tf-field-group select,
+.tf-field-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--tf-border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+.tf-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--tf-border);
+    display: flex;
+    gap: 1rem;
+}
+
+.tf-btn-save {
+    background-color: var(--tf-success);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tf-btn-back {
+    color: #858796;
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+/* Animation */
+.tf-animate {
+    animation: tfFadeIn 0.4s ease-out;
+}
+
+@keyframes tfFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile View */
+@media (max-width: 992px) {
+    .tf-fields-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .tf-fields-row {
+        grid-template-columns: 1fr;
+    }
+    .tf-span-2 { grid-column: auto; }
+}

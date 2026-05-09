@@ -1,0 +1,169 @@
+:root {
+    --tf-primary: #4f46e5;
+    --tf-success: #10b981;
+    --tf-danger: #ef4444;
+    --tf-border: #e2e8f0;
+}
+
+/* --- Layout Architecture --- */
+.tf-dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.tf-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    /* Prevents sidebar from squishing */
+    border-right: 1px solid var(--tf-border);
+    background: #fff;
+}
+
+.tf-main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    background-color: #f8fafc;
+}
+
+.tf-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* --- FIXED HEADER BOX --- */
+.tf-header-box {
+    background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+    color: #fff;
+    padding: 2rem;
+    display: flex;
+    /* Forces layout to be flex */
+    justify-content: space-between;
+    /* Pushes button to the right */
+    align-items: center;
+    /* Centers items vertically */
+    flex-wrap: wrap;
+    /* Allows wrapping on mobile so they don't overlap */
+    gap: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tf-header-text h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.tf-header-text p {
+    margin: 5px 0 0;
+    opacity: 0.8;
+}
+
+/* --- ADD NEW CLASS BUTTON (Exact Animation) --- */
+.tf-btn-add {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    /* Forces text to stay on one line */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tf-btn-add:hover {
+    background: #ffffff;
+    color: #4f46e5 !important;
+    transform: translateY(-3px);
+    /* Matching your save button lift */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Action Buttons (Edit/Delete) --- */
+.btn-action {
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-edit {
+    background-color: #ecfdf5;
+    color: var(--tf-success);
+}
+
+.btn-edit:hover {
+    background-color: var(--tf-success);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-delete {
+    background-color: #fef2f2;
+    color: var(--tf-danger);
+}
+
+.btn-delete:hover {
+    background-color: var(--tf-danger);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* --- Table & Sno Styling --- */
+.sno-badge {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--tf-border);
+    font-size: 0.85rem;
+}
+
+/* --- Animation --- */
+.tf-animate {
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .tf-header-box {
+        flex-direction: column;
+        /* Stack vertically on mobile */
+        text-align: center;
+        padding: 1.5rem;
+    }
+
+    .tf-btn-add {
+        width: 100%;
+        max-width: 300px;
+    }
+}

@@ -1,0 +1,704 @@
+/* ============================================
+   NAVBAR CONTAINER - FIXED LAYOUT
+   ============================================ */
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    gap: 20px;
+    position: relative;
+}
+
+/* ============================================
+   NAVIGATION LINKS - OPTIMIZED SPACING
+   ============================================ */
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: nowrap;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Base Nav Link - Unified Animation */
+.nav-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    padding: 8px 4px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+/* Hover State - Color Change */
+.nav-link:hover {
+    color: var(--text-dark);
+    transform: translateY(-2px);
+}
+
+/* Active State */
+.nav-link.active {
+    color: var(--accent);
+}
+
+/* ============================================
+   UNDERLINE ANIMATION - FOR ALL LINKS
+   ============================================ */
+
+/* Animated Underline Base */
+.nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 3px;
+    left: 50%;
+    bottom: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-glow));
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 2px;
+    transform: translateX(-50%);
+}
+
+/* Hover - Underline expands from center */
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Active - Underline stays visible */
+.nav-link.active::after {
+    width: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+
+/* ============================================
+   WHATSAPP BUTTON - ENHANCED ANIMATION
+   ============================================ */
+
+.whatsapp-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border: 2px solid #bbf7d0;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-width: fit-content;
+}
+
+/* Shine effect animation */
+.whatsapp-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    transition: 0.6s;
+}
+
+.whatsapp-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(37, 211, 102, 0.3);
+    border-color: var(--whatsapp);
+}
+
+.whatsapp-btn:hover::before {
+    left: 100%;
+}
+
+/* Icon bounce animation */
+.whatsapp-icon-wrap {
+    width: 32px;
+    height: 32px;
+    background: var(--whatsapp);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.whatsapp-btn:hover .whatsapp-icon-wrap {
+    transform: rotate(15deg) scale(1.15);
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-icon-wrap svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+}
+
+.whatsapp-btn:hover .whatsapp-icon-wrap svg {
+    transform: scale(1.1);
+}
+
+.whatsapp-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.whatsapp-text span {
+    font-size: 10px;
+    color: var(--whatsapp-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.whatsapp-text strong {
+    font-size: 13px;
+    color: #15803d;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.whatsapp-btn:hover .whatsapp-text strong {
+    color: #166534;
+}
+
+/* ============================================
+   AUTH BUTTONS - MODERN ANIMATIONS
+   ============================================ */
+
+.auth-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.user-name {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.user-name:hover {
+    color: var(--text-dark);
+}
+
+/* Button Base */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    white-space: nowrap;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ripple effect base */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-text {
+    color: var(--text);
+    background: transparent;
+    padding: 8px 12px;
+    position: relative;
+}
+
+/* Underline slide animation */
+.btn-text::after {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.btn-text:hover {
+    color: var(--text-dark);
+    transform: translateY(-2px);
+}
+
+.btn-text:hover::after {
+    width: 60%;
+}
+
+.btn-primary {
+    color: white;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shine sweep animation */
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: rotate(30deg);
+    transition: all 0.6s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.3);
+}
+
+.btn-primary:hover::after {
+    left: 100%;
+}
+
+.btn-outline {
+    color: var(--text);
+    background: transparent;
+    border: 1.5px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Fill animation */
+.btn-outline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    transition: width 0.3s ease;
+    z-index: -1;
+}
+
+.btn-outline:hover {
+    border-color: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2);
+}
+
+.btn-outline:hover::before {
+    width: 100%;
+}
+
+/* ============================================
+   LOGO ANIMATIONS
+   ============================================ */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    position: relative;
+    padding: 6px;
+    border-radius: var(--radius-lg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo:hover {
+    background: rgba(59, 130, 246, 0.05);
+    transform: translateX(4px);
+}
+
+.logo-mark {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-size: 200% 200%;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    animation: gradientShift 3s ease infinite;
+    transition: all 0.3s ease;
+}
+
+.logo:hover .logo-icon {
+    transform: rotate(-5deg) scale(1.1);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.logo-pulse {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    opacity: 0.3;
+    z-index: 1;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.2); opacity: 0; }
+}
+
+.logo-icon svg {
+    width: 24px;
+    height: 24px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    transition: transform 0.3s ease;
+}
+
+.logo:hover .logo-icon svg {
+    transform: scale(1.1);
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.logo-brand {
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+    background-clip: text;
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.logo-brand::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 20px;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.logo:hover .logo-brand::after {
+    width: 100%;
+}
+
+.logo-tagline {
+    font-size: 10px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 3px;
+    transition: color 0.3s ease;
+}
+
+.logo:hover .logo-tagline {
+    color: #64748b;
+}
+
+/* ============================================
+   MOBILE TOGGLE - ANIMATED
+   ============================================ */
+
+.mobile-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+    flex-shrink: 0;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.mobile-toggle:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.mobile-toggle span {
+    width: 24px;
+    height: 2.5px;
+    background: var(--primary);
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+.mobile-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-toggle.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.mobile-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+@media (min-width: 1400px) {
+    .nav-links {
+        gap: 32px;
+    }
+    
+    .nav-link {
+        font-size: 15px;
+        padding: 10px 6px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .navbar {
+        gap: 16px;
+    }
+    
+    .nav-links {
+        gap: 18px;
+    }
+    
+    .whatsapp-text span {
+        display: none;
+    }
+    
+    .whatsapp-btn {
+        padding: 8px 12px;
+        border-radius: 50%;
+    }
+    
+    .whatsapp-icon-wrap {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .navbar {
+        gap: 12px;
+    }
+    
+    .nav-links {
+        gap: 14px;
+    }
+    
+    .nav-link {
+        font-size: 13px;
+        padding: 6px 2px;
+    }
+    
+    .user-name {
+        max-width: 80px;
+        font-size: 12px;
+    }
+    
+    .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    .auth-links {
+        gap: 8px;
+        margin-left: 8px;
+    }
+}
+
+@media (max-width: 900px) {
+    .nav-links {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 20px;
+        gap: 5px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        transform: translateY(-150%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 999;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        align-items: stretch;
+    }
+    
+    .nav-links.active {
+        transform: translateY(0);
+    }
+    
+    .nav-link {
+        padding: 16px 20px;
+        width: 100%;
+        border-bottom: 1px solid var(--border);
+        font-size: 15px;
+        justify-content: center;
+        border-radius: 8px;
+        margin: 2px 0;
+    }
+    
+    .nav-link:hover {
+        background: #f8fafc;
+        transform: translateX(10px);
+    }
+    
+    .nav-link::after {
+        display: none;
+    }
+    
+    /* Mobile dashboard special */
+    .nav-link[href*="dashboard"] {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+        border: 2px solid rgba(59, 130, 246, 0.3);
+        margin: 8px 0;
+    }
+    
+    .nav-link[href*="dashboard"]:hover {
+        transform: translateX(10px) scale(1.02);
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%);
+    }
+    
+    .whatsapp-btn,
+    .auth-links {
+        display: none;
+    }
+    
+    .mobile-toggle {
+        display: flex;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        height: 70px;
+    }
+    
+    .logo-brand {
+        font-size: 18px;
+    }
+    
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .logo-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 16px;
+    }
+    
+    .logo-text {
+        display: none;
+    }
+    
+    .logo-mark {
+        width: 44px;
+        height: 44px;
+    }
+}

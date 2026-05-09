@@ -1,0 +1,80 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}All Classes{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/all_class.css' %}">
+
+<div class="tf-dashboard-layout">
+    <aside class="tf-sidebar flex-shrink-0">
+        {% include "sidebar.html" %}
+    </aside>
+
+    <main class="tf-main-content flex-grow-1">
+        <div class="tf-card tf-animate">
+
+        <div class="tf-header-box">
+            <div class="tf-header-text">
+                <h1>Class Management</h1>
+                <p>View and manage sequential class records.</p>
+            </div>
+            <div class="tf-header-actions">
+                <a href="{% url 'class_create' %}" class="tf-btn-add">
+                    <i class="fas fa-plus me-2"></i> Add New Class
+                </a>
+            </div>
+        </div>
+
+            <div class="tf-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="ps-4">S.No</th>
+                                <th>Class Name</th>
+                                <th>Section</th>
+                                <th>Capacity</th>
+                                <th class="text-end pe-5">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for class_obj in classes %}
+                            <tr>
+                                <td class="ps-4">
+                                    <span class="sno-badge">{{ forloop.counter }}</span>
+                                </td>
+                                <td class="fw-bold text-dark">{{ class_obj.name }}</td>
+                                <td><span class="text-muted">{{ class_obj.section }}</span></td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-users me-2 text-indigo-light"></i>
+                                        {{ class_obj.capacity }} Students
+                                    </div>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="{% url 'class_update' class_obj.id %}" class="btn-action btn-edit">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a href="{% url 'class_delete' class_obj.id %}" class="btn-action btn-delete">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <p class="text-muted mt-3">No classes available.</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

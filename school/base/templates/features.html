@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="features-main-container">
+    <div class="heading-container">
+        <h1>We Providing You Best Features</h1>
+        <div class="paragraph-container">
+            <p>Our free school management system/school management software
+             manages everything starting from admission to attendance
+             and exams to result cards & certification.</p>
+        </div>
+    </div>
+
+    <div class="features-grid">
+        {% for feature in features %}
+        <div class="feature-card">
+            <div class="feature-icon">
+                {% if feature.icon_type == 'image' %}
+                    <img src="{{ feature.icon_url }}" alt="{{ feature.title }}">
+                {% else %}
+                    <i class="{{ feature.icon_class }}"></i>
+                {% endif %}
+            </div>
+            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

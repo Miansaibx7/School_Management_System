@@ -1,0 +1,77 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <p class="alert alert-{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if page == 'loginPage_' %}
+        <form method="POST" action="">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter email" autocomplete="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" autocomplete="current-password" required>
+            </div>
+
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox" name="remember"> Remember me
+                </label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn-submit">Login</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Haven't signed up yet?</p>
+            <a href="{% url 'registerPage' %}">Sign up</a>
+        </div>
+
+        {% else %}
+
+        <form method="POST" action="">
+            {% csrf_token %}
+            
+            {# Render form fields manually for consistent styling #}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <span class="error">{{ field.errors.0 }}</span>
+                {% endif %}
+                {% if field.help_text %}
+                <small class="help-text">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn-submit">Register</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already signed up?</p>
+            <a href="{% url 'loginPage' %}">Login</a>
+        </div>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

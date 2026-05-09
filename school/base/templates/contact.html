@@ -1,0 +1,154 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="contact-main-container">
+    <!-- Contact Header -->
+    <div class="heading-container">
+        <h1>Get In Touch With Us</h1>
+        <div class="paragraph-container">
+            <p>Have questions about our school management software? 
+            We're here to help! Reach out to us through any of the following channels 
+            or fill out the contact form below.</p>
+        </div>
+    </div>
+
+    <!-- Contact Info Cards -->
+    <div class="contact-info-grid">
+        <div class="contact-info-card">
+            <div class="contact-icon">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+            <h3>WhatsApp</h3>
+            <p>+92 306 8363688</p>
+            <a href="https://wa.me/923068363688" target="_blank" class="contact-link">Chat Now</a>
+        </div>
+
+        <div class="contact-info-card">
+            <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <h3>Email</h3>
+            <p>hello@ourschoolsoftware.com</p>
+            <a href="mailto:hello@ourschoolsoftware.com" class="contact-link">Send Email</a>
+        </div>
+
+        <div class="contact-info-card">
+            <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <h3>Address</h3>
+            <p>Park Road, F8 Markaz<br>Islamabad, Pakistan</p>
+            <a href="https://maps.google.com/?q=Park+Road+F8+Markaz+Islamabad" target="_blank" class="contact-link">View Map</a>
+        </div>
+
+        <div class="contact-info-card">
+            <div class="contact-icon">
+                <i class="fas fa-phone-alt"></i>
+            </div>
+            <h3>Phone</h3>
+            <p>+92 306 8363688</p>
+            <a href="tel:+923068363688" class="contact-link">Call Now</a>
+        </div>
+    </div>
+
+    <!-- Contact Form Section -->
+    <div class="contact-form-section">
+        <div class="form-container">
+            <h2>Send Us a Message</h2>
+            <form method="POST" action="{% url 'contact' %}" class="contact-form">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="demo">Request Demo</option>
+                            <option value="support">Technical Support</option>
+                            <option value="sales">Sales Question</option>
+                            <option value="partnership">Partnership</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" rows="6" placeholder="Describe your message here..." required></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="newsletter" value="yes">
+                        <span class="checkmark"></span>
+                        Subscribe to our newsletter for updates and offers
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Message
+                </button>
+            </form>
+        </div>
+
+        <!-- Map or Image Side -->
+        <div class="contact-visual">
+            <div class="visual-content">
+                <h3>Why Choose Us?</h3>
+                <ul class="benefits-list">
+                    <li><i class="fas fa-check-circle"></i> 24/7 Customer Support</li>
+                    <li><i class="fas fa-check-circle"></i> Free Demo Available</li>
+                    <li><i class="fas fa-check-circle"></i> No Hidden Charges</li>
+                    <li><i class="fas fa-check-circle"></i> Cloud-Based Solution</li>
+                    <li><i class="fas fa-check-circle"></i> Multi-Campus Support</li>
+                    <li><i class="fas fa-check-circle"></i> Mobile App Included</li>
+                </ul>
+                <div class="trust-badges">
+                    <div class="badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>100% Secure</span>
+                    </div>
+                    <div class="badge">
+                        <i class="fas fa-users"></i>
+                        <span>500+ Schools</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-grid">
+            {% for faq in faqs %}
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h4>{{ faq.question }}</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>{{ faq.answer }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

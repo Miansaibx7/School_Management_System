@@ -1,0 +1,79 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}Teacher Directory | Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="tf-sidebar flex-shrink-0">
+        {% include "sidebar.html" %}
+    </aside>
+
+    <div class="main-layout">
+        <nav class="top-nav">
+            <div class="nav-left">
+                <button id="toggle-btn" class="menu-icon" type="button">☰</button>
+                <span id="nav-logo" class="logo-text hidden">EduAdmin</span>
+            </div>
+            <div class="nav-right">
+                <a href="{% url 'teacher_create' %}" class="btn-add-teacher">
+                    <span class="plus-icon">+</span> Add Teacher
+                </a>
+            </div>
+        </nav>
+
+        <main class="content-body">
+            <div class="table-card">
+                <table class="teacher-table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Gender</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th class="text-center">Photo</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="animate-body">
+                        {% for teacher in teachers %}
+                        <tr class="t-row">
+                            <td class="id-cell">{{ forloop.counter }}</td>
+                            
+                            <td class="name-cell font-bold">{{ teacher.first_name }} {{ teacher.last_name }}</td>
+                            
+                            <td><span class="role-badge">{{ teacher.designation }}</span></td>
+                            <td>{{ teacher.gender }}</td>
+                            <td>{{ teacher.email }}</td>
+                            <td>{{ teacher.phone_number }}</td>
+                            
+                            <td class="img-col text-center">
+                                {% if teacher.photo %}
+                                    <img src="{{ teacher.photo.url }}" class="profile-pic" alt="Teacher">
+                                {% else %}
+                                    <div class="pic-placeholder">{{ teacher.first_name|first|upper }}</div>
+                                {% endif %}
+                            </td>
+                            
+                            <td class="action-btns text-center">
+                                <a href="{% url 'teacher_update' teacher.id %}" class="btn-action btn-edit">
+                                    <i class="fas fa-edit"></i> Edit</a>
+                                <a href="{% url 'teacher_delete' teacher.pk %}" class="btn-delete">
+                                    <i class="fas fa-trash"></i> Delete</a>
+                            </td>
+
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="no-data text-center">No teachers found in registry.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

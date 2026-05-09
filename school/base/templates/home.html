@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="hero-section" style="background-image: url('{% static 'images/backimage.jpg' %}');">
+    
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+        <h1>Ranked #1</h1>
+
+        <h2>
+            Easy To Use <br>
+            Complete All-In-One <br>
+            School Management System
+        </h2>
+
+        <p>
+            Manage students, attendance, staff and fees with one powerful
+            and simple platform designed for modern schools.
+        </p>
+
+        <a href="{% url 'loginPage' %}" class="hero-btn">Get Started</a>
+    </div>
+
+</div>
+
+{% endblock %}

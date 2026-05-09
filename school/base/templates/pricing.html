@@ -1,0 +1,171 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="pricing-main-container">
+    <!-- Trust Badges Section -->
+    <div class="trust-badges">
+        <div class="trust-badge">
+            <div class="trust-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <div class="trust-text">
+                <strong>256-bit SSL Encryption</strong>
+                <span>Bank-grade data security</span>
+            </div>
+        </div>
+
+        <div class="trust-badge">
+            <div class="trust-icon">
+                <i class="fas fa-cloud"></i>
+            </div>
+            <div class="trust-text">
+                <strong>Amazon AWS Hosted</strong>
+                <span>World's most trusted cloud</span>
+            </div>
+        </div>
+
+        <div class="trust-badge">
+            <div class="trust-icon">
+                <i class="fas fa-database"></i>
+            </div>
+            <div class="trust-text">
+                <strong>Auto Backup Every 30 Min</strong>
+                <span>Your data is never lost</span>
+            </div>
+        </div>
+
+        <div class="trust-badge">
+            <div class="trust-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="trust-text">
+                <strong>99.9% Uptime Guarantee</strong>
+                <span>Always online, always reliable</span>
+            </div>
+        </div>
+
+        <div class="trust-badge">
+            <div class="trust-icon">
+                <i class="fas fa-server"></i>
+            </div>
+            <div class="trust-text">
+                <strong>Isolated Private Database</strong>
+                <span>Nobody else can see your data</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Header -->
+    <div class="pricing-header">
+        <h2>Simple, Transparent Pricing</h2>
+        <p>Choose the perfect plan for your institution. No hidden fees, no surprises.</p>
+
+        <!-- Billing Toggle -->
+        <div class="billing-toggle">
+            <span class="toggle-label active" data-plan="monthly">Monthly</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="billing-toggle">
+                <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label" data-plan="yearly">Yearly <span class="save-badge">Save 20%</span></span>
+        </div>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div class="pricing-grid">
+        <!-- Free Plan -->
+        <div class="pricing-card">
+            <div class="pricing-header-card">
+                <h3>Starter</h3>
+                <p>Perfect for small schools</p>
+            </div>
+            <div class="pricing-price">
+                <span class="currency">$</span>
+                <span class="amount" data-monthly="0" data-yearly="0">0</span>
+                <span class="period">/month</span>
+            </div>
+            <ul class="pricing-features">
+                <li><i class="fas fa-check"></i> Up to 100 students</li>
+                <li><i class="fas fa-check"></i> Basic attendance tracking</li>
+                <li><i class="fas fa-check"></i> 1 campus only</li>
+                <li><i class="fas fa-check"></i> Email support</li>
+                <li><i class="fas fa-check"></i> Mobile app access</li>
+                <li class="disabled"><i class="fas fa-times"></i> Advanced reports</li>
+                <li class="disabled"><i class="fas fa-times"></i> Custom branding</li>
+            </ul>
+            <a href="{% url 'registerPage' %}" class="pricing-btn btn-outline">Start Free Trial</a>
+        </div>
+
+        <!-- Professional Plan (Popular) -->
+        <div class="pricing-card popular">
+            <div class="popular-badge">Most Popular</div>
+            <div class="pricing-header-card">
+                <h3>Professional</h3>
+                <p>For growing institutions</p>
+            </div>
+            <div class="pricing-price">
+                <span class="currency">$</span>
+                <span class="amount" data-monthly="49" data-yearly="39">49</span>
+                <span class="period">/month</span>
+            </div>
+            <ul class="pricing-features">
+                <li><i class="fas fa-check"></i> Up to 1,000 students</li>
+                <li><i class="fas fa-check"></i> Advanced attendance & reports</li>
+                <li><i class="fas fa-check"></i> Up to 3 campuses</li>
+                <li><i class="fas fa-check"></i> Priority support</li>
+                <li><i class="fas fa-check"></i> Mobile app + SMS alerts</li>
+                <li><i class="fas fa-check"></i> Examination management</li>
+                <li class="disabled"><i class="fas fa-times"></i> Custom branding</li>
+            </ul>
+            <a href="#" class="pricing-btn btn-primary">Buy Now</a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card">
+            <div class="pricing-header-card">
+                <h3>Enterprise</h3>
+                <p>For large school chains</p>
+            </div>
+            <div class="pricing-price">
+                <span class="currency">$</span>
+                <span class="amount" data-monthly="99" data-yearly="79">99</span>
+                <span class="period">/month</span>
+            </div>
+            <ul class="pricing-features">
+                <li><i class="fas fa-check"></i> Unlimited students</li>
+                <li><i class="fas fa-check"></i> All features included</li>
+                <li><i class="fas fa-check"></i> Unlimited campuses</li>
+                <li><i class="fas fa-check"></i> 24/7 dedicated support</li>
+                <li><i class="fas fa-check"></i> Custom integrations</li>
+                <li><i class="fas fa-check"></i> White-label solution</li>
+                <li><i class="fas fa-check"></i> On-premise deployment</li>
+            </ul>
+            <a href="#" class="pricing-btn btn-outline" target="_blank">Buy Now</a>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="pricing-faq">
+        <h3>Frequently Asked Questions</h3>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h4>Can I switch plans anytime?</h4>
+                <p>Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Is there a setup fee?</h4>
+                <p>No, there are absolutely no setup fees. You only pay the monthly subscription.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Do you offer refunds?</h4>
+                <p>We offer a 30-day money-back guarantee if you're not satisfied with our service.</p>
+            </div>
+            <div class="faq-item">
+                <h4>What payment methods do you accept?</h4>
+                <p>We accept all major credit cards, PayPal, and bank transfers for enterprise plans.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
