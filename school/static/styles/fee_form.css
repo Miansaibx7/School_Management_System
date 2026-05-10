@@ -1,0 +1,242 @@
+/* --- Root Variables (Matched to your Design System) --- */
+:root {
+    --sf-primary: #4e73df;
+    --sf-success: #1cc88a;
+    --sf-danger: #e74a3b;
+    --sf-bg-light: #f8f9fc;
+    --sf-text-dark: #2e384d;
+    --sf-border: #e3e6f0;
+    --sf-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    --sidebar-width: 260px;
+}
+
+/* --- Layout Structure --- */
+.sf-dashboard-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--sf-bg-light);
+}
+
+.sf-sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    background: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+}
+
+.sf-main-content {
+    flex-grow: 1;
+    width: calc(100% - var(--sidebar-width));
+    padding: 2rem;
+    overflow-x: hidden;
+}
+
+/* --- Form Card Styling --- */
+.sf-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: var(--sf-shadow);
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.sf-header-box {
+    background: linear-gradient(135deg, var(--sf-primary) 0%, #224abe 100%);
+    color: #fff;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sf-header-text h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.sf-header-text p {
+    margin: 5px 0 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.sf-body {
+    padding: 2.5rem;
+}
+
+.sf-section-block {
+    margin-bottom: 2.5rem;
+}
+
+.sf-section-block h3 {
+    border-bottom: 2px solid var(--sf-border);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    color: var(--sf-primary);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- Grid System (3 Columns) --- */
+.sf-fields-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.sf-field-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Special case for notes/textarea to take full width */
+.sf-span-3 {
+    grid-column: 1 / -1;
+}
+
+.sf-field-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--sf-text-dark);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+/* --- Form Inputs Styling --- */
+.sf-field-group input,
+.sf-field-group select,
+.sf-field-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--sf-border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    background-color: #fff;
+}
+
+.sf-field-group input:focus,
+.sf-field-group select:focus,
+.sf-field-group textarea:focus {
+    border-color: var(--sf-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+}
+
+/* --- Error Messages --- */
+.text-danger.small {
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+/* --- Action Buttons --- */
+.sf-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--sf-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.sf-btn-save {
+    background-color: var(--sf-success);
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sf-btn-save:hover {
+    background-color: #17a673;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sf-btn-back {
+    background-color: #f1f3f9;
+    color: #858796;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.sf-btn-back:hover {
+    background-color: #e3e6f0;
+    color: #6e707e;
+    text-decoration: none;
+}
+
+/* --- Animation --- */
+.sf-animate {
+    animation: sfFadeIn 0.4s ease-out;
+}
+
+@keyframes sfFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Responsive Design (Mobile Friendly) --- */
+@media (max-width: 1100px) {
+    .sf-fields-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .sf-fields-row {
+        grid-template-columns: 1fr;
+    }
+
+    .sf-sidebar {
+        display: none;
+        /* Sidebar hidden on mobile */
+    }
+
+    .sf-main-content {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .sf-header-box {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .sf-body {
+        padding: 1.5rem;
+    }
+
+    .sf-actions {
+        flex-direction: column-reverse;
+    }
+
+    .sf-btn-save,
+    .sf-btn-back {
+        width: 100%;
+        justify-content: center;
+    }
+}

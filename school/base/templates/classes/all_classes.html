@@ -4,14 +4,22 @@
 {% block title %}All Classes{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/all_class.css' %}">
-
 <div class="tf-dashboard-layout">
     <aside class="tf-sidebar flex-shrink-0">
         {% include "sidebar.html" %}
     </aside>
 
     <main class="tf-main-content flex-grow-1">
+            <!-- Display Django Messages if any -->
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show ff-animate" role="alert">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
         <div class="tf-card tf-animate">
 
         <div class="tf-header-box">
@@ -19,62 +27,246 @@
                 <h1>Class Management</h1>
                 <p>View and manage sequential class records.</p>
             </div>
-            <div class="tf-header-actions">
+            <div class="tf-header-actions d-flex align-items-center gap-3">
+                <!-- Search Box -->
+                <div class="tf-search-box">
+                    <i class="fas fa-search search-icon"></i>
+        
+                    <input type="text" id="classSearch" placeholder="Search class or section...">
+                </div>
+                <!-- Add Button -->
                 <a href="{% url 'class_create' %}" class="tf-btn-add">
-                    <i class="fas fa-plus me-2"></i> Add New Class
+                    <i class="fas fa-plus me-2"></i>
+                    Add New Class
                 </a>
             </div>
         </div>
 
-            <div class="tf-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th class="ps-4">S.No</th>
-                                <th>Class Name</th>
-                                <th>Section</th>
-                                <th>Capacity</th>
-                                <th class="text-end pe-5">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for class_obj in classes %}
-                            <tr>
-                                <td class="ps-4">
-                                    <span class="sno-badge">{{ forloop.counter }}</span>
-                                </td>
-                                <td class="fw-bold text-dark">{{ class_obj.name }}</td>
-                                <td><span class="text-muted">{{ class_obj.section }}</span></td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-users me-2 text-indigo-light"></i>
-                                        {{ class_obj.capacity }} Students
-                                    </div>
-                                </td>
-                                <td class="text-end pe-4">
-                                    <div class="d-flex justify-content-end gap-2">
-                                        <a href="{% url 'class_update' class_obj.id %}" class="btn-action btn-edit">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </a>
-                                        <a href="{% url 'class_delete' class_obj.id %}" class="btn-action btn-delete">
-                                            <i class="fas fa-trash-alt"></i> Delete
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="5" class="text-center py-5">
-                                    <p class="text-muted mt-3">No classes available.</p>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+        <div class="tf-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">S.No</th>
+                            <th>Class Name</th>
+                            <th>Section</th>
+                            <th>Capacity</th>
+                            <th>Status</th>
+                            <th class="text-end pe-5">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                        {% for class_obj in classes %}
+        
+                        {% if class_obj.sections.all %}
+        
+                        {% for section in class_obj.sections.all %}
+                        <tr>
+                            <!-- Serial Number -->
+                            <td class="ps-4">
+                                <span class="sno-badge">
+                                    {{ forloop.parentloop.counter }}.{{ forloop.counter }}
+                                </span>
+                            </td>
+                            <!-- Class Name -->
+                            <td>
+                                <div class="fw-bold text-dark">
+                                    {{ class_obj.name }}
+                                </div>
+                            </td>
+                            <!-- Section -->
+                            <td>
+                                <span class="section-tag">
+                                    {{ section.name }}
+                                </span>
+                            </td>
+                           <!-- Capacity -->
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-users me-2 text-primary"></i>
+                                    <span class="fw-semibold">
+                                        {{ section.capacity }} Students
+                                    </span>
+                                </div>
+                            </td>
+                            <!-- Status -->
+                            <td>
+                                {% if section.is_active %}
+                                <span class="status-active">
+                                    <i class="fas fa-check-circle me-1"></i>
+                                    Active
+                                </span>
+                                {% else %}
+                                <span class="status-inactive">
+                                    <i class="fas fa-times-circle me-1"></i>
+                                    Inactive
+                                </span>
+                                {% endif %}
+                            </td>
+                            <!-- Actions -->
+                            <td class="text-end pe-4">
+                                <div class="d-flex justify-content-end gap-2">    
+                                    <a href="{% url 'class_update' class_obj.id %}" class="btn-action btn-edit">       
+                                        <i class="fas fa-edit"></i>Edit
+                                    </a>
+        
+                                    <a href="{% url 'class_delete' class_obj.id %}" class="btn-action btn-delete">
+                                        <i class="fas fa-trash-alt"></i>Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+        
+                        {% else %}
+                        <tr>
+                            <!-- Serial Number -->
+                            <td class="ps-4">
+                                <span class="sno-badge">
+                                    {{ forloop.counter }}
+                                </span>
+                            </td>
+        
+                            <!-- Class Name -->
+                            <td>
+                                <div class="fw-bold text-dark">
+                                    {{ class_obj.name }}
+                                </div>
+                            </td>
+        
+                            <!-- Section -->
+                            <td>
+                                <span class="text-muted">
+                                    No Section
+                                </span>
+                            </td>
+        
+                            <!-- Capacity -->
+                            <td>
+                                <span class="text-muted">
+                                    Not Set
+                                </span>
+                            </td>
+        
+                            <!-- Status -->
+                            <td>
+        
+                                {% if class_obj.is_active %}
+        
+                                <span class="status-active">
+                                    <i class="fas fa-check-circle me-1"></i>
+                                    Active
+                                </span>
+        
+                                {% else %}
+        
+                                <span class="status-inactive">
+                                    <i class="fas fa-times-circle me-1"></i>
+                                    Inactive
+                                </span>
+        
+                                {% endif %}
+        
+                            </td>
+        
+                            <!-- Actions -->
+                            <td class="text-end pe-4">
+        
+                                <div class="d-flex justify-content-end gap-2">
+        
+                                    <a href="{% url 'class_update' class_obj.id %}" class="btn-action btn-edit">
+        
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+        
+                                    </a>
+        
+                                    <a href="{% url 'class_delete' class_obj.id %}" class="btn-action btn-delete">
+        
+                                        <i class="fas fa-trash-alt"></i>
+                                        Delete
+        
+                                    </a>
+        
+                                </div>
+        
+                            </td>
+        
+                        </tr>
+        
+                        {% endif %}
+        
+                        {% empty %}
+        
+                        <tr>
+        
+                            <td colspan="6" class="text-center py-5">
+        
+                                <div class="text-muted">
+        
+                                    <i class="fas fa-folder-open fa-2x mb-3"></i>
+        
+                                    <p class="mb-0">
+                                        No classes available.
+                                    </p>
+        
+                                </div>
+        
+                            </td>
+        
+                        </tr>
+        
+                        {% endfor %}
+        
+                    </tbody>
+                </table>
             </div>
         </div>
+
+      </div>
     </main>
 </div>
+<!-- search class by name with section name -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const searchInput = document.getElementById("classSearch");
+        const tableRows = document.querySelectorAll("table tbody tr");
+
+        searchInput.addEventListener("keyup", function () {
+
+            const searchValue = this.value.toLowerCase().trim();
+
+            tableRows.forEach(row => {
+
+                const classNameCell = row.querySelector("td:nth-child(2)");
+                const sectionCell = row.querySelector("td:nth-child(3)");
+
+                if (!classNameCell || !sectionCell) {
+                    return;
+                }
+
+                const className = classNameCell.textContent.toLowerCase();
+                const section = sectionCell.textContent.toLowerCase();
+
+                // Combine class + section
+                const fullClass = `${className} ${section}`;
+
+                if (
+                    className.includes(searchValue) ||
+                    section.includes(searchValue) ||
+                    fullClass.includes(searchValue)
+                ) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+
+            });
+
+        });
+
+    });
+</script>
 {% endblock %}

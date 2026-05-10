@@ -1,0 +1,127 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="tf-dashboard-layout">
+    <div class="tf-sidebar">
+        {% include 'sidebar.html' %}
+    </div>
+
+    <main class="tf-main-content w-100">
+        <!-- Display Django Messages if any -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show ff-animate" role="alert">
+            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        
+        <!-- Summary Cards -->
+        <div class="tf-summary-grid mb-4">
+            <!-- Balance Card -->
+            <div class="tf-summary-card balance tf-animate">
+                <div class="card-info">
+                    <span>Total Balance</span>
+                    <h3>${{ total_balance|floatformat:2 }}</h3>
+                </div>
+                <div class="card-icon"><i class="fas fa-wallet"></i></div>
+            </div>
+
+            <!-- Income Card -->
+            <div class="tf-summary-card income tf-animate" style="animation-delay: 0.1s;">
+                <div class="card-info">
+                    <span>Total Income</span>
+                    <h3>${{ total_income|floatformat:2 }}</h3>
+                </div>
+                <div class="card-icon"><i class="fas fa-arrow-up"></i></div>
+            </div>
+
+            <!-- Expense Card -->
+            <div class="tf-summary-card expense tf-animate" style="animation-delay: 0.2s;">
+                <div class="card-info">
+                    <span>Total Expenses</span>
+                    <h3>${{ total_expense|floatformat:2 }}</h3>
+                </div>
+                <div class="card-icon"><i class="fas fa-arrow-down"></i></div>
+            </div>
+        </div>
+
+        <!-- Transaction Table -->
+        <div class="tf-card tf-animate" style="animation-delay: 0.3s;">
+            <div class="tf-header-box">
+                <div class="tf-header-text">
+                    <h1><i class="fas fa-exchange-alt me-2"></i>Transaction History</h1>
+                    <p>Financial overview of all school records</p>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="tf-search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search..." id="tableSearch">
+                    </div>
+                    <a href="{% url 'transaction_create' %}" class="tf-btn-add">
+                        <i class="fas fa-plus-circle me-1"></i> Add Transaction
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-4">
+                <div class="table-responsive">
+                    <table class="table align-middle" id="transactionTable">
+                        <thead>
+                            <tr>
+                                <th>Receipt No.</th>
+                                <th>Date</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transaction in transactions %}
+                            <tr>
+                                <td class="fw-bold text-primary">#{{ transaction.receipt_number|default:"---" }}</td>
+                                <td>{{ transaction.date|date:"M d, Y" }}</td>
+                                <td>
+                                    <div class="fw-bold text-dark">{{ transaction.title }}</div>
+                                </td>
+                                <td><span class="section-tag">{{ transaction.get_category_display }}</span></td>
+                                <td>
+                                    <!-- Use lowercase 'income' to match your model -->
+                                    {% if transaction.transaction_type == 'income' %}
+                                    <span class="status-active"><i class="fas fa-arrow-up me-1"></i>Income</span>
+                                    {% else %}
+                                    <span class="status-inactive"><i class="fas fa-arrow-down me-1"></i>Expense</span>
+                                    {% endif %}
+                                </td>
+                                <td
+                                    class="{% if transaction.transaction_type == 'income' %}text-success{% else %}text-danger{% endif %} fw-bold">
+                                    {% if transaction.transaction_type == 'income' %}+{% else %}-{% endif %}$
+                                    {{transaction.amount }}
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="{% url 'transaction_update' transaction.pk %}"
+                                            class="btn-action btn-edit"><i class="fas fa-edit"></i>Edit</a>
+                                        <a href="{% url 'transaction_delete' transaction.pk %}"
+                                            class="btn-action btn-delete"><i class="fas fa-trash-alt"></i>Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-5 text-muted">No records found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

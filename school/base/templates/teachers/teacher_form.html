@@ -1,99 +1,119 @@
 {% extends 'main.html' %}
 {% load static %}
 
-{% block title %}
-{% if form.instance.pk %}Update Teacher{% else %}Add Teacher{% endif %}
-{% endblock %}
-
 {% block content %}
-
 <div class="tf-dashboard-layout">
-    <!-- Sidebar Navigation -->
-    <aside class="tf-sidebar flex-shrink-0 d-none d-lg-block">
-        {% include "sidebar.html" %}
-    </aside>
+    <!-- Sidebar Include -->
+    <div class="tf-sidebar">
+        {% include 'sidebar.html' %}
+    </div>
 
-    <main class="tf-main-content flex-grow-1">
+    <!-- Main Content -->
+    <main class="tf-main-content">
+        <!-- Display Django Messages if any -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show tf-animate" role="alert">
+            <i
+                class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
         <div class="tf-card tf-animate">
             <div class="tf-header-box">
                 <div class="tf-header-text">
-                    <h1>{% if form.instance.pk %}Update Teacher{% else %}Add a Teacher{% endif %}</h1>
-                    <p>Provide professional and contact information for the faculty record.</p>
+                    <h1>{% if form.instance.pk %}Edit Teacher{% else %}Add New Teacher{% endif %}</h1>
+                    <p>Enter teacher professional and personal details below.</p>
                 </div>
-                <div class="tf-icon-large text-white-50">
-                    <i class="fas fa-user-tie fa-3x"></i>
-                </div>
+                <a href="{% url 'teacher_list' %}" class="btn btn-light btn-sm">View All Teachers</a>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" id="teacherForm" class="tf-body">
+            <form method="POST" enctype="multipart/form-data" class="tf-body">
                 {% csrf_token %}
 
-                {% if form.errors %}
-                <div class="alert alert-danger rounded-3 border-0 shadow-sm mb-4">
-                    <p class="mb-0 fw-bold"><i class="fas fa-exclamation-circle me-2"></i> Please correct the
-                        highlighted errors.</p>
-                </div>
-                {% endif %}
-
+                <!-- Personal Section -->
                 <div class="tf-section-block">
-                    <h3><i class="fas fa-user-circle"></i> Personal Details</h3>
+                    <h3><i class="fas fa-user"></i> Personal Information</h3>
                     <div class="tf-fields-row">
-                        <div class="tf-field-group">{{ form.first_name.label_tag }}{{ form.first_name }}</div>
-                        <div class="tf-field-group">{{ form.last_name.label_tag }}{{ form.last_name }}</div>
+                        <div class="tf-field-group">{{ form.first_name.label_tag }}{{ form.first_name }}
+                            {{form.first_name.errors }}</div>
+                        <div class="tf-field-group">{{ form.last_name.label_tag }}{{ form.last_name }}
+                            {{form.last_name.errors }}</div>
+                        <div class="tf-field-group">{{ form.photo.label_tag }}{{ form.photo }}
+                            {{ form.photo.errors }}</div>
+
                         <div class="tf-field-group">{{ form.gender.label_tag }}{{ form.gender }}</div>
                         <div class="tf-field-group">{{ form.date_of_birth.label_tag }}{{ form.date_of_birth }}</div>
-                        <div class="tf-field-group tf-span-2">{{ form.photo.label_tag }}{{ form.photo }}</div>
                     </div>
                 </div>
 
+                <!-- Professional Section -->
                 <div class="tf-section-block">
-                    <h3><i class="fas fa-id-card"></i> Professional Info</h3>
+                    <h3><i class="fas fa-id-card"></i> Professional Details</h3>
                     <div class="tf-fields-row">
-                        <div class="tf-field-group">{{ form.teacher_id.label_tag }}{{ form.teacher_id }}</div>
-                        <div class="tf-field-group">{{ form.designation.label_tag }}{{ form.designation }}</div>
-                        <div class="tf-field-group">{{ form.qualification.label_tag }}{{ form.qualification }}</div>
-                        <div class="tf-field-group">{{ form.date_of_joining.label_tag }}{{ form.date_of_joining }}</div>
+                        <div class="tf-field-group">{{ form.teacher_id.label_tag }}{{ form.teacher_id }}
+                            {{ form.teacher_id.errors }}</div>
+                        <div class="tf-field-group">{{ form.designation.label_tag }}{{ form.designation }}
+                            {{ form.designation.errors }}</div>
+                        <div class="tf-field-group">{{ form.qualification.label_tag }}{{ form.qualification }}
+                            {{ form.qualification.errors }}</div>
 
-                        <div class="tf-field-group tf-span-2">
-                            {{ form.subject_specialization.label_tag }}
-                            <div class="input-wrapper">
-                                {{ form.subject_specialization }}
+                        <div class="tf-field-group">{{ form.subject_specialization.label_tag }}
+                            {{form.subject_specialization }}
+                            {{ form.subject_specialization.errors }}</div>
+                        <div class="tf-field-group">{{ form.date_of_joining.label_tag }}{{ form.date_of_joining }}
+                            {{ form.date_of_joining.errors }}</div>
+                        <!-- Active Status -->
+                        <div class="sf-field-group">
+                        
+                            <label class="sf-label" for="{{ form.is_active.id_for_label }}">
+                                Active Status:
+                            </label>
+                        
+                            <div class="checkbox-wrapper">
+                                {{ form.is_active }}
+                        
+                                <span class="checkbox-text">
+                                    Teacher is Active
+                                </span>
                             </div>
-                            {% if form.subject_specialization.errors %}
-                            <span class="text-danger small">{{ form.subject_specialization.errors }}</span>
-                            {% endif %}
+                        
                         </div>
                     </div>
                 </div>
 
+                <!-- Contact & Finance Section -->
                 <div class="tf-section-block">
                     <h3><i class="fas fa-wallet"></i> Contact & Finance</h3>
                     <div class="tf-fields-row">
-                        <div class="tf-field-group">{{ form.phone_number.label_tag }}{{ form.phone_number }}</div>
-                        <div class="tf-field-group">{{ form.email.label_tag }}{{ form.email }}</div>
-                        <div class="tf-field-group">{{ form.monthly_salary.label_tag }}{{ form.monthly_salary }}</div>
-                        <div class="tf-field-group">{{ form.bank_name.label_tag }}{{ form.bank_name }}</div>
-                        <div class="tf-field-group tf-span-2">{{ form.address.label_tag }}{{ form.address }}</div>
+                        <div class="tf-field-group">{{ form.phone_number.label_tag }}{{ form.phone_number }}
+                            {{ form.phone_number.errors }}</div>
+                        <div class="tf-field-group">{{ form.email.label_tag }}{{ form.email }}
+                            {{ form.email.errors }}</div>
+                        <div class="tf-field-group">{{ form.monthly_salary.label_tag }}{{ form.monthly_salary }}
+                            {{ form.monthly_salary.errors }}</div>
+
+                        <div class="tf-field-group">{{ form.bank_name.label_tag }}{{ form.bank_name }}
+                            {{ form.bank_name.errors }}</div>
+                        
+                    
+
+                        <div class="tf-field-group tf-span-3">{{ form.address.label_tag }}{{ form.address }}
+                            {{ form.address.errors }}</div>
                     </div>
                 </div>
 
-                <div class="tf-actions pt-4 d-flex align-items-center">
-                    <button type="submit" class="tf-btn-save" id="submitBtn">
-                        <span class="btn-text">Save Teacher Record</span>
+                <div class="sf-actions">
+                    <button type="submit" class="sf-btn-save">
+                        {% if form.instance.pk %}Update Teacher Profile{% else %}Save Teacher Record{% endif %}
                     </button>
-                    <a href="{% url 'teacher_list' %}" class="tf-btn-back ms-3">Cancel</a>
+                    <a href="{% url 'teacher_list' %}" class="sf-btn-back">Cancel & Go Back</a>
                 </div>
             </form>
         </div>
     </main>
 </div>
-
-<script>
-    document.getElementById('teacherForm').onsubmit = function () {
-        const btn = document.getElementById('submitBtn');
-        btn.querySelector('.btn-text').innerText = 'Saving Data...';
-        btn.style.opacity = '0.7';
-        btn.style.pointerEvents = 'none';
-    };
-</script>
 {% endblock %}

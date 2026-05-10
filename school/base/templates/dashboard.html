@@ -78,14 +78,21 @@
                     </div>
                     <div class="stat-details">
                         <span class="stat-label">Total Students</span>
-                        <h3 class="stat-value" data-target="{{ stats.students }}">0</h3>
+                        <h3 class="stat-value" data-target="{{ stats.students }}">{{stats.student}}</h3>
+
+                        {% if stats.student_trend > 0 %}
                         <span class="stat-trend up">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
                                 <polyline points="17 6 23 6 23 12"></polyline>
                             </svg>
-                            +12% this month
+                            +{{ stats.student_trend }} this month
                         </span>
+                        {% else %}
+                        <span class="stat-trend neutral">
+                            No new additions this month
+                        </span>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -155,16 +162,29 @@
                 </div>
             </div>
 
-            <!-- Content Grid -->
+            <!-- =========================
+                 CONTENT GRID SECTION
+            ========================= -->
             <div class="content-grid">
-                <!-- Recent Students Table -->
+            
+                <!-- =========================
+                     RECENT STUDENTS
+                ========================= -->
                 <div class="content-card recent-students">
+            
                     <div class="card-header">
                         <h3>Recent Admissions</h3>
-                        <a href="#" class="view-all">View All →</a>
+            
+                        <a href="{% url 'student_list' %}" class="view-all">
+                            View All
+                            <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
                     </div>
+            
                     <div class="table-responsive">
+            
                         <table class="data-table">
+            
                             <thead>
                                 <tr>
                                     <th>Student</th>
@@ -173,96 +193,219 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
+            
                             <tbody>
+            
                                 {% for student in recent_students %}
+            
                                 <tr class="table-row-animated">
+            
+                                    <!-- Student -->
                                     <td>
                                         <div class="user-cell">
+            
                                             <div class="avatar-sm">
+            
                                                 {% if student.photo %}
+            
                                                 <img src="{{ student.photo.url }}" alt="{{ student.first_name }}">
+            
                                                 {% else %}
-                                                <span>{{ student.first_name|first }}{{ student.last_name|first }}</span>
+            
+                                                <span>
+                                                    {{ student.first_name|first }}{{ student.last_name|first }}
+                                                </span>
+            
                                                 {% endif %}
+            
                                             </div>
+            
                                             <div class="user-details">
-                                                <span class="name">{{ student.full_name }}</span>
-                                                <span class="meta">{{ student.admission_number }}</span>
+            
+                                                <span class="name">
+                                                    {{ student.full_name }}
+                                                </span>
+            
+                                                <span class="meta">
+                                                    {{ student.admission_number }}
+                                                </span>
+            
                                             </div>
+            
                                         </div>
                                     </td>
+            
+                                    <!-- Class -->
                                     <td>
-                                        <span class="badge-class">{{ student.class_room.name }}</span>
-                                        {% if student.section %}
-                                        <span class="badge-section">{{ student.section.name }}</span>
-                                        {% endif %}
+            
+                                        <div class="d-flex align-items-center gap-2 flex-wrap">
+            
+                                            <span class="badge-class">
+                                                {{ student.class_room.name }}
+                                            </span>
+            
+                                            {% if student.section %}
+            
+                                            <span class="badge-section">
+                                                {{ student.section.name }}
+                                            </span>
+            
+                                            {% endif %}
+            
+                                        </div>
+            
                                     </td>
-                                    <td>{{ student.admission_date|date:"M d, Y" }}</td>
+            
+                                    <!-- Admission Date -->
                                     <td>
-                                        <span
-                                            class="status-badge {% if student.is_active %}active{% else %}inactive{% endif %}">
-                                            {% if student.is_active %}Active{% else %}Inactive{% endif %}
+                                        {{ student.admission_date|date:"M d, Y" }}
+                                    </td>
+            
+                                    <!-- Status -->
+                                    <td>
+            
+                                        {% if student.is_active %}
+            
+                                        <span class="status-badge active">
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            Active
                                         </span>
+            
+                                        {% else %}
+            
+                                        <span class="status-badge inactive">
+                                            <i class="fas fa-times-circle me-1"></i>
+                                            Inactive
+                                        </span>
+            
+                                        {% endif %}
+            
                                     </td>
+            
                                 </tr>
+            
                                 {% empty %}
+            
                                 <tr>
+            
                                     <td colspan="4" class="empty-state">
+            
                                         <div class="empty-content">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                <circle cx="9" cy="7" r="4"></circle>
-                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                            </svg>
-                                            <p>No recent admissions</p>
+            
+                                            <i class="fas fa-user-graduate empty-icon"></i>
+            
+                                            <p>No recent admissions found.</p>
+            
                                         </div>
+            
                                     </td>
+            
                                 </tr>
+            
                                 {% endfor %}
+            
                             </tbody>
+            
                         </table>
+            
                     </div>
+            
                 </div>
-
-                <!-- Fee Defaulters -->
+            
+                <!-- =========================
+                     FEE DEFAULTERS
+                ========================= -->
                 <div class="content-card defaulters">
+            
                     <div class="card-header">
+            
                         <h3>Fee Defaulters</h3>
-                        <span class="badge-alert">{{ defaulters|length }} Pending</span>
+            
+                        <span class="badge-alert">
+                            {{ defaulters|length }} Pending
+                        </span>
+            
                     </div>
+            
                     <div class="defaulters-list">
+            
                         {% for student in defaulters %}
+            
                         <div class="defaulter-item">
+            
+                            <!-- Left Side -->
                             <div class="defaulter-info">
-                                <div class="avatar-sm warning">{{ student.first_name|first }}</div>
-                                <div class="info-text">
-                                    <span class="name">{{ student.full_name }}</span>
-                                    <span class="class">{{ student.class_room.name }}</span>
+            
+                                <div class="avatar-sm warning">
+            
+                                    {% if student.photo %}
+            
+                                    <img src="{{ student.photo.url }}" alt="{{ student.first_name }}">
+            
+                                    {% else %}
+            
+                                    {{ student.first_name|first }}
+            
+                                    {% endif %}
+            
                                 </div>
+            
+                                <div class="info-text">
+            
+                                    <span class="name">
+                                        {{ student.full_name }}
+                                    </span>
+            
+                                    <span class="class">
+                                        {{ student.class_room.name }}
+            
+                                        {% if student.section %}
+                                        - {{ student.section.name }}
+                                        {% endif %}
+                                    </span>
+            
+                                </div>
+            
                             </div>
+            
+                            <!-- Right Side -->
                             <div class="defaulter-amount">
-                                <span class="amount">${{ student.total_fee_due }}</span>
-                                <span class="label">Due</span>
+            
+                                <span class="amount">
+                                    ${{ student.total_fee_due|default:"0" }}
+                                </span>
+            
+                                <span class="label">
+                                    Due
+                                </span>
+            
                             </div>
+            
                         </div>
+            
                         {% empty %}
+            
                         <div class="empty-state-small">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                            <p>No pending dues!</p>
+            
+                            <i class="fas fa-check-circle success-icon"></i>
+            
+                            <p>No pending dues found.</p>
+            
                         </div>
+            
                         {% endfor %}
+            
                     </div>
+            
                 </div>
+            
             </div>
 
             <!-- Quick Actions -->
             <div class="quick-actions">
                 <h3>Quick Actions</h3>
                 <div class="actions-grid">
-                    <a href="#" class="action-card">
+                    <a href="{% url 'student_create' %}" class="action-card">
                         <div class="action-icon blue">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -286,7 +429,7 @@
                         <span>Add Teacher</span>
                     </a>
 
-                    <a href="#" class="action-card">
+                    <a href="{% url 'fee_list' %}" class="action-card">
                         <div class="action-icon green">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
@@ -296,7 +439,7 @@
                         <span>Record Fee</span>
                     </a>
 
-                    <a href="#" class="action-card">
+                    <a href="{% url 'financial_reports'%}" class="action-card">
                         <div class="action-icon orange">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"></circle>

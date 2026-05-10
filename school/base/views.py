@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.db.models import Sum,F
+from decimal import Decimal
+import json
+from django.db.models.functions import Coalesce
 
 from .models import (User,
             Teacher,
@@ -34,7 +38,6 @@ from django.conf import settings
 from .data.faqs import CONTACT_FAQS
 
 from .services.fee_service import FeeService
-from .models import Student
 
 def home(request):
     context = {}
@@ -82,14 +85,6 @@ def Register(request):
             messages.error(request, 'An error occurred during registration')
 
     return render(request, 'login.html', {'form': form})
-
-
-@login_required(login_url='loginPage')
-def dashboard(request):
-    return render(request, 'dashboard.html')
-
-
-
 
 def contact_view(request):
     
@@ -140,14 +135,12 @@ def contact_view(request):
     return render(request, 'contact.html', context)
 
 
-
 def pricing_view(request):
     return render(request, 'pricing.html')
 
 
 @login_required(login_url='loginPage')
 def features_view(request):
-    
     features = [
         {
             'title': 'Free Mobile App',
@@ -232,7 +225,6 @@ def features_view(request):
     return render(request, 'features.html', context)
 
 
-
 def about_view(request):
     context = {}
     return render (request,'about.html',context)
@@ -247,26 +239,86 @@ def learn_more(request):
     return render(request, 'learn_more.html', context)
 
 
+@login_required(login_url='loginPage')
 def dashboard(request):
+
     now = timezone.now()
-    # Calculate "This Month" (Teachers added since the 1st of the current month)
-    teachers_this_month = Teacher.objects.filter(
-        created_at__year=now.year, 
+
+    # =========================
+    # REFRESH STUDENT FEE STATUS
+    # =========================
+    students = Student.objects.select_related('class_room')
+
+    for student in students:
+        student.update_fee_status()
+
+    # =========================
+    # BASIC STATS
+    # =========================
+    total_students = Student.objects.count()
+    total_teachers = Teacher.objects.count()
+    total_classes = Class.objects.count()
+
+    students_this_month = Student.objects.filter(
+        created_at__year=now.year,
         created_at__month=now.month
     ).count()
-    # We create a dictionary to match what your HTML expects
+
+    teachers_this_month = Teacher.objects.filter(
+        created_at__year=now.year,
+        created_at__month=now.month
+    ).count()
+
+    # =========================
+    # FINANCIAL STATS
+    # =========================
+    total_income = Transaction.objects.filter(
+        transaction_type='income'
+    ).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
+
+    total_expense = Transaction.objects.filter(
+        transaction_type='expense'
+    ).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
+
+    profit = total_income - total_expense
+
+    # =========================
+    # RECENT STUDENTS
+    # =========================
+    recent_students = Student.objects.select_related(
+        'class_room',
+        'section'
+    ).order_by('-created_at')[:5]
+
+    # =========================
+    # 🔥 REAL FEE DEFAULTERS (IMPORTANT FIX)
+    # =========================
+    defaulters = Student.objects.annotate(
+    paid=Coalesce(Sum('fee_payments__amount'), Decimal('0.00'))
+    ).filter(
+    paid__lt=F('class_room__monthly_fee')
+    ).order_by('paid')[:10]
+
+    # =========================
+    # CONTEXT
+    # =========================
     context = {
         'stats': {
-            'teachers': Teacher.objects.count(),
+            'students': total_students,
+            'student_trend': students_this_month,
+            'teachers': total_teachers,
             'teachers_trend': teachers_this_month,
-            # You can add more here later:
-            # 'students': Student.objects.count(),
-            'classes': Class.objects.count(),
-        }
+            'classes': total_classes,
+            'monthly_revenue': total_income,
+            'profit': profit,
+        },
+
+        'recent_students': recent_students,
+        'defaulters': defaulters,
+        'now': now,
     }
+
     return render(request, 'dashboard.html', context)
-
-
 #========================= Teacher Function ===================================================================
 @login_required(login_url='loginPage')
 def teacher_list(request):
@@ -315,10 +367,14 @@ def teacher_delete(request, pk):
 
 
 #========================= Class Function =======================================================================================
+@login_required(login_url='loginPage')
 def class_list(request):
-    classes = Class.objects.all()
-    return render(request, "classes/all_classes.html", {"classes": classes})
+    classes = Class.objects.prefetch_related('sections').order_by('name')
 
+    context = {"classes": classes}
+    return render(request, "classes/all_classes.html", context)
+
+@login_required(login_url='loginPage')
 def class_create(request):
     form = ClassForm(request.POST or None)
     if form.is_valid():
@@ -327,6 +383,7 @@ def class_create(request):
         return redirect("class_list")
     return render(request, "classes/classes_form.html", {"form": form})
 
+@login_required(login_url='loginPage')
 def class_update(request, pk):
     class_obj = get_object_or_404(Class, pk=pk)
     form = ClassForm(
@@ -340,6 +397,7 @@ def class_update(request, pk):
         return redirect("class_list")
     return render(request, "classes/classes_form.html", {"form": form})
 
+@login_required(login_url='loginPage')
 def class_delete(request, pk):
     class_obj = get_object_or_404(Class, pk=pk)
     if request.method == 'POST':
@@ -352,10 +410,12 @@ def class_delete(request, pk):
     
 
 #========================= Section Function =======================================================================================
+@login_required(login_url='loginPage')
 def section_list(request):
     sections = Section.objects.all()
     return render(request, "sections/all_sections.html", {"sections": sections})
 
+@login_required(login_url='loginPage')
 def section_create(request):
     form = SectionForm(request.POST or None)
     if form.is_valid():
@@ -363,7 +423,8 @@ def section_create(request):
         messages.success(request, "Section created successfully")
         return redirect("section_list")
     return render(request, "sections/section_form.html", {"form": form})
-    
+
+@login_required(login_url='loginPage')    
 def section_update(request,pk):
     section_obj = get_object_or_404(Section, pk=pk)
     form = SectionForm(
@@ -377,6 +438,7 @@ def section_update(request,pk):
         return redirect("section_list")
     return render(request,"sections/section_form.html",{"form": form})
 
+@login_required(login_url='loginPage')
 def section_delete(request,pk):
     section_obj = get_object_or_404(Section, pk=pk)
     if request.method == 'POST':
@@ -389,10 +451,12 @@ def section_delete(request,pk):
 
 
 #========================= Student Function =======================================================================================
+@login_required(login_url='loginPage')
 def student_list(request):
     student = Student.objects.all()
     return render(request,"students/all_student.html",{'student': student})
 
+@login_required(login_url='loginPage')
 def student_create(request):
     form = StudentForm(request.POST or None, request.FILES or None)
     if form.is_valid():
@@ -401,6 +465,7 @@ def student_create(request):
         return redirect("student_list")
     return render(request,"students/student_form.html",{"form": form})
 
+@login_required(login_url='loginPage')
 def student_update(request, pk):
     student_obj = get_object_or_404(Student, pk=pk)
     form = StudentForm(
@@ -414,6 +479,7 @@ def student_update(request, pk):
         return redirect("student_list")
     return render(request,"students/student_form.html",{"form": form})
 
+@login_required(login_url='loginPage')
 def student_delete(request, pk):
     student_obj = get_object_or_404(Student, pk=pk)
     if request.method == 'POST':
@@ -423,3 +489,389 @@ def student_delete(request, pk):
         
     context = {"student_obj": student_obj}
     return render(request,'students/student_confirm_delete.html',context)
+
+
+#========================= Transaction Function =======================================================================================
+@login_required(login_url='loginPage')
+def all_transactions(request):
+    transactions = Transaction.objects.all().order_by('-date', '-created_at')
+
+    total_income = Transaction.objects.filter(transaction_type='income'
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    total_expense = Transaction.objects.filter(transaction_type='expense'
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    total_balance = total_income - total_expense
+
+    context = {'transactions': transactions,'total_income': total_income,
+        'total_expense': total_expense,'total_balance': total_balance,
+    }
+
+    return render(request, 'transactions/all_transaction.html', context)
+
+@login_required(login_url='loginPage')
+def transaction_list(request):
+    # All Transactions
+    transactions = Transaction.objects.all().order_by('-date', '-created_at')
+
+    # Total Income
+    total_income = Transaction.objects.filter(transaction_type='income'
+    ).aggregate( total=Sum('amount'))['total'] or 0
+
+    # Total Expense
+    total_expense = Transaction.objects.filter(transaction_type='expense'
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    # Final Balance
+    total_balance = total_income - total_expense
+
+    # Context
+    context = {"transactions": transactions,"total_income": total_income,
+            "total_expense": total_expense,"total_balance": total_balance,
+        }
+
+    return render(request,"transactions/all_transaction.html",context)
+
+@login_required(login_url='loginPage')
+def transaction_create(request):
+    if request.method == 'POST':
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            # commit=False pauses the save to the database
+            transaction = form.save(commit=False)
+            # Assign the current logged-in user to the excluded 'recorded_by' field
+            transaction.recorded_by = request.user
+            # Now safely save to the database
+            transaction.save()
+            return redirect('transaction_list')
+    else:
+        form = TransactionForm()
+    
+    return render(request, 'transactions/transaction_form.html', {'form': form, 'title': 'Add Transaction'})
+
+@login_required(login_url='loginPage')
+def transaction_update(request, pk):
+    transaction = get_object_or_404(Transaction, pk=pk)
+    if request.method == 'POST':
+        form = TransactionForm(request.POST, instance=transaction)
+        if form.is_valid():
+            form.save()
+            return redirect('transaction_list')
+    else:
+        form = TransactionForm(instance=transaction)  
+    return render(request, 'transactions/transaction_form.html', {'form': form, 'title': 'Edit Transaction'})
+
+@login_required(login_url='loginPage')
+def transaction_delete(request, pk):
+    transaction = get_object_or_404(Transaction, pk=pk)
+    if request.method == 'POST':
+        transaction.delete()
+        return redirect('transaction_list') 
+    return render(request, 'transactions/transaction_confirm_delete.html', {'transaction': transaction})
+
+
+#========================= Fee Function =======================================================================================
+@login_required(login_url='loginPage')
+def fee_list(request):
+    fees = Fee.objects.all()
+    # ===============================
+    # 💰 TOTAL COLLECTED (PAID + PARTIAL)
+    # ===============================
+    collected_data = Fee.objects.filter(status__in=['paid', 'partial']).aggregate(total=Sum('amount'))
+
+    total_collected = collected_data['total'] or Decimal('0.00')
+    # ===============================
+    # ⚠️ PENDING DUES
+    # ===============================
+    pending_data = Fee.objects.filter(status='pending').aggregate(total=Sum('amount'))
+
+    pending_dues = pending_data['total'] or Decimal('0.00')
+
+    context = {
+        "fees": fees,
+        "total_collected": total_collected,
+        "pending_dues": pending_dues,}
+
+    return render(request, "fees/all_fee.html", context)
+
+@login_required(login_url= 'loginPage')
+def fee_create(request):
+    if request.method == 'POST':
+        form = FeeForm(request.POST)
+        if form.is_valid():
+            fee = form.save(commit=False)
+            fee.received_by = request.user # Set the received_by field to the current user
+            fee.save()
+            messages.success(request, 'Fee payment recorded successfully.')
+            return redirect('fee_list')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = FeeForm()
+
+    return render(request, 'fees/fee_form.html', {'form': form, 'title': 'Add Fee'})
+    
+@login_required(login_url='loginPage')
+def fee_update(request,pk):
+    fee = get_object_or_404(Fee, pk=pk)
+    if request.method == 'POST':
+        form = FeeForm(request.POST, instance=fee)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Fee payment updated successfully.')
+            return redirect('fee_list')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = FeeForm(instance=fee)
+    return render(request, 'fees/fee_form.html', {'form': form, 'title': 'Edit Fee'})
+
+@login_required(login_url='loginPage')
+def fee_delete(request, pk):
+    fee = get_object_or_404(Fee, pk=pk)
+    if request.method == 'POST':
+        fee.delete()
+        messages.success(request, 'Fee payment deleted successfully.')
+        return redirect('fee_list')
+    return render(request, 'fees/fee_confirm_delete.html', {'fee': fee})
+
+
+#========================= Salary Function =======================================================================================
+@login_required(login_url='loginPage')
+def salary_list(request):
+    salaries = Salary.objects.all().order_by('-created_at')
+    # =========================
+    # Total Disbursed Salary
+    # =========================
+    total_disbursed_data = Salary.objects.filter(
+        status='paid'
+    ).aggregate(total=Sum('amount'))
+
+    total_disbursed = total_disbursed_data['total'] or Decimal('0.00')
+    # =========================
+    # Pending Salaries
+    # =========================
+    pending_salary_data = Salary.objects.filter(
+        status='pending'
+    ).aggregate(total=Sum('amount'))
+
+    pending_salaries = pending_salary_data['total'] or Decimal('0.00')
+
+    context = {
+        "salaries": salaries,
+        "total_disbursed": total_disbursed,
+        "pending_salaries": pending_salaries,}
+
+    return render(request, "salaries/all_salary.html", context)
+
+@login_required(login_url='loginPage')
+def salary_create(request):
+    if request.method == 'POST':
+        form = SalaryForm(request.POST)
+        if form.is_valid():
+            salary = form.save(commit=False)
+            salary.paid_by = request.user  # Set the paid_by field to the current user
+            salary.save()
+            messages.success(request, 'Salary payment recorded successfully.')
+            return redirect('salary_list')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = SalaryForm()
+    return render(request, 'salaries/salary_form.html', {'form': form, 'title': 'Add Salary'})
+
+@login_required(login_url='loginPage')
+def salary_update(request, pk):
+    salary = get_object_or_404(Salary, pk=pk)
+    if request.method == 'POST':
+        form = SalaryForm(request.POST, instance=salary)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Salary payment updated successfully.')
+            return redirect('salary_list')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = SalaryForm(instance=salary)
+    return render(request, 'salaries/salary_form.html', {'form': form, 'title': 'Edit Salary'})
+
+@login_required(login_url='loginPage')
+def salary_delete(request, pk):
+    salary = get_object_or_404(Salary, pk=pk)
+    if request.method == 'POST':
+        salary.delete()
+        messages.success(request, 'Salary payment deleted successfully.')
+        return redirect('salary_list')
+    return render(request, 'salaries/salary_confirm_delete.html', {'salary': salary})
+
+
+
+
+@login_required(login_url='loginPage')
+def financial_reports(request):
+
+    now = timezone.now()
+
+    # =========================
+    # BASIC COUNTS
+    # =========================
+    total_students = Student.objects.count()
+
+    total_teachers = Teacher.objects.count()
+
+    total_classes = Class.objects.count()
+
+    # =========================
+    # TRANSACTION TOTALS
+    # =========================
+    total_income = Transaction.objects.filter(
+        transaction_type='income'
+    ).aggregate(
+        total=Sum('amount')
+    )['total'] or Decimal('0.00')
+
+    total_expense = Transaction.objects.filter(
+        transaction_type='expense'
+    ).aggregate(
+        total=Sum('amount')
+    )['total'] or Decimal('0.00')
+
+    total_balance = total_income - total_expense
+
+    # =========================
+    # FEES DATA
+    # =========================
+    total_collected = Fee.objects.filter(
+        status__in=['paid', 'partial']
+    ).aggregate(
+        total=Sum('amount')
+    )['total'] or Decimal('0.00')
+
+    pending_dues = Fee.objects.filter(
+        status='pending'
+    ).aggregate(
+        total=Sum('amount')
+    )['total'] or Decimal('0.00')
+
+    # =========================
+    # SALARY DATA
+    # =========================
+    total_salary_paid = Salary.objects.filter(
+        status='paid'
+    ).aggregate(
+        total=Sum('amount')
+    )['total'] or Decimal('0.00')
+
+    pending_salary = Salary.objects.filter(
+        status='pending'
+    ).aggregate(
+        total=Sum('amount')
+    )['total'] or Decimal('0.00')
+
+    # =========================
+    # MONTHLY CHART DATA
+    # =========================
+    months = []
+
+    income_chart = []
+
+    expense_chart = []
+
+    current_year = now.year
+
+    for month in range(1, 13):
+
+        month_name = timezone.datetime(
+            current_year,
+            month,
+            1
+        ).strftime('%b')
+
+        months.append(month_name)
+
+        monthly_income = Transaction.objects.filter(
+            transaction_type='income',
+            date__year=current_year,
+            date__month=month
+        ).aggregate(
+            total=Sum('amount')
+        )['total'] or Decimal('0.00')
+
+        monthly_expense = Transaction.objects.filter(
+            transaction_type='expense',
+            date__year=current_year,
+            date__month=month
+        ).aggregate(
+            total=Sum('amount')
+        )['total'] or Decimal('0.00')
+
+        income_chart.append(float(monthly_income))
+
+        expense_chart.append(float(monthly_expense))
+
+    # =========================
+    # FEE STATUS CHART
+    # =========================
+    paid_fees = Fee.objects.filter(
+        status='paid'
+    ).count()
+
+    partial_fees = Fee.objects.filter(
+        status='partial'
+    ).count()
+
+    pending_fees = Fee.objects.filter(
+        status='pending'
+    ).count()
+
+    # =========================
+    # RECENT TRANSACTIONS
+    # =========================
+    recent_transactions = Transaction.objects.order_by(
+        '-date',
+        '-created_at'
+    )[:10]
+
+    # =========================
+    # CONTEXT
+    # =========================
+    context = {
+
+        # Summary
+        'total_students': total_students,
+        'total_teachers': total_teachers,
+        'total_classes': total_classes,
+
+        'total_income': total_income,
+        'total_expense': total_expense,
+        'total_balance': total_balance,
+
+        'total_collected': total_collected,
+        'pending_dues': pending_dues,
+
+        'total_salary_paid': total_salary_paid,
+        'pending_salary': pending_salary,
+
+        # Charts
+        'months': json.dumps(months),
+
+        'income_chart': json.dumps(income_chart),
+
+        'expense_chart': json.dumps(expense_chart),
+
+        'paid_fees': paid_fees,
+
+        'partial_fees': partial_fees,
+
+        'pending_fees': pending_fees,
+
+        # Transactions
+        'recent_transactions': recent_transactions,
+    }
+
+    return render(
+        request,
+        'reports/financial_reports.html',
+        context
+    )

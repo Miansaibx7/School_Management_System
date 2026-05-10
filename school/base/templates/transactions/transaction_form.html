@@ -1,0 +1,95 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="sf-dashboard-layout">
+    <!-- Sidebar Portion -->
+    <div class="sf-sidebar">
+        {% include 'sidebar.html' %}
+    </div>
+
+    <!-- Content Portion -->
+    <main class="sf-main-content">
+        <!-- Display Django Messages if any -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show ff-animate" role="alert">
+            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        
+        <div class="sf-card sf-animate">
+            <div class="sf-header-box">
+                <div class="sf-header-text">
+                    <h1>{% if form.instance.pk %}Edit Transaction{% else %}Add Transaction{% endif %}</h1>
+                    <p>Record school income or expenses for account tracking.</p>
+                </div>
+                <a href="{% url 'transaction_list' %}" class="btn btn-light btn-sm">Transaction History</a>
+            </div>
+
+            <form method="POST" class="sf-body" novalidate>
+                {% csrf_token %}
+
+                <!-- Transaction Details Section -->
+                <div class="sf-section-block">
+                    <h3><i class="fas fa-money-check-alt"></i> Basic Information</h3>
+                    <div class="sf-fields-row">
+                        <div class="sf-field-group">
+                            {{ form.title.label_tag }}{{ form.title }}
+                            {{ form.title.errors }}
+                        </div>
+                        <div class="sf-field-group">
+                            {{ form.transaction_type.label_tag }}{{ form.transaction_type }}
+                            {{ form.transaction_type.errors }}
+                        </div>
+                        <div class="sf-field-group">
+                            {{ form.category.label_tag }}{{ form.category }}
+                            {{ form.category.errors }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Details Section -->
+                <div class="sf-section-block">
+                    <h3><i class="fas fa-coins"></i> Payment Details</h3>
+                    <div class="sf-fields-row">
+                        <div class="sf-field-group">
+                            {{ form.amount.label_tag }}{{ form.amount }}
+                            {{ form.amount.errors }}
+                        </div>
+                        <div class="sf-field-group">
+                            {{ form.date.label_tag }}{{ form.date }}
+                            {{ form.date.errors }}
+                        </div>
+                        <div class="sf-field-group">
+                            {{ form.receipt_number.label_tag }}{{ form.receipt_number }}
+                            {{ form.receipt_number.errors }}
+                        </div>
+
+                        <!-- Description takes full width like Address in Student Form -->
+                        <div class="sf-field-group sf-span-3">
+                            {{ form.description.label_tag }}{{ form.description }}
+                            {{ form.description.errors }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="sf-actions">
+                    <a href="{% url 'transaction_list' %}" class="sf-btn-back">
+                        <i class="fas fa-times me-2"></i> Cancel
+                    </a>
+                    <button type="submit" class="sf-btn-save">
+                        <i class="fas fa-save me-2"></i>
+                        {% if form.instance.pk %}Update Transaction{% else %}Save Transaction{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+{% endblock %}

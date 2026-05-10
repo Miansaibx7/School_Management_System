@@ -1,0 +1,230 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="sal-dashboard-layout">
+    <div class="sal-sidebar">
+        {% include 'sidebar.html' %}
+    </div>
+
+    <main class="sal-main-content w-100">
+        <!-- Display Django Messages if any -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show sal-animate" role="alert">
+            <i
+                class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- Summary Cards -->
+        <div class="sal-summary-grid mb-4">
+            <!-- Total Paid Card -->
+            <div class="sal-summary-card income sal-animate">
+                <div class="card-info">
+                    <span>Total Disbursed</span>
+                    <h3>${{ total_disbursed|default:"0.00" }}</h3>
+                </div>
+                <div class="card-icon"><i class="fas fa-money-check-alt"></i></div>
+            </div>
+
+            <!-- Pending Salaries Card -->
+            <div class="sal-summary-card expense sal-animate" style="animation-delay: 0.1s;">
+                <div class="card-info">
+                    <span>Pending Salaries</span>
+                    <h3>${{ pending_salaries|default:"0.00" }}</h3>
+                </div>
+                <div class="card-icon"><i class="fas fa-hourglass-half"></i></div>
+            </div>
+
+            <!-- Total Staff Paid Card -->
+            <div class="sal-summary-card balance sal-animate" style="animation-delay: 0.2s;">
+                <div class="card-info">
+                    <span>Records This Month</span>
+                    <h3>{{ salaries.count|default:"0" }}</h3>
+                </div>
+                <div class="card-icon"><i class="fas fa-users-cog"></i></div>
+            </div>
+        </div>
+
+        <!-- Salary Table -->
+        <div class="sal-card sal-animate" style="animation-delay: 0.3s;">
+            <div class="sal-header-box">
+                <div class="sal-header-text">
+                    <h1><i class="fas fa-wallet me-2"></i>Staff Payroll</h1>
+                    <p>Overview of staff salary disbursements and statuses</p>
+                </div>
+        
+                <div class="d-flex align-items-center gap-3">
+                    <div class="sal-search-box">
+                        <i class="fas fa-search search-icon"></i>
+        
+                        <input type="text" placeholder="Search by teacher name or ID..." id="tableSearch">
+                    </div>
+        
+                    <a href="{% url 'salary_create' %}" class="sal-btn-add">
+                        <i class="fas fa-plus-circle me-1"></i>
+                        Disburse Salary
+                    </a>
+                </div>
+            </div>
+        
+            <div class="p-4">
+                <div class="table-responsive">
+        
+                    <table class="table align-middle" id="salaryTable">
+        
+                        <thead>
+                            <tr>
+                                <th>Teacher Name</th>
+                                <th>Teacher ID</th>
+                                <th>Salary Month</th>
+                                <th>Payment Date</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                                <th>Amount</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+        
+                        <tbody>
+        
+                            {% for salary in salaries %}
+                            <tr>
+        
+                                <!-- Teacher Name -->
+                                <td class="teacher-name">
+                                    <div class="fw-bold text-dark">
+                                        {{ salary.teacher.full_name }}
+                                    </div>
+                                </td>
+        
+                                <!-- Teacher ID -->
+                                <td class="teacher-id">
+                                    <span class="fw-bold text-primary">
+                                        {{ salary.teacher.teacher_id }}
+                                    </span>
+                                </td>
+        
+                                <!-- Salary Month -->
+                                <td class="fw-bold text-primary">
+                                    {{ salary.month_for|date:"F Y" }}
+                                </td>
+        
+                                <!-- Payment Date -->
+                                <td>
+                                    {{ salary.payment_date|date:"M d, Y" }}
+                                </td>
+        
+                                <!-- Payment Method -->
+                                <td>
+                                    <span class="section-tag">
+                                        {{ salary.get_payment_method_display }}
+                                    </span>
+                                </td>
+        
+                                <!-- Status -->
+                                <td>
+                                    {% if salary.status == 'paid' %}
+                                    <span class="status-badge status-paid">
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        Paid
+                                    </span>
+        
+                                    {% elif salary.status == 'pending' %}
+                                    <span class="status-badge status-pending">
+                                        <i class="fas fa-clock me-1"></i>
+                                        Pending
+                                    </span>
+        
+                                    {% elif salary.status == 'processing' %}
+                                    <span class="status-badge status-processing">
+                                        <i class="fas fa-spinner fa-spin me-1"></i>
+                                        Processing
+                                    </span>
+                                    {% endif %}
+                                </td>
+        
+                                <!-- Amount -->
+                                <td
+                                    class="fw-bold {% if salary.status == 'pending' %}text-danger{% else %}text-success{% endif %}">
+                                    ${{ salary.amount }}
+                                </td>
+        
+                                <!-- Actions -->
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+        
+                                        <a href="{% url 'salary_update' salary.pk %}" class="btn-action btn-edit">
+                                            <i class="fas fa-edit"></i>
+                                            Edit
+                                        </a>
+        
+                                        <a href="{% url 'salary_delete' salary.pk %}" class="btn-action btn-delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                            Delete
+                                        </a>
+        
+                                    </div>
+                                </td>
+        
+                            </tr>
+        
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center py-5 text-muted">
+                                    No salary records found.
+                                </td>
+                            </tr>
+                            {% endfor %}
+        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+        <!-- SEARCH SCRIPT -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const searchInput = document.getElementById("tableSearch");
+                const table = document.getElementById("salaryTable");
+                const rows = table.querySelectorAll("tbody tr");
+
+                searchInput.addEventListener("keyup", function () {
+
+                    const searchValue = this.value.toLowerCase().trim();
+
+                    rows.forEach(row => {
+
+                        const teacherName = row.querySelector(".teacher-name");
+                        const teacherId = row.querySelector(".teacher-id");
+
+                        if (!teacherName || !teacherId) {
+                            return;
+                        }
+
+                        const nameText = teacherName.textContent.toLowerCase();
+                        const idText = teacherId.textContent.toLowerCase();
+
+                        if (
+                            nameText.includes(searchValue) ||
+                            idText.includes(searchValue)
+                        ) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
+                        }
+
+                    });
+
+                });
+
+            });
+        </script>
+{% endblock %}

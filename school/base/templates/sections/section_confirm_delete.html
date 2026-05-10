@@ -1,0 +1,145 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}Confirm Delete Section{% endblock %}
+
+{% block content %}
+<style>
+    /* Same pattern styling for all delete pages */
+    .dashboard-container {
+        display: flex;
+        background-color: #f8f9fc;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    .delete-card {
+        background: #ffffff;
+        width: 100%;
+        max-width: 500px;
+        border-radius: 15px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid #eee;
+    }
+
+    .warning-icon {
+        font-size: 50px;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .delete-card h2 {
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .delete-card p {
+        color: #666;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        margin-bottom: 30px;
+    }
+
+    /* Same highlight pattern used in teacher delete */
+    .teacher-highlight {
+        font-weight: 700;
+        color: #e74a3b;
+        background: #fff5f5;
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn {
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+        border: none;
+        flex: 1;
+        display: inline-block;
+    }
+
+    .btn-cancel {
+        background-color: #f1f3f5;
+        color: #495057;
+    }
+
+    .btn-cancel:hover {
+        background-color: #e9ecef;
+        color: #212529;
+    }
+
+    .btn-danger {
+        background-color: #e74a3b;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #be2617;
+        box-shadow: 0 4px 12px rgba(231, 74, 59, 0.2);
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .dashboard-container {
+            flex-direction: column;
+        }
+
+        .main-content {
+            padding: 40px 15px;
+        }
+
+        .action-buttons {
+            flex-direction: column-reverse;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <aside class="tf-sidebar flex-shrink-0">
+        {% include "sidebar.html" %}
+    </aside>
+
+    <div class="main-content">
+        <div class="delete-card">
+            <div class="warning-icon">⚠️</div>
+            <h2>Confirm Deletion</h2>
+            <p>Are you absolutely sure you want to delete Section <br>
+                <!-- Using section object details -->
+                <span class="teacher-highlight">{{ section_obj.name }}</span> of
+                <span class="teacher-highlight">{{ section_obj.student_class.name }}</span>? <br><br>
+                <i class="fas fa-circle-info me-1"></i>This action is permanent and will remove all student assignments
+                within this section.
+            </p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="action-buttons">
+                    <!-- Redirect back to the section list -->
+                    <a href="{% url 'section_list' %}" class="btn btn-cancel">No, Go Back</a>
+                    <button type="submit" class="btn btn-danger">Yes, Delete Section</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

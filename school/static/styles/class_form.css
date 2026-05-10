@@ -1,165 +1,301 @@
-/* --- Layout & Sidebar Integration --- */
-body {
-    background-color: #f8fafc;
-    /* Soft neutral background */
+/* ==========================================================================
+   THEME VARIABLES (Matches Teacher Form System)
+   ========================================================================== */
+:root {
+    --tf-primary: #4e73df;
+    --tf-primary-dark: #2e59d9;
+    --tf-success: #1cc88a;
+    --tf-danger: #e74a3b;
+    --tf-gray: #858796;
+    --tf-light: #f8f9fc;
+    --tf-border: #e3e6f0;
+    --tf-text-dark: #2d3748;
+    --tf-text-muted: #718096;
+    --tf-white: #ffffff;
+}
+
+/* ==========================================================================
+   LAYOUT
+   ========================================================================== */
+.tf-dashboard-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--tf-light);
+}
+
+.tf-sidebar {
+    width: 260px;
+    background: var(--tf-white);
+    border-right: 1px solid var(--tf-border);
+    flex-shrink: 0;
+}
+
+.tf-main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   CARD
+   ========================================================================== */
+.tf-card {
+    background: var(--tf-white);
+    border-radius: 12px;
+    box-shadow: 0 0.15rem 1.75rem rgba(58, 59, 69, 0.1);
+    overflow: hidden;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.tf-header-box {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    color: var(--tf-white);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tf-header-text h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
     margin: 0;
-    padding: 0;
 }
 
-.lt-sidebar {
-    height: 100vh;
-    position: sticky;
-    top: 0;
-    background-color: #ffffff;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.02);
+.tf-header-text p {
+    margin: 5px 0 0;
+    opacity: 0.85;
+    font-size: 0.9rem;
 }
 
-/* --- Base Layout Animations --- */
-.form-card-anim {
-    animation: fadeIn 0.6s ease-out forwards;
-    opacity: 0;
+.tf-body {
+    padding: 2.5rem;
 }
 
-.form-group-anim {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: slideUpFade 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    animation-delay: var(--delay, 0s);
+/* ==========================================================================
+   SECTIONS
+   ========================================================================== */
+.tf-section-block {
+    margin-bottom: 2.5rem;
 }
 
-@keyframes fadeIn {
-    to {
-        opacity: 1;
+.tf-section-block h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--tf-primary);
+    border-bottom: 2px solid var(--tf-light);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.tf-fields-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.tf-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tf-field-group label {
+    font-weight: 600;
+    color: var(--tf-text-dark);
+    font-size: 0.9rem;
+}
+
+/* Inputs */
+.tf-field-group input,
+.tf-field-group select,
+.tf-field-group textarea {
+    padding: 12px 14px;
+    border: 1px solid var(--tf-border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: 0.2s;
+}
+
+.tf-field-group input:focus,
+.tf-field-group select:focus,
+.tf-field-group textarea:focus {
+    border-color: var(--tf-primary);
+    box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+    outline: none;
+}
+
+/* ==========================================================================
+   ACTIVE TOGGLE (FIXED - NOT STRETCHED)
+   ========================================================================== */
+.tf-active-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--tf-border);
+    border-radius: 10px;
+    background: #fff;
+    width: fit-content;
+    /* 🔥 FIX: prevents long stretch */
+}
+
+/* Hide default checkbox */
+.tf-active-box input[type="checkbox"] {
+    width: 42px;
+    height: 22px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: #cbd5e1;
+    border-radius: 50px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Knob */
+.tf-active-box input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 2px;
+    left: 2px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.3s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Checked */
+.tf-active-box input[type="checkbox"]:checked {
+    background: var(--tf-success);
+}
+
+.tf-active-box input[type="checkbox"]:checked::before {
+    transform: translateX(20px);
+}
+
+/* Label */
+.tf-active-box label {
+    margin: 0;
+    font-weight: 600;
+    color: var(--tf-text-dark);
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   ACTION BUTTONS
+   ========================================================================== */
+.tf-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--tf-border);
+}
+
+.tf-btn-save {
+    background: var(--tf-primary);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tf-btn-save:hover {
+    background: var(--tf-primary-dark);
+    transform: translateY(-2px);
+}
+
+.tf-btn-back {
+    background: #fff;
+    color: var(--tf-gray);
+    border: 1px solid var(--tf-border);
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.tf-btn-back:hover {
+    background: var(--tf-light);
+    color: var(--tf-text-dark);
+}
+
+/* ==========================================================================
+   ANIMATION
+   ========================================================================== */
+.tf-animate {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
     }
-}
 
-@keyframes slideUpFade {
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-/* --- Input Field Styling --- */
-.custom-input-anim {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 0.85rem 1.25rem;
-    background-color: #ffffff;
-    font-size: 1rem;
-    color: #1e293b;
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+    .tf-fields-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tf-main-content {
+        padding: 1.5rem;
+    }
 }
 
-/* Focus States for Inputs */
-.custom-input-anim:focus {
-    border-color: #4f46e5;
-    /* Indigo Focus */
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-    outline: none;
-    transform: translateY(-1px);
-}
+/* Mobile */
+@media (max-width: 768px) {
+    .tf-dashboard-layout {
+        flex-direction: column;
+    }
 
-/* Input Group Specifics (Fee Field) */
-.input-group-lg .custom-input-anim {
-    border-left: 0;
-}
+    .tf-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--tf-border);
+    }
 
-.input-group-lg .input-group-text {
-    border: 2px solid #e2e8f0;
-    border-right: 0;
-    border-radius: 10px 0 0 10px;
-    background-color: #f1f5f9;
-    color: #64748b;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
+    .tf-fields-row {
+        grid-template-columns: 1fr;
+    }
 
-.input-group:focus-within .input-group-text {
-    border-color: #4f46e5;
-    color: #4f46e5;
-    background-color: #ffffff;
-}
+    .tf-header-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
 
-/* --- Enhanced Toggle Switch (Active Status) --- */
-.custom-switch-lg .form-check-input {
-    width: 3.5em;
-    height: 1.75em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid #cbd5e1;
-}
+    .tf-actions {
+        flex-direction: column;
+    }
 
-.custom-switch-lg .form-check-input:checked {
-    background-color: #10b981;
-    /* Success Emerald */
-    border-color: #10b981;
-}
+    .tf-btn-save,
+    .tf-btn-back {
+        width: 100%;
+        text-align: center;
+    }
 
-.custom-switch-lg .form-check-input:focus {
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
-}
-
-/* --- The Modern Indigo Save Button --- */
-.submit-btn-anim {
-    background-color: #4f46e5;
-    /* Primary Indigo */
-    color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    padding: 14px 40px;
-    font-weight: 700;
-    font-size: 1.1rem;
-    letter-spacing: 0.3px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -1px rgba(79, 70, 229, 0.1);
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.submit-btn-anim:hover {
-    background-color: #4338ca;
-    /* Deep Indigo on hover */
-    transform: translateY(-3px);
-    box-shadow: 0 12px 20px -5px rgba(79, 70, 229, 0.35);
-}
-
-.submit-btn-anim:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
-}
-
-/* --- Secondary Button (Cancel) --- */
-.btn-outline-secondary {
-    border: 2px solid #e2e8f0 !important;
-    color: #64748b !important;
-    font-weight: 600;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-}
-
-.btn-outline-secondary:hover {
-    background-color: #f1f5f9 !important;
-    border-color: #cbd5e1 !important;
-    color: #334155 !important;
-}
-
-/* --- Scrollbar Styling for overflow areas --- */
-.overflow-auto::-webkit-scrollbar {
-    width: 8px;
-}
-
-.overflow-auto::-webkit-scrollbar-track {
-    background: #f1f5f9;
-}
-
-.overflow-auto::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
-}
-
-.overflow-auto::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    .tf-active-box {
+        width: 100%;
+        /* mobile fix */
+    }
 }

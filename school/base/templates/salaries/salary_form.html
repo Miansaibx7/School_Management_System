@@ -1,0 +1,130 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="sf-dashboard-layout">
+    <!-- Sidebar -->
+    <div class="sf-sidebar">
+        {% include 'sidebar.html' %}
+    </div>
+
+    <!-- Main Content -->
+    <main class="sf-main-content">
+
+        <!-- Notifications -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show sf-animate" role="alert">
+            <i
+                class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="sf-card sf-animate">
+            <div class="sf-header-box">
+                <div class="sf-header-text">
+                    <h1>{% if form.instance.pk %}Edit Salary Record{% else %}Disburse Salary{% endif %}</h1>
+                    <p>Process staff payroll and record monthly disbursements.</p>
+                </div>
+                <a href="{% url 'salary_list' %}" class="btn btn-light btn-sm">
+                    <i class="fas fa-history me-1"></i> Salary History
+                </a>
+            </div>
+
+            <form method="POST" class="sf-body" novalidate>
+                {% csrf_token %}
+
+                <!-- Section 1: Staff Information -->
+                <div class="sf-section-block">
+                    <h3><i class="fas fa-user-tie"></i> Staff Information</h3>
+                    <div class="sf-fields-row">
+                        <!-- Staff Member Selection -->
+                        <div class="sf-field-group">
+                            {{ form.teacher.label_tag }}
+                            {{ form.teacher }}
+                            {% if form.teacher.errors %}
+                            <span class="text-danger small">{{ form.teacher.errors|striptags }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Salary Month -->
+                        <div class="sf-field-group">
+                            {{ form.month_for.label_tag }}
+                            {{ form.month_for }}
+                            {% if form.month_for.errors %}
+                            <span class="text-danger small">{{ form.month_for.errors|striptags }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Status -->
+                        <div class="sf-field-group">
+                            {{ form.status.label_tag }}
+                            {{ form.status }}
+                            {% if form.status.errors %}
+                            <span class="text-danger small">{{ form.status.errors|striptags }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Financials -->
+                <div class="sf-section-block">
+                    <h3><i class="fas fa-money-check-alt"></i> Payment Details</h3>
+                    <div class="sf-fields-row">
+                        <!-- Basic Salary / Amount -->
+                        <div class="sf-field-group">
+                            {{ form.amount.label_tag }}
+                            {{ form.amount }}
+                            {% if form.amount.errors %}
+                            <span class="text-danger small">{{ form.amount.errors|striptags }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Payment Date -->
+                        <div class="sf-field-group">
+                            {{ form.payment_date.label_tag }}
+                            {{ form.payment_date }}
+                            {% if form.payment_date.errors %}
+                            <span class="text-danger small">{{ form.payment_date.errors|striptags }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Method -->
+                        <div class="sf-field-group">
+                            {{ form.payment_method.label_tag }}
+                            {{ form.payment_method }}
+                            {% if form.payment_method.errors %}
+                            <span class="text-danger small">{{ form.payment_method.errors|striptags }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Remarks/Notes -->
+                        <div class="sf-field-group sf-span-3">
+                            {{ form.notes.label_tag }}
+                            {{ form.notes }}
+                            {% if form.notes.errors %}
+                            <span class="text-danger small">{{ form.notes.errors|striptags }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                
+                <div class="sf-actions">
+                    <button type="submit" class="sf-btn-save">
+                        <i class="fas fa-paper-plane me-2"></i>
+                        {% if form.instance.pk %}Update Payroll{% else %}Confirm Disbursement{% endif %}
+                    </button>
+                    <a href="{% url 'salary_list' %}" class="sf-btn-back">
+                    Cancel & Go Back
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+{% endblock %}

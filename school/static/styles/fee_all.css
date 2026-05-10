@@ -1,0 +1,330 @@
+/* Variables for Theme Consistency */
+:root {
+    --ff-primary: #4e73df;
+    --ff-indigo: #6610f2;
+    --ff-success: #1cc88a;
+    --ff-danger: #e74a3b;
+    --ff-warning: #f6c23e;
+    --ff-light-bg: #f8f9fc;
+    --ff-white: #ffffff;
+    --ff-text-dark: #2d3748;
+    --ff-text-muted: #718096;
+    --ff-border: #e3e6f0;
+}
+
+/* Base Layout */
+.ff-dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--ff-light-bg);
+}
+
+.ff-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background: var(--ff-white);
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+}
+
+.ff-main-content {
+    padding: 2rem;
+    transition: all 0.3s ease;
+    flex-grow: 1;
+}
+
+/* -------------------
+   Summary Cards
+-------------------- */
+.ff-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.ff-summary-card {
+    background: var(--ff-white);
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid var(--ff-border);
+    transition: transform 0.2s ease;
+}
+
+.ff-summary-card:hover {
+    transform: translateY(-5px);
+}
+
+.ff-summary-card.balance {
+    border-left-color: var(--ff-primary);
+}
+
+.ff-summary-card.income {
+    border-left-color: var(--ff-success);
+}
+
+.ff-summary-card.expense {
+    border-left-color: var(--ff-danger);
+}
+
+.card-info span {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ff-text-muted);
+    letter-spacing: 0.5px;
+}
+
+.card-info h3 {
+    margin: 8px 0 0;
+    color: var(--ff-text-dark);
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.card-icon i {
+    font-size: 2.5rem;
+    color: var(--ff-border);
+    opacity: 0.6;
+}
+
+/* -------------------
+   Card & Header Box
+-------------------- */
+.ff-card {
+    background: var(--ff-white);
+    border-radius: 15px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    border: none;
+    overflow: hidden;
+}
+
+.ff-header-box {
+    background: linear-gradient(135deg, var(--ff-primary) 0%, var(--ff-indigo) 100%);
+    padding: 2rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.ff-header-text h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.ff-header-text p {
+    margin: 5px 0 0 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+/* -------------------
+   Search Box & Add Button
+-------------------- */
+.ff-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.ff-search-box .search-icon {
+    position: absolute;
+    left: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.ff-search-box input {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 15px 10px 35px;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    width: 250px;
+}
+
+.ff-search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.ff-search-box input:focus {
+    background: white;
+    color: var(--ff-text-dark);
+}
+
+.ff-search-box input:focus+.search-icon,
+.ff-search-box input:focus~.search-icon {
+    color: var(--ff-text-dark);
+}
+
+.ff-btn-add {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+}
+
+.ff-btn-add:hover {
+    background: white;
+    color: var(--ff-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* -------------------
+   Table Styling
+-------------------- */
+.table thead th {
+    background-color: #f1f4f9;
+    color: var(--ff-text-dark);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--ff-border);
+    padding: 18px 15px;
+}
+
+.table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #edf2f7;
+    color: var(--ff-text-dark);
+}
+
+.section-tag {
+    background: var(--ff-text-dark);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Fee Specific Status Badges */
+.status-badge {
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.status-paid {
+    background-color: #e3fdfd;
+    color: var(--ff-success);
+}
+
+.status-pending {
+    background-color: #fff5f5;
+    color: var(--ff-danger);
+}
+
+.status-partial {
+    background-color: #fdf6e3;
+    color: var(--ff-warning);
+}
+
+/* Action Buttons */
+.btn-action {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+}
+
+.btn-edit {
+    background-color: #ebf4ff;
+    color: var(--ff-primary);
+}
+
+.btn-edit:hover {
+    background-color: var(--ff-primary);
+    color: white;
+}
+
+.btn-delete {
+    background-color: #fff5f5;
+    color: var(--ff-danger);
+}
+
+.btn-delete:hover {
+    background-color: var(--ff-danger);
+    color: white;
+}
+
+/* Alert Styling */
+.alert {
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+}
+
+/* Animation */
+.ff-animate {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .ff-sidebar {
+        display: none;
+    }
+
+    .ff-summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .ff-header-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ff-search-box input {
+        width: 100%;
+    }
+
+    .ff-main-content {
+        padding: 1rem;
+    }
+}

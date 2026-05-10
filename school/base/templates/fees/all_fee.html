@@ -1,0 +1,219 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="ff-dashboard-layout">
+    <div class="ff-sidebar">
+        {% include 'sidebar.html' %}
+    </div>
+
+    <main class="ff-main-content w-100">
+        <!-- Display Django Messages if any -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show ff-animate" role="alert">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Summary Cards (Optional: Calculate these in your views.py) -->
+        <div class="ff-summary-grid mb-4">
+            <!-- Collected Card -->
+            <div class="ff-summary-card income ff-animate">
+                <div class="card-info">
+                    <span>Total Collected</span>
+                    <h3>${{ total_collected|default:"0.00" }}</h3>
+                </div>
+                <div class="card-icon"><i class="fas fa-hand-holding-usd"></i></div>
+            </div>
+
+            <!-- Pending Card -->
+            <div class="ff-summary-card expense ff-animate" style="animation-delay: 0.1s;">
+                <div class="card-info">
+                    <span>Pending Dues</span>
+                    <h3>${{ pending_dues|default:"0.00" }}</h3>
+                </div>
+                <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+            </div>
+
+            <!-- Total Records Card -->
+            <div class="ff-summary-card balance ff-animate" style="animation-delay: 0.2s;">
+                <div class="card-info">
+                    <span>Total Records</span>
+                    <h3>{{ fees.count|default:"0" }}</h3>
+                </div>
+                <div class="card-icon"><i class="fas fa-users"></i></div>
+            </div>
+        </div>
+
+        <!-- Fee Table -->
+        <div class="ff-card ff-animate" style="animation-delay: 0.3s;">
+            <div class="ff-header-box">
+                <div class="ff-header-text">
+                    <h1><i class="fas fa-graduation-cap me-2"></i>Fee Management</h1>
+                    <p>Overview of student fee payments and statuses</p>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="ff-search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search by Name or Admission No..." id="tableSearch">
+                    </div>
+                    <a href="{% url 'fee_create' %}" class="ff-btn-add">
+                        <i class="fas fa-plus-circle me-1"></i> Record Fee
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-4">
+                <div class="table-responsive">
+                    <table class="table align-middle" id="feeTable">
+            
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Admission No</th>
+                                <th>Month For</th>
+                                <th>Payment Date</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                                <th>Amount</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+            
+                        <tbody>
+                            {% for fee in fees %}
+                            <tr>
+            
+                                <!-- Student Name -->
+                                <td class="student-name">
+                                    <div class="fw-bold text-dark">
+                                        {{ fee.student.full_name }}
+                                    </div>
+                                </td>
+            
+                                <!-- Admission Number -->
+                                <td class="student-admission">
+                                    <span class="fw-bold text-primary">
+                                        {{ fee.student.admission_number }}
+                                    </span>
+                                </td>
+            
+                                <!-- Month -->
+                                <td class="fw-bold text-primary">
+                                    {{ fee.month_for|date:"F Y" }}
+                                </td>
+            
+                                <!-- Payment Date -->
+                                <td>
+                                    {{ fee.payment_date|date:"M d, Y" }}
+                                </td>
+            
+                                <!-- Method -->
+                                <td>
+                                    <span class="section-tag">
+                                        {{ fee.get_payment_method_display }}
+                                    </span>
+                                </td>
+            
+                                <!-- Status -->
+                                <td>
+                                    {% if fee.status == 'paid' %}
+                                    <span class="status-badge status-paid">
+                                        <i class="fas fa-check-circle me-1"></i>Paid
+                                    </span>
+            
+                                    {% elif fee.status == 'pending' %}
+                                    <span class="status-badge status-pending">
+                                        <i class="fas fa-clock me-1"></i>Pending
+                                    </span>
+            
+                                    {% elif fee.status == 'partial' %}
+                                    <span class="status-badge status-partial">
+                                        <i class="fas fa-adjust me-1"></i>Partial
+                                    </span>
+                                    {% endif %}
+                                </td>
+            
+                                <!-- Amount -->
+                                <td class="fw-bold {% if fee.status == 'pending' %}text-danger{% else %}text-success{% endif %}">
+                                    ${{ fee.amount }}
+                                </td>
+            
+                                <!-- Actions -->
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+            
+                                        <a href="{% url 'fee_update' fee.pk %}" class="btn-action btn-edit">
+                                            <i class="fas fa-edit"></i>Edit
+                                        </a>
+            
+                                        <a href="{% url 'fee_delete' fee.pk %}" class="btn-action btn-delete">
+                                            <i class="fas fa-trash-alt"></i>Delete
+                                        </a>
+            
+                                    </div>
+                                </td>
+            
+                            </tr>
+            
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center py-5 text-muted">
+                                    No fee records found.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+            
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const searchInput = document.getElementById("tableSearch");
+        const table = document.getElementById("feeTable");
+        const rows = table.querySelectorAll("tbody tr");
+
+        searchInput.addEventListener("input", function () {
+
+            const value = this.value.toLowerCase().trim();
+
+            rows.forEach(row => {
+
+                // Student Name
+                const nameCell = row.querySelector(".student-name");
+
+                // Admission Number
+                const admissionCell = row.querySelector(".student-admission");
+
+                // Skip empty rows
+                if (!nameCell || !admissionCell) return;
+
+                const studentName = nameCell.textContent.toLowerCase().trim();
+                const admissionNumber = admissionCell.textContent.toLowerCase().trim();
+
+                // Search by name OR admission number
+                if (
+                    studentName.includes(value) ||
+                    admissionNumber.includes(value)
+                ) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+
+            });
+
+        });
+
+    });
+</script>
+{% endblock %}

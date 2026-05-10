@@ -1,12 +1,11 @@
 {% extends 'main.html' %}
 {% load static %}
 
-{% block title %}Confirm Teacher Deletion{% endblock %}
+{% block title %}Confirm Student Deletion{% endblock %}
 
 {% block content %}
-
 <style>
-    /* Global Container Pattern */
+    /* Consistent Dashboard Layout */
     .dashboard-container {
         display: flex;
         background-color: #f8f9fc;
@@ -14,7 +13,7 @@
         width: 100%;
     }
 
-    /* Main Content Centering */
+    /* Centering the Delete Card */
     .main-content {
         width: 100%;
         padding: 20px;
@@ -24,7 +23,7 @@
         flex-grow: 1;
     }
 
-    /* Standardized Delete Card */
+    /* Standardized Deletion Card UI */
     .delete-card {
         background: #ffffff;
         width: 100%;
@@ -57,8 +56,8 @@
         margin-bottom: 35px;
     }
 
-    /* Highlight matching Section Page */
-    .teacher-highlight {
+    /* Highlight matching the Teacher/Class/Section pages */
+    .student-highlight {
         font-weight: 700;
         color: #e74a3b;
         background: #fff5f5;
@@ -108,7 +107,7 @@
         transform: translateY(-1px);
     }
 
-    /* Entrance Animation */
+    /* Animation */
     @keyframes fadeInScale {
         from {
             opacity: 0;
@@ -153,21 +152,21 @@
             <h2>Confirm Deletion</h2>
 
             <p>Are you absolutely sure you want to delete <br>
-                <span class="teacher-highlight">{{ teacher.full_name }}</span>? <br><br>
+                <span class="student-highlight">{{ student_obj.full_name }}</span>? <br><br>
                 <span class="small">
-                    <i class="fas fa-circle-info me-1"></i> This action is <strong>permanent</strong> and will also
-                    remove their user portal access immediately.
+                    <i class="fas fa-circle-info me-1"></i> This action is <strong>permanent</strong>. Deleting this
+                    student will also remove their attendance history, grade records, and portal access.
                 </span>
             </p>
 
             <form method="POST">
                 {% csrf_token %}
                 <div class="action-buttons">
-                    <a href="{% url 'teacher_list' %}" class="btn btn-cancel">
+                    <a href="{% url 'student_list' %}" class="btn btn-cancel">
                         <i class="fas fa-arrow-left me-2"></i> No, Go Back
                     </a>
                     <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-trash-alt me-2"></i> Yes, Delete Teacher
+                        <i class="fas fa-trash-alt me-2"></i> Yes, Delete Student
                     </button>
                 </div>
             </form>

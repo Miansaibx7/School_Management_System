@@ -1,12 +1,14 @@
 {% extends 'main.html' %}
 {% load static %}
 
-{% block title %}Confirm Teacher Deletion{% endblock %}
+{% block title %}Confirm Fee Deletion{% endblock %}
 
 {% block content %}
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
 
 <style>
-    /* Global Container Pattern */
+    /* Consistent Dashboard Layout */
     .dashboard-container {
         display: flex;
         background-color: #f8f9fc;
@@ -14,7 +16,7 @@
         width: 100%;
     }
 
-    /* Main Content Centering */
+    /* Centering the Delete Card */
     .main-content {
         width: 100%;
         padding: 20px;
@@ -24,7 +26,7 @@
         flex-grow: 1;
     }
 
-    /* Standardized Delete Card */
+    /* Standardized Deletion Card UI */
     .delete-card {
         background: #ffffff;
         width: 100%;
@@ -57,8 +59,8 @@
         margin-bottom: 35px;
     }
 
-    /* Highlight matching Section Page */
-    .teacher-highlight {
+    /* Fee Highlight - Red style to match other delete pages */
+    .fee-highlight {
         font-weight: 700;
         color: #e74a3b;
         background: #fff5f5;
@@ -67,7 +69,7 @@
         border: 1px solid #fadbd8;
     }
 
-    /* Button Layout */
+    /* Action Buttons */
     .action-buttons {
         display: flex;
         gap: 15px;
@@ -150,24 +152,25 @@
     <div class="main-content">
         <div class="delete-card">
             <div class="warning-icon">⚠️</div>
-            <h2>Confirm Deletion</h2>
+            <h2>Confirm Fee Deletion</h2>
 
-            <p>Are you absolutely sure you want to delete <br>
-                <span class="teacher-highlight">{{ teacher.full_name }}</span>? <br><br>
+            <p>Are you absolutely sure you want to delete the fee record for <br>
+                <span class="fee-highlight">{{ fee.student.full_name }}</span> <br>
+                Amount: <span class="fee-highlight">${{ fee.amount }}</span>? <br><br>
                 <span class="small">
-                    <i class="fas fa-circle-info me-1"></i> This action is <strong>permanent</strong> and will also
-                    remove their user portal access immediately.
+                    <i class="fas fa-circle-info me-1"></i> This action is <strong>permanent</strong>. Deleting this fee
+                    will reset the student's payment status for this period and cannot be recovered.
                 </span>
             </p>
 
             <form method="POST">
                 {% csrf_token %}
                 <div class="action-buttons">
-                    <a href="{% url 'teacher_list' %}" class="btn btn-cancel">
+                    <a href="{% url 'fee_list' %}" class="btn btn-cancel">
                         <i class="fas fa-arrow-left me-2"></i> No, Go Back
                     </a>
                     <button type="submit" class="btn btn-danger">
-                        <i class="fas fa-trash-alt me-2"></i> Yes, Delete Teacher
+                        <i class="fas fa-trash-alt me-2"></i> Yes, Delete Fee
                     </button>
                 </div>
             </form>

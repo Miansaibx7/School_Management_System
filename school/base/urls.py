@@ -40,6 +40,32 @@ urlpatterns = [
           path('sections/delete/<int:pk>/', views.section_delete, name='section_delete'),
 
           # ===================== Sudents URLS =====================
+          path('students/', views.student_list, name='student_list'),
+          path('students/create/', views.student_create, name='student_create'),
+          path('students/update/<int:pk>/', views.student_update, name='student_update'),
+          path('students/delete/<int:pk>/', views.student_delete, name='student_delete'),
+
+          # ===================== Transactions URLS =====================
+          path('transactions/', views.transaction_list, name='transaction_list'),
+          path('transactions/create/', views.transaction_create, name='transaction_create'),
+          path('transactions/update/<int:pk>/', views.transaction_update, name='transaction_update'),
+          path('transactions/delete/<int:pk>/', views.transaction_delete, name='transaction_delete'),
+
+          # ===================== Fees URLS ====================================
+          path('fees/', views.fee_list, name='fee_list'),
+          path('fees/create/', views.fee_create, name='fee_create'),
+          path('fees/update/<int:pk>/', views.fee_update, name='fee_update'),
+          path('fees/delete/<int:pk>/', views.fee_delete, name='fee_delete'),
+
+          # ===================== Salary URLS ====================================
+          path('salaries/', views.salary_list, name='salary_list'),
+          path('salaries/create/', views.salary_create, name='salary_create'),
+          path('salaries/update/<int:pk>/', views.salary_update, name='salary_update'),
+          path('salaries/delete/<int:pk>/', views.salary_delete, name='salary_delete'),
+
+
+          path('financial-reports/',views.financial_reports,name='financial_reports'),
+
 ]
 
 from django.conf import settings

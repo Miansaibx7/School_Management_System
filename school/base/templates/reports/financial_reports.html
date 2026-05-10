@@ -1,0 +1,200 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="fr-container">
+
+    <!-- HEADER -->
+    <div class="fr-header">
+        <div>
+            <h1>Financial Reports</h1>
+            <p>School analytics, fees, salaries and transaction reports.</p>
+        </div>
+    </div>
+    <!-- SUMMARY CARDS -->
+    <div class="fr-grid">
+        <div class="fr-card income">
+            <h4>Total Income</h4>
+            <h2>${{ total_income }}</h2>
+        </div>
+        <div class="fr-card expense">
+            <h4>Total Expense</h4>
+            <h2>${{ total_expense }}</h2>
+        </div>
+        <div class="fr-card balance">
+            <h4>Total Balance</h4>
+            <h2>${{ total_balance }}</h2>
+        </div>
+        <div class="fr-card fee">
+            <h4>Fee Collected</h4>
+            <h2>${{ total_collected }}</h2>
+        </div>
+        <div class="fr-card pending">
+            <h4>Pending Fees</h4>
+            <h2>${{ pending_dues }}</h2>
+        </div>
+        <div class="fr-card salary">
+            <h4>Salary Paid</h4>
+            <h2>${{ total_salary_paid }}</h2>
+        </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="fr-chart-grid">
+        <!-- INCOME EXPENSE -->
+        <div class="fr-chart-card">
+            <h3>Income vs Expense</h3>
+            <canvas id="incomeExpenseChart" data-months='{{ months|safe }}' data-income='{{ income_chart|safe }}'
+                data-expense='{{ expense_chart|safe }}'>
+            </canvas>
+        </div>
+        <!-- FEE STATUS -->
+        <div class="fr-chart-card">
+            <h3>Fee Status Report</h3>
+            <canvas id="feeChart" data-paid="{{ paid_fees }}" data-partial="{{ partial_fees }}" data-pending="{{ pending_fees }}">
+            </canvas>
+        </div>
+    </div>
+
+    <!-- SCHOOL STATS -->
+    <div class="fr-stats">
+        <div class="fr-mini-card">
+            <h4>Total Students</h4>
+            <span>{{ total_students }}</span>
+        </div>
+        <div class="fr-mini-card">
+            <h4>Total Teachers</h4>
+            <span>{{ total_teachers }}</span>
+        </div>
+        <div class="fr-mini-card">
+            <h4>Total Classes</h4>
+            <span>{{ total_classes }}</span>
+        </div>
+    </div>
+
+    <!-- RECENT TRANSACTIONS -->
+    <div class="fr-table-card">
+        <div class="fr-table-header">
+            <h3>Recent Transactions</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in recent_transactions %}
+                    <tr>
+                        <td>{{ transaction.date }}</td>
+                        <td>{{ transaction.title }}</td>
+                        <td>
+                            {% if transaction.transaction_type == 'income' %}
+                            <span class="badge bg-success">Income</span>
+                            {% else %}
+                            <span class="badge bg-danger">Expense</span>
+                            {% endif %}
+                        </td>
+                        <td>${{ transaction.amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- java scripts for charts -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+// Income Expense Chart
+        const incomeExpenseCanvas = document.getElementById("incomeExpenseChart");
+
+        if (incomeExpenseCanvas) {
+
+            const months = JSON.parse(incomeExpenseCanvas.dataset.months || "[]");
+            const incomeData = JSON.parse(incomeExpenseCanvas.dataset.income || "[]");
+            const expenseData = JSON.parse(incomeExpenseCanvas.dataset.expense || "[]");
+
+            new Chart(incomeExpenseCanvas, {
+                type: "bar",
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: "Income",
+                            data: incomeData,
+                            backgroundColor: "#1cc88a",
+                            borderRadius: 8
+                        },
+                        {
+                            label: "Expense",
+                            data: expenseData,
+                            backgroundColor: "#e74a3b",
+                            borderRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "top"
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+// Fee Status Chart
+        const feeCanvas = document.getElementById("feeChart");
+
+        if (feeCanvas) {
+
+            const paidFees = Number(feeCanvas.dataset.paid || 0);
+            const partialFees = Number(feeCanvas.dataset.partial || 0);
+            const pendingFees = Number(feeCanvas.dataset.pending || 0);
+
+            new Chart(feeCanvas, {
+                type: "doughnut",
+                data: {
+                    labels: ["Paid", "Partial", "Pending"],
+                    datasets: [{
+                        data: [
+                            paidFees,
+                            partialFees,
+                            pendingFees
+                        ],
+                        backgroundColor: [
+                            "#1cc88a",
+                            "#f6c23e",
+                            "#e74a3b"
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: "70%",
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            });
+        }
+
+    });
+</script>
+{% endblock %}

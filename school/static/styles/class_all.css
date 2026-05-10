@@ -32,6 +32,44 @@
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
+/* Search Box */
+.tf-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.tf-search-box .search-icon {
+    position: absolute;
+    left: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.tf-search-box input {
+    width: 240px;
+    padding: 10px 15px 10px 38px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.tf-search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.tf-search-box input:focus {
+    background: white;
+    color: #2d3748;
+}
+
+.tf-search-box input:focus+.search-icon,
+.tf-search-box input:focus~.search-icon {
+    color: #2d3748;
+}
 /* --- FIXED HEADER BOX --- */
 .tf-header-box {
     background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);

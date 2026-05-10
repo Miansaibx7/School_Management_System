@@ -3,7 +3,7 @@
 
 {% block content %}
 <!-- External CSS Link -->
-<link rel="stylesheet" href="{% static 'css/all_teacher.css' %}">
+<link rel="stylesheet" href="{% static 'css/all_students.css' %}">
 
 <div class="tf-dashboard-layout">
     <!-- Sidebar Include -->
@@ -16,89 +16,89 @@
         <!-- Display Django Messages if any -->
         {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show tf-animate" role="alert">
-            <i
-                class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show ff-animate" role="alert">
+            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         {% endfor %}
         {% endif %}
-
+        
         <div class="tf-card tf-animate">
 
             <!-- Header Box -->
             <div class="tf-header-box">
                 <div class="tf-header-text">
-                    <h1><i class="fas fa-chalkboard-teacher me-2"></i>Teacher Directory</h1>
-                    <p>Managing {{ teachers.count }} registered teachers in the system</p>
+                    <h1><i class="fas fa-user-graduate me-2"></i>Student Directory</h1>
+                    <p>Managing {{ student.count }} registered students in the system</p>
                 </div>
-
+            
                 <!-- Right Side -->
                 <div class="d-flex align-items-center gap-3 flex-wrap">
-
+                
                     <!-- Search Box -->
                     <div class="tf-search-box">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="teacherSearch" placeholder="Search by Teacher ID...">
+                        <input type="text" id="studentSearch" placeholder="Search by Admission Number...">
                     </div>
-
+                
                     <!-- Add Button -->
-                    <a href="{% url 'teacher_create' %}" class="tf-btn-add">
+                    <a href="{% url 'student_create' %}" class="tf-btn-add">
                         <i class="fas fa-plus-circle me-1"></i>
-                        Add New Teacher
+                        Add New Student
                     </a>
-
+                
                 </div>
-            </div>
+                </div>
 
             <!-- Table Body -->
             <div class="p-4">
                 <div class="table-responsive">
-                    <table class="table align-middle" id="teacherTable">
+                    <table class="table align-middle" id="studentTable">
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>Teacher</th>
-                                <th>Teacher ID</th>
-                                <th>Designation & Subject</th>
+                                <th>Student</th>
+                                <th>Admission.No</th>
+                                <th>Class & Section</th>
                                 <th>Contact Info</th>
                                 <th>Status</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for t in teachers %}
+                            {% for s in student %}
                             <tr>
                                 <td><span class="sno-badge">{{ forloop.counter }}</span></td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        {% if t.photo %}
-                                        <img src="{{ t.photo.url }}" alt="Profile" class="rounded-circle me-3"
+                                        {% if s.photo %}
+                                        <img src="{{ s.photo.url }}" alt="Profile" class="rounded-circle me-3"
                                             style="width: 45px; height: 45px; object-fit: cover;">
                                         {% else %}
                                         <div class="rounded-circle me-3 bg-light d-flex align-items-center justify-content-center"
                                             style="width: 45px; height: 45px;">
-                                            <i class="fas fa-user-tie text-muted"></i>
+                                            <i class="fas fa-user text-muted"></i>
                                         </div>
                                         {% endif %}
                                         <div>
-                                            <div class="fw-bold text-dark">{{ t.first_name }} {{ t.last_name }}</div>
+                                            <div class="fw-bold text-dark">{{ s.full_name }}</div>
+                                            <!-- <small class="text-muted">{{ s.roll_number }}</small> -->
                                         </div>
                                     </div>
                                 </td>
-                                <td class="fw-bold text-primary teacher-id">{{ t.teacher_id|default:"-" }}</td>
+                                <td class="fw-bold text-primary admission-number">{{ s.admission_number }}</td>
                                 <td>
-                                    <div class="fw-600">{{ t.designation }} </div>
-                                    <span class="section-tag">{{ t.subject_specialization|default:"General" }}</span>
+                                    <div class="fw-600">{{ s.class_room.name }} </div>
+                                    <span class="section-tag">{{ s.section.name|default:"N/A" }}</span>
                                 </td>
                                 <td>
-                                    <div class="small"><i class="fas fa-phone-alt me-1"></i> {{ t.phone_number }}</div>
-                                    <div class="small text-muted"><i class="fas fa-envelope me-1"></i>
-                                        {{ t.email|default:"No Email" }}</div>
+                                    <div class="small"><i class="fas fa-phone-alt me-1"></i> {{ s.phone_number }}</div>
+                                    <div class="small text-muted"><i class="fas fa-envelope me-1"></i> 
+                                        {{ s.email|default:"No Email" }}</div>
                                 </td>
                                 <td>
-                                    {% if t.is_active is not False %}
+                                    {% if s.is_active %}
                                     <span class="status-active"><i class="fas fa-check-circle me-1"></i>Active</span>
                                     {% else %}
                                     <span class="status-inactive"><i
@@ -107,13 +107,13 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a href="{% url 'teacher_update' t.pk %}" class="btn-action btn-edit"
+                                        <a href="{% url 'student_update' s.pk %}" class="btn-action btn-edit"
                                             title="Edit">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
-                                        <a href="{% url 'teacher_delete' t.pk %}" class="btn-action btn-delete"
+                                        <a href="{% url 'student_delete' s.pk %}" class="btn-action btn-delete"
                                             title="Delete">
-                                            <i class="fas fa-trash-alt"></i> Delete
+                                            <i class="fas fa-trash-alt"></i>Delete
                                         </a>
                                     </div>
                                 </td>
@@ -122,7 +122,7 @@
                             <tr>
                                 <td colspan="7" class="text-center py-5 text-muted">
                                     <i class="fas fa-folder-open fa-3x mb-3"></i>
-                                    <p>No teacher records found in the database.</p>
+                                    <p>No student records found in the database.</p>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -134,31 +134,38 @@
         </div>
     </main>
 </div>
-
-<!-- JAVASCRIPT (SEARCH A TEACHER BY ID) -->
+<!--  JAVASCRIPT (SEARCH A STUDENT BY ADMISSION NUMBER) -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const searchInput = document.getElementById("teacherSearch");
-        const tableRows = document.querySelectorAll("#teacherTable tbody tr");
+
+        const searchInput = document.getElementById("studentSearch");
+        const tableRows = document.querySelectorAll("#studentTable tbody tr");
 
         searchInput.addEventListener("keyup", function () {
+
             const searchValue = this.value.toLowerCase().trim();
 
             tableRows.forEach(row => {
-                const idCell = row.querySelector(".teacher-id");
+
+                const admissionCell = row.querySelector(".admission-number");
 
                 // Skip empty rows
-                if (!idCell) return;
+                if (!admissionCell) return;
 
-                const teacherId = idCell.textContent.toLowerCase().trim();
+                const admissionNumber = admissionCell.textContent
+                    .toLowerCase()
+                    .trim();
 
-                if (teacherId.includes(searchValue)) {
+                if (admissionNumber.includes(searchValue)) {
                     row.style.display = "";
                 } else {
                     row.style.display = "none";
                 }
+
             });
+
         });
+
     });
 </script>
 {% endblock %}

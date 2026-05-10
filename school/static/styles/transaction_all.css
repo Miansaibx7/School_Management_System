@@ -1,4 +1,4 @@
-/* Variables for Theme Consistency */
+/* Variables for Theme Consistency (Copied exactly from Student CSS) */
 :root {
     --tf-primary: #4e73df;
     --tf-indigo: #6610f2;
@@ -32,7 +32,67 @@
     flex-grow: 1;
 }
 
-/* Card Styling */
+/* -------------------
+   Summary Cards
+-------------------- */
+.tf-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.tf-summary-card {
+    background: var(--tf-white);
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid var(--tf-border);
+    transition: transform 0.2s ease;
+}
+
+.tf-summary-card:hover {
+    transform: translateY(-5px);
+}
+
+.tf-summary-card.balance {
+    border-left-color: var(--tf-primary);
+}
+
+.tf-summary-card.income {
+    border-left-color: var(--tf-success);
+}
+
+.tf-summary-card.expense {
+    border-left-color: var(--tf-danger);
+}
+
+.card-info span {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--tf-text-muted);
+    letter-spacing: 0.5px;
+}
+
+.card-info h3 {
+    margin: 8px 0 0;
+    color: var(--tf-text-dark);
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.card-icon i {
+    font-size: 2.5rem;
+    color: var(--tf-border);
+    opacity: 0.6;
+}
+
+/* -------------------
+   Card & Header Box
+-------------------- */
 .tf-card {
     background: var(--tf-white);
     border-radius: 15px;
@@ -41,7 +101,6 @@
     overflow: hidden;
 }
 
-/* Header Box Styling */
 .tf-header-box {
     background: linear-gradient(135deg, var(--tf-primary) 0%, var(--tf-indigo) 100%);
     padding: 2rem;
@@ -49,6 +108,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
 }
 
 .tf-header-text h1 {
@@ -64,6 +125,49 @@
     font-size: 0.9rem;
 }
 
+/* -------------------
+   Search Box & Add Button
+-------------------- */
+.tf-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.tf-search-box .search-icon {
+    position: absolute;
+    left: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.tf-search-box input {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 15px 10px 35px;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    width: 250px;
+}
+
+.tf-search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.tf-search-box input:focus {
+    background: white;
+    color: var(--tf-text-dark);
+}
+
+.tf-search-box input:focus+.search-icon,
+.tf-search-box input:focus~.search-icon {
+    color: var(--tf-text-dark);
+    /* Dark icon when typing */
+}
+
 .tf-btn-add {
     background: rgba(255, 255, 255, 0.2);
     color: white;
@@ -73,6 +177,7 @@
     font-weight: 600;
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
 }
 
 .tf-btn-add:hover {
@@ -82,49 +187,9 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Search Box */
-.tf-search-box {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.tf-search-box .search-icon {
-    position: absolute;
-    left: 14px;
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 0.9rem;
-}
-
-.tf-search-box input {
-    width: 260px;
-    padding: 11px 15px 11px 42px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    outline: none;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-}
-
-.tf-search-box input::placeholder {
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.tf-search-box input:focus {
-    background: white;
-    color: var(--tf-text-dark);
-    border-color: white;
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
-}
-
-.tf-search-box input:focus+.search-icon {
-    color: var(--tf-primary);
-}
-
-/* Table Styling */
+/* -------------------
+   Table Styling
+-------------------- */
 .table thead th {
     background-color: #f1f4f9;
     color: var(--tf-text-dark);
@@ -143,19 +208,10 @@
     color: var(--tf-text-dark);
 }
 
-.sno-badge {
-    background: #eef2ff;
-    color: var(--tf-primary);
-    padding: 5px 12px;
-    border-radius: 8px;
-    font-weight: 800;
-    font-size: 0.85rem;
-}
-
 .section-tag {
     background: var(--tf-text-dark);
     color: white;
-    padding: 2px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
@@ -207,6 +263,7 @@
 
 /* Animation */
 .tf-animate {
+    opacity: 0;
     animation: fadeInUp 0.6s ease-out forwards;
 }
 
@@ -222,26 +279,28 @@
     }
 }
 
-/* Mobile Responsive Adjustments */
+/* Responsive Adjustments */
 @media (max-width: 992px) {
     .tf-sidebar {
         display: none;
+    }
+
+    .tf-summary-grid {
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 768px) {
     .tf-header-box {
         flex-direction: column;
-        text-align: center;
-        gap: 1.2rem;
-        padding: 1.5rem;
+        align-items: flex-start;
+    }
+
+    .tf-search-box input {
+        width: 100%;
     }
 
     .tf-main-content {
         padding: 1rem;
-    }
-
-    .tf-header-text h1 {
-        font-size: 1.3rem;
     }
 }

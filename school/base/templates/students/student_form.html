@@ -1,0 +1,141 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="sf-dashboard-layout">
+    <!-- Sidebar Include -->
+    <div class="sf-sidebar">
+        {% include 'sidebar.html' %}
+    </div>
+
+    <!-- Main Content -->
+    <main class="sf-main-content">
+        <!-- Display Django Messages if any -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show ff-animate" role="alert">
+            <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        
+        <div class="sf-card sf-animate">
+            <div class="sf-header-box">
+                <div class="sf-header-text">
+                    <h1>{% if form.instance.pk %}Edit Student{% else %}Add New Student{% endif %}</h1>
+                    <p>Enter student academic and personal details below.</p>
+                </div>
+                <a href="{% url 'student_list' %}" class="btn btn-light btn-sm">View All Students</a>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" class="sf-body">
+                {% csrf_token %}
+
+                <!-- Personal Section -->
+                <div class="sf-section-block">
+                    <h3><i class="fas fa-user"></i> Personal Information</h3>
+                    <div class="sf-fields-row">
+                        <div class="sf-field-group">{{ form.first_name.label_tag }}{{ form.first_name }}
+                            {{form.first_name.errors }}</div>
+                        <div class="sf-field-group">{{ form.last_name.label_tag }}{{ form.last_name }}
+                            {{form.last_name.errors }}</div>
+                        <div class="sf-field-group">{{ form.photo.label_tag }}{{ form.photo }}{{ form.photo.errors }}
+                        </div>
+
+                        <div class="sf-field-group">{{ form.gender.label_tag }}{{ form.gender }}</div>
+                        <div class="sf-field-group">{{ form.date_of_birth.label_tag }}{{ form.date_of_birth }}</div>
+                        <div class="sf-field-group">{{ form.blood_group.label_tag }}{{ form.blood_group }}</div>
+                    </div>
+                </div>
+
+                <!-- Academic Section -->
+                <!-- Academic Section -->
+                <div class="sf-section-block">
+                
+                    <h3>
+                        <i class="fas fa-graduation-cap"></i>
+                        Academic Details
+                    </h3>
+                
+                    <div class="sf-fields-row">
+                
+                        <!-- Admission Number -->
+                        <div class="sf-field-group">
+                            {{ form.admission_number.label_tag }}
+                            {{ form.admission_number }}
+                        </div>
+                
+                        <!-- Roll Number -->
+                        <div class="sf-field-group">
+                            {{ form.roll_number.label_tag }}
+                            {{ form.roll_number }}
+                        </div>
+                
+                        <!-- Active Status -->
+                        <div class="sf-field-group">
+                        
+                            <label class="sf-label" for="{{ form.is_active.id_for_label }}">
+                                Active Status:
+                            </label>
+                        
+                            <div class="checkbox-wrapper">
+                                {{ form.is_active }}
+                        
+                                <span class="checkbox-text">
+                                    Student is Active
+                                </span>
+                            </div>
+                        
+                        </div>
+                
+                        <!-- Class -->
+                        <div class="sf-field-group">
+                            {{ form.class_room.label_tag }}
+                            {{ form.class_room }}
+                        </div>
+                
+                        <!-- Section -->
+                        <div class="sf-field-group">
+                            {{ form.section.label_tag }}
+                            {{ form.section }}
+                        </div>
+                
+                        <!-- Admission Date -->
+                        <div class="sf-field-group">
+                            {{ form.admission_date.label_tag }}
+                            {{ form.admission_date }}
+                        </div>
+                
+                    </div>
+                
+                </div>
+
+                <!-- Contact/Guardian Section -->
+                <div class="sf-section-block">
+                    <h3><i class="fas fa-users"></i> Family & Contact</h3>
+                    <div class="sf-fields-row">
+                        <div class="sf-field-group">{{ form.father_name.label_tag }}{{ form.father_name }}</div>
+                        <div class="sf-field-group">{{ form.mother_name.label_tag }}{{ form.mother_name }}</div>
+                        <div class="sf-field-group">{{ form.email.label_tag }}{{ form.email }}</div>
+
+                        <div class="sf-field-group">{{ form.guardian_name.label_tag }}{{ form.guardian_name }}</div>
+                        <div class="sf-field-group">{{ form.guardian_phone.label_tag }}{{ form.guardian_phone }}</div>
+                        <div class="sf-field-group">{{ form.phone_number.label_tag }}{{ form.phone_number }}</div>
+
+                        <div class="sf-field-group sf-span-3">{{ form.address.label_tag }}{{ form.address }}</div>
+                    </div>
+                </div>
+
+                <div class="sf-actions">
+                    <button type="submit" class="sf-btn-save">
+                        {% if form.instance.pk %}Update Student Profile{% else %}Save Student Record{% endif %}
+                    </button>
+                    <a href="{% url 'student_list' %}" class="sf-btn-back">Cancel & Go Back</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+{% endblock %}

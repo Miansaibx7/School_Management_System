@@ -1,4 +1,3 @@
-/* Variables for Theme Consistency */
 :root {
     --tf-primary: #4e73df;
     --tf-indigo: #6610f2;
@@ -8,31 +7,19 @@
     --tf-white: #ffffff;
     --tf-text-dark: #2d3748;
     --tf-text-muted: #718096;
-    --tf-border: #e3e6f0;
 }
 
-/* Base Layout */
 .tf-dashboard-layout {
     display: flex;
     min-height: 100vh;
     background-color: var(--tf-light-bg);
 }
 
-.tf-sidebar {
-    width: 250px;
-    flex-shrink: 0;
-    background: var(--tf-white);
-    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.05);
-    z-index: 100;
-}
-
 .tf-main-content {
     padding: 2rem;
     transition: all 0.3s ease;
-    flex-grow: 1;
 }
 
-/* Card Styling */
 .tf-card {
     background: var(--tf-white);
     border-radius: 15px;
@@ -79,85 +66,41 @@
     background: white;
     color: var(--tf-primary);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-/* Search Box */
-.tf-search-box {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.tf-search-box .search-icon {
-    position: absolute;
-    left: 14px;
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 0.9rem;
-}
-
-.tf-search-box input {
-    width: 260px;
-    padding: 11px 15px 11px 42px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    outline: none;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-}
-
-.tf-search-box input::placeholder {
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.tf-search-box input:focus {
-    background: white;
-    color: var(--tf-text-dark);
-    border-color: white;
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
-}
-
-.tf-search-box input:focus+.search-icon {
-    color: var(--tf-primary);
 }
 
 /* Table Styling */
 .table thead th {
     background-color: #f1f4f9;
     color: var(--tf-text-dark);
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     letter-spacing: 0.05em;
-    border-bottom: 2px solid var(--tf-border);
-    padding: 18px 15px;
+    border-bottom: 2px solid #e3e6f0;
+    padding: 15px;
 }
 
 .table tbody td {
     padding: 15px;
     vertical-align: middle;
     border-bottom: 1px solid #edf2f7;
-    color: var(--tf-text-dark);
 }
 
 .sno-badge {
     background: #eef2ff;
     color: var(--tf-primary);
-    padding: 5px 12px;
-    border-radius: 8px;
-    font-weight: 800;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 700;
     font-size: 0.85rem;
 }
 
 .section-tag {
     background: var(--tf-text-dark);
     color: white;
-    padding: 2px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 600;
 }
 
@@ -173,16 +116,15 @@
 
 /* Action Buttons */
 .btn-action {
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    border: none;
+    gap: 5px;
 }
 
 .btn-edit {
@@ -222,26 +164,14 @@
     }
 }
 
-/* Mobile Responsive Adjustments */
-@media (max-width: 992px) {
-    .tf-sidebar {
-        display: none;
-    }
-}
-
 @media (max-width: 768px) {
     .tf-header-box {
         flex-direction: column;
         text-align: center;
-        gap: 1.2rem;
-        padding: 1.5rem;
+        gap: 1rem;
     }
 
     .tf-main-content {
         padding: 1rem;
-    }
-
-    .tf-header-text h1 {
-        font-size: 1.3rem;
     }
 }

@@ -2,90 +2,89 @@
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/class_form.css' %}">
+<div class="tf-dashboard-layout">
 
-<div class="d-flex w-100" style="min-height: calc(100vh - 60px);">
+    <!-- Sidebar -->
+    <div class="tf-sidebar">
+        {% include 'sidebar.html' %}
+    </div>
 
-    <aside class="lt-sidebar flex-shrink-0 bg-white border-end shadow-sm" id="sidebar-menu"
-        style="width: 260px; z-index: 10;">
-        {% include "sidebar.html" %}
-    </aside>
+    <!-- Main Content -->
+    <main class="tf-main-content">
+            <!-- Display Django Messages if any -->
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show ff-animate" role="alert">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
 
-    <main class="flex-grow-1 bg-light d-flex flex-column overflow-hidden">
+        <div class="tf-card tf-animate">
 
-        <div class="card form-card-anim border-0 rounded-0 flex-grow-1 d-flex flex-column shadow-sm m-0">
-
-            <div class="card-header bg-primary text-white py-4 border-0">
-                <div class="px-4 px-md-5">
-                    <h2 class="mb-1 fw-bold">Register New Class</h2>
-                    <p class="mb-0 text-white-75 fs-6">Configure class details, teacher assignments, and fee structures.
-                    </p>
+            <!-- Header -->
+            <div class="tf-header-box">
+                <div class="tf-header-text">
+                    <h1>
+                        {% if form.instance.pk %}Edit Class{% else %}Add New Class{% endif %}
+                    </h1>
+                    <p>Configure class details, fees, and activation status.</p>
                 </div>
+
+                <a href="{% url 'class_list' %}" class="btn btn-light btn-sm">
+                    View All Classes
+                </a>
             </div>
 
-            <div class="card-body bg-light flex-grow-1 py-4 py-md-5 overflow-auto">
-                <div class="px-4 px-md-5 h-100">
-                    <form method="POST" action="" class="d-flex flex-column h-100">
-                        {% csrf_token %}
+            <!-- Form -->
+            <form method="POST" class="tf-body">
+                {% csrf_token %}
 
-                        <div class="row g-4">
+                <!-- Class Info -->
+                <div class="tf-section-block">
+                    <h3><i class="fas fa-chalkboard"></i> Class Information</h3>
 
-                            <div class="col-12 col-lg-6 form-group-anim" style="--delay: 0.1s">
-                                <label for="{{ form.name.id_for_label }}" class="form-label fw-semibold text-secondary">
-                                    Class / Grade Level <span class="text-danger">*</span>
-                                </label>
-                                {{ form.name }}
-                                {% if form.name.errors %}
-                                <div class="text-danger small mt-1">{{ form.name.errors }}</div>
-                                {% endif %}
-                            </div>
+                    <div class="tf-fields-row">
 
-                            <div class="col-12 col-lg-6 form-group-anim" style="--delay: 0.2s">
-                                <label for="{{ form.monthly_fee.id_for_label }}"
-                                    class="form-label fw-semibold text-secondary">
-                                    Monthly Fee Structure <span class="text-danger">*</span>
-                                </label>
-                                <div class="input-group input-group-lg">
-                                    <span class="input-group-text bg-white text-muted border-end-0 fw-bold">$</span>
-                                    {{ form.monthly_fee }}
-                                </div>
-                                {% if form.monthly_fee.errors %}
-                                <div class="text-danger small mt-1">{{ form.monthly_fee.errors }}</div>
-                                {% endif %}
-                            </div>
+                        <div class="tf-field-group">
+                            {{ form.name.label_tag }}
+                            {{ form.name }}
+                            {{ form.name.errors }}
                         </div>
 
-                        <div class="row mt-4">
-                            <div class="col-12 form-group-anim" style="--delay: 0.3s">
-                                <div class="p-4 bg-white border rounded-3 d-flex align-items-center">
-                                    <div class="form-check form-switch custom-switch-lg mb-0">
-                                        {{ form.is_active }}
-                                    </div>
-                                    <div class="ms-3">
-                                        <label class="form-check-label fw-bold text-dark d-block mb-1"
-                                            for="{{ form.is_active.id_for_label }}">
-                                            Active Status
-                                        </label>
-                                        <small class="text-muted d-block">If active, this class will be visible across
-                                            the school management system.</small>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="tf-field-group">
+                            {{ form.monthly_fee.label_tag }}
+                            {{ form.monthly_fee }}
+                            {{ form.monthly_fee.errors }}
                         </div>
 
-                        <div class="mt-auto pt-5 d-flex justify-content-end gap-3 form-group-anim"
-                            style="--delay: 0.4s">
-                            <button type="button"
-                                class="btn btn-outline-secondary btn-lg px-4 fw-semibold border-2">Cancel</button>
-                            <button type="submit" class="btn btn-primary btn-lg px-5 submit-btn-anim fw-bold">Save Class
-                                Data</button>
-                        </div>
-
-                    </form>
+                    </div>
                 </div>
-            </div>
+
+                <!-- Status -->
+                <div class="col-12">
+                    <div class="form-check form-switch tf-switch">
+                        {{ form.is_active }}
+                        <label class="form-check-label ms-2" for="{{ form.is_active.id_for_label }}">Class is
+                            Active</label>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="sf-actions">
+                    <button type="submit" class="sf-btn-save">
+                        {% if form.instance.pk %}Update Class{% else %}Save Class{% endif %}
+                    </button>
+                    <a href="{% url 'class_list' %}" class="sf-btn-back">Cancel & Go Back</a>   
+                </div>
+            </form>
+
         </div>
 
     </main>
+
 </div>
-{% endblock content %}
+{% endblock %}

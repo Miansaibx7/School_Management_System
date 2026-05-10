@@ -31,28 +31,33 @@
         <div class="menu-category">Students</div>
         <ul>
             <li class="has-submenu">
-                <a href="#">
+                <a href="has-submenu">
                     <i class="fas fa-user-graduate"></i>
                     <span>Students</span>
                     <i class="fas fa-chevron-right arrow"></i>
                 </a>
                 <ul class="submenu">
-                    <li><a href="#"><i class="fas fa-list"></i> All Students</a></li>
-                    <li><a href="#"><i class="fas fa-plus"></i> Add Student</a></li>
+                    <li><a href="{% url 'student_list' %}"><i class="fas fa-list"></i> All Students</a></li>
+                    <li><a href="{% url 'student_create' %}"><i class="fas fa-plus"></i> Add Student</a></li>
                 </ul>
             </li>
-            <li>
-                <a href="#">
+            <li class="has-submenu">
+                <a href="has-submenu">
                     <i class="fas fa-money-bill-wave"></i>
                     <span>Fee Payments</span>
+                    <i class="fas fa-chevron-right arrow"></i>
                 </a>
+                <ul class="submenu">
+                    <li><a href="{% url 'fee_list' %}"><i class="fas fa-list"></i> All Fee Payments</a></li>
+                    <li><a href="{% url 'fee_create' %}"><i class="fas fa-plus"></i> Add Fee Payment</a></li>
+                </ul>
             </li>
         </ul>
 
         <div class="menu-category">Teachers</div>
         <ul>
             <li class="has-submenu">
-                <a href="#">
+                <a href="has-submenu">
                     <i class="fas fa-chalkboard-teacher"></i>
                     <span>Teachers</span>
                     <i class="fas fa-chevron-right arrow"></i>
@@ -62,39 +67,60 @@
                     <li><a href="{% url 'teacher_create' %}"><i class="fas fa-plus"></i> Add Teacher</a></li>
                 </ul>
             </li>
-            <li>
-                <a href="#">
+            <li class="has-submenu">
+                <a href="has-submenu">
                     <i class="fas fa-hand-holding-usd"></i>
                     <span>Salary Payments</span>
+                    <i class="fas fa-chevron-right arrow"></i>
                 </a>
+                <ul class="submenu">
+                    <li><a href="{% url 'salary_list' %}"><i class="fas fa-list"></i> All salaries</a></li>
+                    <li><a href="{% url 'salary_create' %}"><i class="fas fa-plus"></i> Add salaries</a></li>
+                </ul>
             </li>
         </ul>
 
         <div class="menu-category">Academic</div>
         <ul>
             <li class="has-submenu">
-                <a href="#">
+                <a href="has-submenu">
                     <i class="fas fa-school"></i>
                     <span>Classes</span>
                     <i class="fas fa-chevron-right arrow"></i>
                 </a>
                 <ul class="submenu">
                     <li><a href="{% url 'class_list' %}"><i class="fas fa-list"></i> All Classes</a></li>
-                    <li><a href="{%url 'class_create'%}"><i class="fas fa-plus"></i> Add Class</a></li>
+                    <li><a href="{% url 'class_create' %}"><i class="fas fa-plus"></i> Add Class</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a href="has-submenu">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Sections</span>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="{% url 'section_list' %}"><i class="fas fa-list"></i> All Sections</a></li>
+                    <li><a href="{% url 'section_create' %}"><i class="fas fa-plus"></i> Add Section</a></li>
                 </ul>
             </li>
         </ul>
 
         <div class="menu-category">Finance</div>
         <ul>
-            <li>
-                <a href="#">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                    <span>Expenses</span>
+            <li class="has-submenu">
+                <a href="has-submenu">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transactions</span>
+                    <i class="fas fa-chevron-right arrow"></i>
                 </a>
+                <ul class="submenu">
+                    <li><a href="{% url 'transaction_list' %}"><i class="fas fa-list"></i> All Transactions</a></li>
+                    <li><a href="{% url 'transaction_create' %}"><i class="fas fa-plus"></i> Add Transaction</a></li>
+                </ul>
             </li>
             <li>
-                <a href="#">
+                <a href="{% url 'financial_reports' %}">
                     <i class="fas fa-chart-line"></i>
                     <span>Financial Reports</span>
                 </a>
@@ -112,3 +138,60 @@
         </ul>
     </div>
 </aside>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const submenuParents = document.querySelectorAll(".has-submenu");
+
+        submenuParents.forEach(function (parent) {
+
+            const trigger = parent.querySelector("a");
+            const submenu = parent.querySelector(".submenu");
+            const arrow = parent.querySelector(".arrow");
+
+            // Hide submenu initially
+            submenu.style.maxHeight = "0px";
+
+            trigger.addEventListener("click", function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Check current menu state
+                const isOpen = parent.classList.contains("active");
+
+                // Close all menus
+                submenuParents.forEach(function (item) {
+
+                    item.classList.remove("active");
+
+                    const itemSubmenu = item.querySelector(".submenu");
+                    const itemArrow = item.querySelector(".arrow");
+
+                    itemSubmenu.style.maxHeight = "0px";
+
+                    if (itemArrow) {
+                        itemArrow.style.transform = "rotate(0deg)";
+                    }
+
+                });
+
+                // Open current menu again if it was closed
+                if (!isOpen) {
+
+                    parent.classList.add("active");
+
+                    submenu.style.maxHeight = submenu.scrollHeight + "px";
+
+                    if (arrow) {
+                        arrow.style.transform = "rotate(90deg)";
+                    }
+                }
+
+            });
+
+        });
+
+    });
+</script>

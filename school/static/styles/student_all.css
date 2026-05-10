@@ -226,6 +226,7 @@
 @media (max-width: 992px) {
     .tf-sidebar {
         display: none;
+        /* Hide sidebar on small screens or use a toggle */
     }
 }
 

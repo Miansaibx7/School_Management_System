@@ -1,0 +1,249 @@
+/* =========================
+   ROOT VARIABLES
+========================= */
+:root {
+    --tf-primary: #4e73df;
+    --tf-indigo: #6610f2;
+    --tf-bg: #f8f9fc;
+    --tf-white: #ffffff;
+    --tf-text: #4e5e7a;
+    --tf-border: #eaecf4;
+    --tf-success: #1cc88a;
+}
+
+/* =========================
+   BASE LAYOUT
+========================= */
+.tf-dashboard-layout {
+    display: flex;
+    background-color: var(--tf-bg);
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.tf-main-content {
+    width: 100%;
+    padding: 1.5rem;
+    flex-grow: 1;
+}
+
+.tf-form-container {
+    width: 100%;
+}
+
+/* =========================
+   FORM CARD
+========================= */
+.tf-form-card {
+    background: var(--tf-white);
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0.15rem 1.75rem rgba(58, 59, 69, 0.1);
+    overflow: hidden;
+}
+
+/* =========================
+   HEADER
+========================= */
+.tf-form-header {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    padding: 1.5rem 2rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.header-icon {
+    font-size: 1.75rem;
+    background: rgba(255, 255, 255, 0.2);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.header-text h2 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.header-text p {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+/* =========================
+   FORM BODY
+========================= */
+.tf-styled-form {
+    padding: 2rem;
+}
+
+.tf-label {
+    display: block;
+    font-weight: 600;
+    color: var(--tf-text);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+/* Inputs */
+.tf-styled-form input,
+.tf-styled-form select,
+.tf-styled-form textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--tf-border);
+    border-radius: 8px;
+    transition: 0.2s ease-in-out;
+}
+
+.tf-styled-form input:focus,
+.tf-styled-form select:focus,
+.tf-styled-form textarea:focus {
+    border-color: var(--tf-primary);
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.15);
+    outline: none;
+}
+
+/* check box */
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
+.checkbox-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+/* =========================
+   SWITCH / TOGGLE
+========================= */
+.tf-switch {
+    background: #f8f9fc;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--tf-border);
+    display: inline-flex;
+    align-items: center;
+}
+
+.tf-switch .form-check-input {
+    width: 2.5em;
+    height: 1.25em;
+    cursor: pointer;
+}
+
+.tf-switch .form-check-label {
+    margin-left: 0.75rem;
+    font-weight: 600;
+    color: var(--tf-text);
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+.tf-form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--tf-border);
+}
+
+/* SAVE BUTTON (GREEN FIXED) */
+.tf-btn-save {
+    background: var(--tf-success);
+    color: #ffffff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.tf-btn-save:hover {
+    background: #17a673;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(28, 200, 138, 0.25);
+}
+
+.tf-btn-save:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* CANCEL BUTTON */
+.tf-btn-cancel {
+    background: #ffffff;
+    color: var(--tf-text);
+    border: 1px solid var(--tf-border);
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.tf-btn-cancel:hover {
+    background: #f8f9fc;
+    transform: translateY(-2px);
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+    .tf-dashboard-layout {
+        flex-direction: column;
+    }
+
+    .tf-main-content {
+        padding: 1rem 0.5rem;
+    }
+
+    .tf-form-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+
+    .tf-styled-form {
+        padding: 1.5rem 1rem;
+    }
+
+    .tf-form-actions {
+        flex-direction: column;
+    }
+
+    .tf-btn-save,
+    .tf-btn-cancel {
+        width: 100%;
+        justify-content: center;
+    }
+}

@@ -1,4 +1,4 @@
-from django.db import models, transaction
+from django.db import models, transaction as db_transaction # Use alias to prevent naming conflicts
 from django.contrib.auth.models import AbstractUser
 
 from django.db.models import Sum, Q, F
@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ValidationError
 # TruncMonth converts a date into the first day of its month
           # Example: 2026-03-15 → 2026-03-01
-from django.db.models.functions import TruncMonth 
+from django.db.models.functions import TruncMonth, Coalesce # ADDED: Coalesce to prevent 'None' values in charts
 from django.db.models.functions import Coalesce
 
 
@@ -196,15 +196,14 @@ class Section(models.Model):
 
     class Meta:
         ordering = ["student_class", "name",]
-        constraints = [
-        models.UniqueConstraint(
-        fields=["student_class", "name"], # No duplicate class-section combos
-        name="unique_class_section"
-    )
-        ]
         verbose_name = "Section"
         verbose_name_plural = "Sections" 
-        constraints = [
+        # Merged constraints into a single list for better readability and performance 
+    constraints = [
+            models.UniqueConstraint(
+                fields=["student_class", "name"], # No duplicate class-section combos
+                name="unique_class_section"
+            ),
             models.UniqueConstraint(
                 fields=['class_teacher'],
                 condition=Q(class_teacher__isnull=False),
@@ -395,7 +394,7 @@ class Transaction(models.Model):
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
     category = models.CharField(max_length=20, choices=CATEGORIES)
     amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
-    date = models.DateField(default=timezone.now, db_index=True)
+    date = models.DateField(default=timezone.now)
     description = models.TextField(blank=True)
     receipt_number = models.CharField(max_length=50, blank=True)
     recorded_by = models.ForeignKey(User, on_delete=models.SET_NULL,
@@ -428,11 +427,13 @@ class Transaction(models.Model):
         # into the first day of its month Example: 2026-03-15 → 2026-03-01
         # Group results by the month field                                                     
         ).values('month').annotate( 
-            total_income=Sum('amount', filter=Q(transaction_type='income')),    
-            total_expense=Sum('amount', filter=Q(transaction_type='expense'))   
+            # FIXED: Added Coalesce so charts get '0' instead of 'None' if no data exists
+            total_income=Coalesce(Sum('amount', filter=Q(transaction_type='income')), Decimal('0.00')),    
+            total_expense=Coalesce(Sum('amount', filter=Q(transaction_type='expense')), Decimal('0.00'))   
         ).order_by('month') # Order results chronologically from January to December
-        
-        
+    
+
+
 # Calculate total profit or loss for a given year  
     @classmethod
     def get_yearly_profit(cls, year=None):
@@ -442,16 +443,13 @@ class Transaction(models.Model):
     # Aggregate total income and expense in one query
         result = cls.objects.filter(date__year=year).aggregate(
         # Sum of all income transactions
-        total_income=Sum('amount', filter=Q(transaction_type='income')),
+        # FIXED: Added Coalesce to prevent math errors on empty records
+            total_income=Coalesce(Sum('amount', filter=Q(transaction_type='income')), Decimal('0.00')),
         # Sum of all expense transactions
-        total_expense=Sum('amount', filter=Q(transaction_type='expense'))
+        total_expense=Coalesce(Sum('amount', filter=Q(transaction_type='expense')), Decimal('0.00'))
         )
-    # Handle None values if no transactions exist
-        income = result['total_income'] or 0
-        expense = result['total_expense'] or 0
-    # Return profit or loss
-        return income - expense
-    
+    # Handle None values if no transactions exist Return profit or loss
+        return result['total_income'] - result['total_expense']
     
     
 # Returns total transaction amount grouped by category.Useful for category-based charts.    
@@ -478,16 +476,17 @@ class Transaction(models.Model):
         ).values('month').annotate(
             
             # Monthly income
-            total_income = Sum('amount', filter = Q(transaction_type = 'income')),
+            # FIXED: Coalesced values to ensure profit calculation works
+            total_income=Coalesce(Sum('amount', filter=Q(transaction_type='income')), Decimal('0.00')),
             # Monthly expense
-            total_expense = Sum('amount', filter = Q(transaction_type = 'expense'))
+            total_expense=Coalesce(Sum('amount', filter=Q(transaction_type='expense')), Decimal('0.00'))
         ).annotate(
 
         # F Use for the value from the database column when performing the calculation.
-        profit = Coalesce(F('total_income'), Decimal('0.00')) - Coalesce(F('total_expense'), Decimal('0.00'))
+        profit=F('total_income') - F('total_expense')
                                 # Profit = income - expense
         ).order_by('month')    
-    
+
 
 # ==================== FEE MODEL ====================
 class Fee(models.Model):
@@ -514,15 +513,18 @@ class Fee(models.Model):
     transaction = models.OneToOneField(
         Transaction,
         on_delete=models.CASCADE,
-        related_name='fee_record'
+        related_name='fee_record',
+        null=True,
+        blank=True
     )
+
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='paid')
     amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     month_for = models.DateField(help_text="Fee for which month/year", db_index=True)
-    payment_date = models.DateField(default=timezone.now, db_index=True)
+    payment_date = models.DateField(default=timezone.now)
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS, default='cash')
-   
     notes = models.TextField(blank=True)
+    
 # Staff member who received the payment
     received_by = models.ForeignKey(
         User, 
@@ -548,22 +550,32 @@ class Fee(models.Model):
     def __str__(self):
         return f"{self.student.full_name} - {self.amount} ({self.month_for.strftime('%B %Y')})"
 
-
     def save(self, *args, **kwargs):
-        with transaction.atomic(): # Ensure fee save and student fee status update happen in a single database transaction
-            if not self.transaction:
+        with db_transaction.atomic(): # Ensure fee save and student fee status update happen in a single database transaction
+                                      # ( Use the aliased db_transaction )
+        # Check transaction_id to safely see if the relationship exists yet
+        # CHANGED: Logic now updates the existing transaction if the Fee is edited
+            transaction_data = {
+                'title': f"Fee Payment - {self.student.full_name}",
+                'transaction_type': 'income',
+                'category': 'fee',
+                'amount': self.amount,
+                'date': self.payment_date,
+                'recorded_by': self.received_by
+            }
 
-                self.transaction = Transaction.objects.create(
-                    title=f"Fee Payment - {self.student.full_name}",
-                    transaction_type='income',
-                    category='fee',
-                    amount=self.amount,
-                    date=self.payment_date,
-                    recorded_by=self.received_by
-                )
+            if self.transaction:
+                # FIXED: This ensures that if you change the Fee amount, the Transaction record also updates
+                Transaction.objects.filter(id=self.transaction.id).update(**transaction_data)
+            else:
+                new_trans = Transaction.objects.create(**transaction_data)
+                self.transaction = new_trans
+
             super().save(*args, **kwargs)
-            self.student.update_fee_status()
-
+            
+            # Use hasattr to ensure the student actually has this method
+            if hasattr(self.student, 'update_fee_status'):
+                self.student.update_fee_status()
 
 
 # ==================== SALARY MODEL ====================
@@ -589,7 +601,9 @@ class Salary(models.Model):
     transaction = models.OneToOneField(
         Transaction,
         on_delete=models.CASCADE,
-        related_name='salary_record'
+        related_name='salary_record', 
+        null=True,
+        blank=True
     )
     amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     month_for = models.DateField(help_text="Salary for which month/year", db_index=True)
@@ -633,24 +647,34 @@ class Salary(models.Model):
             raise ValidationError("Salary must be greater than zero.")
         
 # Require transaction ID if payment method is bank transfer
-        if self.payment_method == 'bank' and not self.transaction_id:
-            raise ValidationError("Transaction ID required for bank payments.")
+        # Changed self.transaction_id to self.bank_reference
+        if self.payment_method == 'bank' and not self.bank_reference:
+            raise ValidationError("Bank Reference required for bank payments.")
 
     def save(self, *args, **kwargs):
-        with transaction.atomic():
-            if not self.transaction:
+        # Forces validation to run even when saving via script (not just forms)
+        self.full_clean()
 
-                self.transaction = Transaction.objects.create(
-                    title=f"Salary Payment - {self.teacher.full_name}",
-                    transaction_type='expense',
-                    category='salary',
-                    amount=self.amount,
-                    date=self.payment_date,
-                    recorded_by=self.paid_by
-            )
+        with db_transaction.atomic(): # Ensure salary save and teacher salary status update happen in a single database transaction
+         # Check transaction_id to safely see if the relationship exists yet
+         # CHANGED: Logic now updates the existing transaction if the Salary is edited
+            transaction_data = {
+                'title': f"Salary Payment - {self.teacher.full_name}",
+                'transaction_type': 'expense',
+                'category': 'salary',
+                'amount': self.amount,
+                'date': self.payment_date,
+                'recorded_by': self.paid_by
+            }
+            
+
+            if self.transaction:
+                # FIXED: Updates the expense record if salary amount/date changes
+                Transaction.objects.filter(id=self.transaction.id).update(**transaction_data)
+            else:
+                new_trans = Transaction.objects.create(**transaction_data)
+                self.transaction = new_trans
 
             super().save(*args, **kwargs)
-            self.teacher.update_salary_status() # Update salary status on the related teacher model
-
-
-
+            if hasattr(self.teacher, 'update_salary_status'):
+                self.teacher.update_salary_status() # Update salary status on the related teacher model

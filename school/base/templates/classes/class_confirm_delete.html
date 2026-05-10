@@ -1,10 +1,149 @@
 {% extends 'main.html' %}
 {% load static %}
+
 {% block title %}Confirm Class Deletion{% endblock %}
 
 {% block content %}
+<style>
+    /* Consistent Dashboard Layout */
+    .dashboard-container {
+        display: flex;
+        background-color: #f8f9fc;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    /* Centering the Delete Card */
+    .main-content {
+        width: 100%;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    /* Standardized Deletion Card UI */
+    .delete-card {
+        background: #ffffff;
+        width: 100%;
+        max-width: 500px;
+        border-radius: 15px;
+        padding: 45px 35px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        animation: fadeInScale 0.3s ease-out;
+    }
+
+    .warning-icon {
+        font-size: 60px;
+        margin-bottom: 25px;
+        display: block;
+    }
+
+    .delete-card h2 {
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 15px;
+        font-size: 1.75rem;
+    }
+
+    .delete-card p {
+        color: #718096;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        margin-bottom: 35px;
+    }
+
+    /* Global Highlight Class for Objects being deleted */
+    .teacher-highlight {
+        font-weight: 700;
+        color: #e74a3b;
+        background: #fff5f5;
+        padding: 3px 10px;
+        border-radius: 6px;
+        border: 1px solid #fadbd8;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: none;
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-cancel {
+        background-color: #f1f3f5;
+        color: #4a5568;
+    }
+
+    .btn-cancel:hover {
+        background-color: #e2e8f0;
+        color: #2d3748;
+    }
+
+    .btn-danger {
+        background-color: #e74a3b;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #be2617;
+        box-shadow: 0 4px 12px rgba(231, 74, 59, 0.25);
+        transform: translateY(-1px);
+    }
+
+    /* Animation */
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .dashboard-container {
+            flex-direction: column;
+        }
+
+        .main-content {
+            padding: 40px 15px;
+            align-items: flex-start;
+        }
+
+        .action-buttons {
+            flex-direction: column-reverse;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+
 <div class="dashboard-container">
     <aside class="tf-sidebar flex-shrink-0">
+        <!-- Sidebar Inclusion -->
         {% include "sidebar.html" %}
     </aside>
 
@@ -12,185 +151,27 @@
         <div class="delete-card">
             <div class="warning-icon">⚠️</div>
             <h2>Confirm Deletion</h2>
+
             <p>Are you absolutely sure you want to delete <br>
-                <span class="teacher-highlight">{{ class.full_name }}</span>? <br><br>
-                This action is permanent and will also remove their user portal access.
+                <span class="teacher-highlight">{{ class_obj.name }}</span>? <br><br>
+                <span class="small">
+                    <i class="fas fa-circle-info me-1"></i> This action is <strong>permanent</strong>. Deleting this
+                    class will also remove all associated sections and academic records linked to it.
+                </span>
             </p>
 
             <form method="POST">
                 {% csrf_token %}
                 <div class="action-buttons">
-                    <a href="{% url 'class_list' %}" class="btn btn-cancel">No, Go Back</a>
-                    <button type="submit" class="btn btn-danger">Yes, Delete Class</button>
+                    <a href="{% url 'class_list' %}" class="btn btn-cancel">
+                        <i class="fas fa-arrow-left me-2"></i> No, Go Back
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash-alt me-2"></i> Yes, Delete Class
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<style>
-   /* --- Design Tokens --- */
-:root {
-    --primary-bg: #f4f7f6;
-    --sidebar-bg: #2c3e50;
-    --card-bg: #ffffff;
-    --danger: #d9534f;
-    --danger-hover: #c9302c;
-    --secondary: #6c757d;
-    --secondary-hover: #5a6268;
-    --text-main: #333333;
-    --text-muted: #666666;
-    --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    --transition-fast: 0.2s ease;
-    --transition-smooth: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-/* --- Layout & Reset --- */
-.dashboard-container {
-    display: flex;
-    min-height: 100vh;
-    background-color: var(--primary-bg);
-    font-family: 'Inter', -apple-system, sans-serif;
-}
-
-.sidebar-wrapper {
-    width: 260px;
-    background: var(--sidebar-bg);
-    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-    transition: width var(--transition-smooth);
-}
-
-.main-content {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-}
-
-/* --- The Deletion Card --- */
-.delete-card {
-    background: var(--card-bg);
-    padding: 3rem;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
-    border-top: 5px solid var(--danger);
-    
-    /* Animation: Subtle Fade and Slide Up */
-    animation: fadeInUp 0.6s var(--transition-smooth) forwards;
-    opacity: 0;
-}
-
-.warning-icon {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-    display: inline-block;
-    /* Animation: Soft pulse to draw attention */
-    animation: pulse 2s infinite;
-}
-
-h2 {
-    color: var(--text-main);
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-p {
-    color: var(--text-muted);
-    line-height: 1.6;
-    font-size: 1.05rem;
-}
-
-.teacher-highlight {
-    font-weight: 700;
-    color: var(--text-main);
-    background: #fff3f3;
-    padding: 2px 8px;
-    border-radius: 4px;
-}
-
-/* --- Buttons & Actions --- */
-.action-buttons {
-    margin-top: 2.5rem;
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-}
-
-.btn {
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all var(--transition-fast);
-    border: none;
-    cursor: pointer;
-    font-size: 0.95rem;
-}
-
-.btn-cancel {
-    background: var(--secondary);
-    color: white;
-}
-
-.btn-cancel:hover {
-    background: var(--secondary-hover);
-    transform: translateY(-2px);
-}
-
-.btn-danger {
-    background: var(--danger);
-    color: white;
-}
-
-.btn-danger:hover {
-    background: var(--danger-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(217, 83, 79, 0.3);
-}
-
-.btn:active {
-    transform: translateY(0);
-}
-
-/* --- Animations --- */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-/* --- Responsive Design --- */
-@media (max-width: 768px) {
-    .dashboard-container {
-        flex-direction: column;
-    }
-    .sidebar-wrapper {
-        width: 100%;
-        display: none; /* Usually hidden or a hamburger menu on mobile */
-    }
-    .main-content {
-        padding: 20px;
-    }
-    .action-buttons {
-        flex-direction: column-reverse;
-    }
-    .btn {
-        width: 100%;
-    }
-}
-</style>
 {% endblock %}
