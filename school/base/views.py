@@ -355,7 +355,7 @@ def teacher_update(request, pk):
 def teacher_delete(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
     
-    # CRITICAL FIX: Only delete on POST to prevent accidental/malicious URL hits
+    # Only delete on POST to prevent accidental/malicious URL hits
     if request.method == 'POST':
         teacher.delete()
         messages.success(request, "Teacher deleted successfully.")
@@ -575,17 +575,12 @@ def transaction_delete(request, pk):
 @login_required(login_url='loginPage')
 def fee_list(request):
     fees = Fee.objects.all()
-    # ===============================
     # 💰 TOTAL COLLECTED (PAID + PARTIAL)
-    # ===============================
     collected_data = Fee.objects.filter(status__in=['paid', 'partial']).aggregate(total=Sum('amount'))
-
     total_collected = collected_data['total'] or Decimal('0.00')
-    # ===============================
-    # ⚠️ PENDING DUES
-    # ===============================
-    pending_data = Fee.objects.filter(status='pending').aggregate(total=Sum('amount'))
 
+    # ⚠️ PENDING DUES
+    pending_data = Fee.objects.filter(status='pending').aggregate(total=Sum('amount'))
     pending_dues = pending_data['total'] or Decimal('0.00')
 
     context = {
@@ -641,21 +636,14 @@ def fee_delete(request, pk):
 @login_required(login_url='loginPage')
 def salary_list(request):
     salaries = Salary.objects.all().order_by('-created_at')
-    # =========================
     # Total Disbursed Salary
-    # =========================
-    total_disbursed_data = Salary.objects.filter(
-        status='paid'
+    total_disbursed_data = Salary.objects.filter(status='paid'
     ).aggregate(total=Sum('amount'))
-
     total_disbursed = total_disbursed_data['total'] or Decimal('0.00')
-    # =========================
-    # Pending Salaries
-    # =========================
-    pending_salary_data = Salary.objects.filter(
-        status='pending'
-    ).aggregate(total=Sum('amount'))
 
+    # Pending Salaries
+    pending_salary_data = Salary.objects.filter(status='pending'
+    ).aggregate(total=Sum('amount'))
     pending_salaries = pending_salary_data['total'] or Decimal('0.00')
 
     context = {
