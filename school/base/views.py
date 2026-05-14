@@ -701,132 +701,66 @@ def financial_reports(request):
 
     now = timezone.now()
 
-    # =========================
     # BASIC COUNTS
-    # =========================
     total_students = Student.objects.count()
-
     total_teachers = Teacher.objects.count()
-
     total_classes = Class.objects.count()
 
-    # =========================
     # TRANSACTION TOTALS
-    # =========================
-    total_income = Transaction.objects.filter(
-        transaction_type='income'
-    ).aggregate(
-        total=Sum('amount')
-    )['total'] or Decimal('0.00')
+    total_income = Transaction.objects.filter( transaction_type='income').aggregate(
+    total=Sum('amount'))['total'] or Decimal('0.00')
 
-    total_expense = Transaction.objects.filter(
-        transaction_type='expense'
-    ).aggregate(
-        total=Sum('amount')
-    )['total'] or Decimal('0.00')
+    total_expense = Transaction.objects.filter(transaction_type='expense').aggregate(
+    total=Sum('amount'))['total'] or Decimal('0.00')
 
     total_balance = total_income - total_expense
 
-    # =========================
     # FEES DATA
-    # =========================
-    total_collected = Fee.objects.filter(
-        status__in=['paid', 'partial']
-    ).aggregate(
-        total=Sum('amount')
-    )['total'] or Decimal('0.00')
+    total_collected = Fee.objects.filter(status__in=['paid', 'partial']).aggregate(
+    total=Sum('amount'))['total'] or Decimal('0.00')
 
-    pending_dues = Fee.objects.filter(
-        status='pending'
-    ).aggregate(
-        total=Sum('amount')
-    )['total'] or Decimal('0.00')
+    pending_dues = Fee.objects.filter(status='pending').aggregate(
+    total=Sum('amount'))['total'] or Decimal('0.00')
 
-    # =========================
     # SALARY DATA
-    # =========================
-    total_salary_paid = Salary.objects.filter(
-        status='paid'
-    ).aggregate(
-        total=Sum('amount')
-    )['total'] or Decimal('0.00')
+    total_salary_paid = Salary.objects.filter(status='paid').aggregate(
+    total=Sum('amount'))['total'] or Decimal('0.00')
 
-    pending_salary = Salary.objects.filter(
-        status='pending'
-    ).aggregate(
-        total=Sum('amount')
-    )['total'] or Decimal('0.00')
+    pending_salary = Salary.objects.filter(status='pending').aggregate(
+    total=Sum('amount'))['total'] or Decimal('0.00')
 
-    # =========================
     # MONTHLY CHART DATA
-    # =========================
     months = []
-
     income_chart = []
-
     expense_chart = []
-
     current_year = now.year
 
     for month in range(1, 13):
-
-        month_name = timezone.datetime(
-            current_year,
+        month_name = timezone.datetime(current_year,
             month,
             1
         ).strftime('%b')
 
         months.append(month_name)
 
-        monthly_income = Transaction.objects.filter(
-            transaction_type='income',
-            date__year=current_year,
-            date__month=month
-        ).aggregate(
-            total=Sum('amount')
-        )['total'] or Decimal('0.00')
+        monthly_income = Transaction.objects.filter(transaction_type='income',date__year=current_year,
+        date__month=month).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
 
-        monthly_expense = Transaction.objects.filter(
-            transaction_type='expense',
-            date__year=current_year,
-            date__month=month
-        ).aggregate(
-            total=Sum('amount')
-        )['total'] or Decimal('0.00')
+        monthly_expense = Transaction.objects.filter(transaction_type='expense',date__year=current_year,
+                                                     date__month=month).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
 
         income_chart.append(float(monthly_income))
-
         expense_chart.append(float(monthly_expense))
 
-    # =========================
     # FEE STATUS CHART
-    # =========================
-    paid_fees = Fee.objects.filter(
-        status='paid'
-    ).count()
+    paid_fees = Fee.objects.filter(status='paid').count()
+    partial_fees = Fee.objects.filter(status='partial').count()
+    pending_fees = Fee.objects.filter(status='pending').count()
 
-    partial_fees = Fee.objects.filter(
-        status='partial'
-    ).count()
-
-    pending_fees = Fee.objects.filter(
-        status='pending'
-    ).count()
-
-    # =========================
     # RECENT TRANSACTIONS
-    # =========================
-    recent_transactions = Transaction.objects.order_by(
-        '-date',
-        '-created_at'
-    )[:10]
-
-    # =========================
+    recent_transactions = Transaction.objects.order_by('-date','-created_at')[:10]
     # CONTEXT
-    # =========================
     context = {
-
-        # Summary
         'total_students': total_students,
         'total_teachers': total_teachers,
         'total_classes': total_classes,
@@ -843,23 +777,14 @@ def financial_reports(request):
 
         # Charts
         'months': json.dumps(months),
-
         'income_chart': json.dumps(income_chart),
-
         'expense_chart': json.dumps(expense_chart),
-
         'paid_fees': paid_fees,
-
         'partial_fees': partial_fees,
-
         'pending_fees': pending_fees,
 
         # Transactions
         'recent_transactions': recent_transactions,
     }
 
-    return render(
-        request,
-        'reports/financial_reports.html',
-        context
-    )
+    return render(request,'reports/financial_reports.html',context)
