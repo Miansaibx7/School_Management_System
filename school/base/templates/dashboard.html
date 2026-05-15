@@ -162,29 +162,19 @@
                 </div>
             </div>
 
-            <!-- =========================
-                 CONTENT GRID SECTION
-            ========================= -->
+            <!-- CONTENT GRID SECTION -->
             <div class="content-grid">
             
-                <!-- =========================
-                     RECENT STUDENTS
-                ========================= -->
+                <!--RECENT STUDENTS -->
                 <div class="content-card recent-students">
-            
                     <div class="card-header">
                         <h3>Recent Admissions</h3>
-            
-                        <a href="{% url 'student_list' %}" class="view-all">
-                            View All
-                            <i class="fas fa-arrow-right ms-1"></i>
-                        </a>
+                        <a href="{% url 'student_list' %}" class="view-all">View All
+                        <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
             
                     <div class="table-responsive">
-            
                         <table class="data-table">
-            
                             <thead>
                                 <tr>
                                     <th>Student</th>
@@ -195,167 +185,106 @@
                             </thead>
             
                             <tbody>
-            
                                 {% for student in recent_students %}
-            
                                 <tr class="table-row-animated">
-            
                                     <!-- Student -->
                                     <td>
                                         <div class="user-cell">
-            
                                             <div class="avatar-sm">
-            
                                                 {% if student.photo %}
-            
                                                 <img src="{{ student.photo.url }}" alt="{{ student.first_name }}">
-            
                                                 {% else %}
-            
                                                 <span>
                                                     {{ student.first_name|first }}{{ student.last_name|first }}
                                                 </span>
-            
                                                 {% endif %}
-            
                                             </div>
-            
+    
                                             <div class="user-details">
-            
                                                 <span class="name">
                                                     {{ student.full_name }}
                                                 </span>
-            
                                                 <span class="meta">
                                                     {{ student.admission_number }}
                                                 </span>
-            
                                             </div>
-            
                                         </div>
                                     </td>
             
                                     <!-- Class -->
                                     <td>
-            
                                         <div class="d-flex align-items-center gap-2 flex-wrap">
-            
                                             <span class="badge-class">
                                                 {{ student.class_room.name }}
                                             </span>
-            
                                             {% if student.section %}
-            
                                             <span class="badge-section">
                                                 {{ student.section.name }}
                                             </span>
-            
                                             {% endif %}
-            
                                         </div>
-            
                                     </td>
             
                                     <!-- Admission Date -->
                                     <td>
                                         {{ student.admission_date|date:"M d, Y" }}
                                     </td>
-            
+
                                     <!-- Status -->
-                                    <td>
-            
+                                    <td>            
                                         {% if student.is_active %}
-            
                                         <span class="status-badge active">
                                             <i class="fas fa-check-circle me-1"></i>
                                             Active
                                         </span>
-            
                                         {% else %}
-            
                                         <span class="status-badge inactive">
                                             <i class="fas fa-times-circle me-1"></i>
                                             Inactive
                                         </span>
-            
                                         {% endif %}
-            
                                     </td>
-            
                                 </tr>
-            
                                 {% empty %}
-            
                                 <tr>
             
                                     <td colspan="4" class="empty-state">
-            
                                         <div class="empty-content">
-            
                                             <i class="fas fa-user-graduate empty-icon"></i>
-            
                                             <p>No recent admissions found.</p>
-            
                                         </div>
-            
                                     </td>
-            
                                 </tr>
-            
                                 {% endfor %}
-            
                             </tbody>
-            
                         </table>
-            
                     </div>
-            
                 </div>
             
-                <!-- =========================
-                     FEE DEFAULTERS
-                ========================= -->
+                <!-- FEE DEFAULTERS -->
                 <div class="content-card defaulters">
-            
                     <div class="card-header">
-            
                         <h3>Fee Defaulters</h3>
-            
                         <span class="badge-alert">
                             {{ defaulters|length }} Pending
                         </span>
-            
                     </div>
             
                     <div class="defaulters-list">
-            
                         {% for student in defaulters %}
-            
                         <div class="defaulter-item">
-            
                             <!-- Left Side -->
                             <div class="defaulter-info">
-            
                                 <div class="avatar-sm warning">
-            
                                     {% if student.photo %}
-            
                                     <img src="{{ student.photo.url }}" alt="{{ student.first_name }}">
-            
                                     {% else %}
-            
                                     {{ student.first_name|first }}
-            
                                     {% endif %}
-            
                                 </div>
             
                                 <div class="info-text">
-            
-                                    <span class="name">
-                                        {{ student.full_name }}
-                                    </span>
-            
+                                    <span class="name">{{ student.full_name }}</span>
                                     <span class="class">
                                         {{ student.class_room.name }}
             
@@ -363,42 +292,23 @@
                                         - {{ student.section.name }}
                                         {% endif %}
                                     </span>
-            
                                 </div>
-            
                             </div>
             
                             <!-- Right Side -->
                             <div class="defaulter-amount">
-            
-                                <span class="amount">
-                                    ${{ student.total_fee_due|default:"0" }}
-                                </span>
-            
-                                <span class="label">
-                                    Due
-                                </span>
-            
+                                <span class="amount">${{ student.total_fee_due|default:"0" }}</span>
+                                <span class="label"> Due </span>
                             </div>
-            
                         </div>
-            
                         {% empty %}
-            
                         <div class="empty-state-small">
-            
                             <i class="fas fa-check-circle success-icon"></i>
-            
                             <p>No pending dues found.</p>
-            
                         </div>
-            
                         {% endfor %}
-            
                     </div>
-            
                 </div>
-            
             </div>
 
             <!-- Quick Actions -->
