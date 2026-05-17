@@ -657,17 +657,23 @@ def salary_list(request):
 def salary_create(request):
     if request.method == 'POST':
         form = SalaryForm(request.POST)
+
         if form.is_valid():
             salary = form.save(commit=False)
-            salary.paid_by = request.user  # Set the paid_by field to the current user
-            salary.save()
-            messages.success(request, 'Salary payment recorded successfully.')
-            return redirect('salary_list')
+            salary.paid_by = request.user
+
+            try:
+                salary.save()
+                messages.success(request, 'Salary payment recorded successfully.')
+                return redirect('salary_list')
+
+            except Exception as e:
+                messages.error(request, str(e))  
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
         form = SalaryForm()
-    return render(request, 'salaries/salary_form.html', {'form': form, 'title': 'Add Salary'})
+    return render(request, 'salaries/salary_form.html', {'form': form})
 
 @login_required(login_url='loginPage')
 def salary_update(request, pk):

@@ -99,6 +99,17 @@
                             {% if form.payment_method.errors %}
                             <span class="text-danger small">{{ form.payment_method.errors|striptags }}</span>
                             {% endif %}
+
+                        </div>
+
+                        <!-- Bank Reference (HIDDEN by default) -->
+                        <div class="sf-field-group" id="bankRefBox" style="display:none;">
+                            {{ form.bank_reference.label_tag }}
+                            {{ form.bank_reference }}
+                        
+                            {% if form.bank_reference.errors %}
+                            <span class="text-danger small">{{ form.bank_reference.errors|striptags }}</span>
+                            {% endif %}
                         </div>
 
                         <!-- Remarks/Notes -->
@@ -112,8 +123,7 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
-                
+                <!-- Action Buttons --> 
                 <div class="sf-actions">
                     <button type="submit" class="sf-btn-save">
                         <i class="fas fa-paper-plane me-2"></i>
@@ -127,4 +137,38 @@
         </div>
     </main>
 </div>
+<!-- Only show the references id when the bank is selected -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const paymentMethod = document.querySelector('[name="payment_method"]');
+        const bankBox = document.getElementById("bankRefBox");
+        const bankInput = document.querySelector('[name="bank_reference"]');
+
+        function toggleBankField() {
+
+            if (!paymentMethod || !bankBox) return;
+
+            if (paymentMethod.value === "bank") {
+                bankBox.style.display = "block";
+
+                if (bankInput) {
+                    bankInput.setAttribute("required", "required");
+                }
+
+            } else {
+                bankBox.style.display = "none";
+
+                if (bankInput) {
+                    bankInput.removeAttribute("required");
+                    bankInput.value = "";
+                }
+            }
+        }
+
+        paymentMethod.addEventListener("change", toggleBankField);
+
+        toggleBankField(); // run on page load
+    });
+</script>
 {% endblock %}
