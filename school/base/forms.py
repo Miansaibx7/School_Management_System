@@ -30,7 +30,7 @@ class MyUserCreationForm(UserCreationForm):
      
      
 
-# ================= USER FORM =================
+# ================= USER FORM ======================================
 class UserForm(forms.ModelForm):
 
     class Meta:
@@ -46,7 +46,7 @@ class UserForm(forms.ModelForm):
         ]
 
 
-# ================= TEACHER FORM =================
+# ================= TEACHER FORM ======================================================
 class TeacherForm(forms.ModelForm):
 
     class Meta:
@@ -68,7 +68,7 @@ class TeacherForm(forms.ModelForm):
         }
 
 
-# ================= CLASS FORM =================
+# ================= CLASS FORM =========================================================
 class ClassForm(forms.ModelForm):
 
     class Meta:
@@ -86,7 +86,7 @@ class ClassForm(forms.ModelForm):
             # 'class_teacher': forms.Select(attrs={'class': 'form-select custom-input-anim'}),
         }
 
-# ================= SECTION FORM =================
+# ================= SECTION FORM =====================================
 class SectionForm(forms.ModelForm):
 
     class Meta:
@@ -101,7 +101,7 @@ class SectionForm(forms.ModelForm):
         }
 
 
-# ================= STUDENT FORM =================
+# ================= STUDENT FORM ================================
 class StudentForm(forms.ModelForm):
 
     class Meta:
@@ -123,7 +123,7 @@ class StudentForm(forms.ModelForm):
                 field.widget.attrs.update({'class': 'form-control'})
 
 
-# ================= TRANSACTION FORM =================
+# ================= TRANSACTION FORM ===================================
 class TransactionForm(forms.ModelForm):
 
     class Meta:
@@ -147,7 +147,7 @@ class TransactionForm(forms.ModelForm):
         self.fields['category'].widget.attrs.update({'class': 'form-select'})
 
 
-# ================= FEE FORM =================
+# ================= FEE FORM ==================================================
 class FeeForm(forms.ModelForm):
 
     class Meta:
@@ -161,7 +161,7 @@ class FeeForm(forms.ModelForm):
         }
 
 
-# ================= SALARY FORM =================
+# ================= SALARY FORM ===================================================
 class SalaryForm(forms.ModelForm):
 
     class Meta:

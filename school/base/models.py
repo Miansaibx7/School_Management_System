@@ -14,7 +14,7 @@ from django.db.models.functions import Coalesce
 
 
 
-# ==================== USER MODEL ====================#
+# ==================== USER MODEL ==========================================
 class User(AbstractUser):
     """Custom User model using email as username"""
     username = None
