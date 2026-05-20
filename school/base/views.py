@@ -361,7 +361,6 @@ def teacher_delete(request, pk):
         messages.success(request, "Teacher deleted successfully.")
         return redirect("teacher_list")
         
-    # If GET request, render a confirmation page
     context = {"teacher": teacher}
     return render(request, "teachers/teacher_confirm_delete.html", context)
 
@@ -514,7 +513,7 @@ def all_transactions(request):
 def transaction_list(request):
     # All Transactions
     transactions = Transaction.objects.all().order_by('-date', '-created_at')
-
+    
     # Total Income
     total_income = Transaction.objects.filter(transaction_type='income'
     ).aggregate( total=Sum('amount'))['total'] or 0
@@ -526,11 +525,9 @@ def transaction_list(request):
     # Final Balance
     total_balance = total_income - total_expense
 
-    # Context
     context = {"transactions": transactions,"total_income": total_income,
             "total_expense": total_expense,"total_balance": total_balance,
         }
-
     return render(request,"transactions/all_transaction.html",context)
 
 @login_required(login_url='loginPage')
@@ -700,13 +697,10 @@ def salary_delete(request, pk):
     return render(request, 'salaries/salary_confirm_delete.html', {'salary': salary})
 
 
-
-
 @login_required(login_url='loginPage')
 def financial_reports(request):
 
     now = timezone.now()
-
     # BASIC COUNTS
     total_students = Student.objects.count()
     total_teachers = Teacher.objects.count()
@@ -792,5 +786,4 @@ def financial_reports(request):
         # Transactions
         'recent_transactions': recent_transactions,
     }
-
     return render(request,'reports/financial_reports.html',context)
