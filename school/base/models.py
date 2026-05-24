@@ -209,25 +209,7 @@ class Section(models.Model):
                 condition=Q(class_teacher__isnull=False),
                 name='unique_class_teacher'
             )
-        ]
-        
-# # For one Class one teacher using the Foreign key
-#     def clean(self):
-#         if self.class_teacher:
-#             exists = Section.objects.filter(
-#                 class_teacher=self.class_teacher
-#             ).exclude(pk=self.pk).exists()
-            
-#             if exists:
-#                 raise ValidationError({"class_teacher": "This teacher is already assigned to another class."})         
-# # Validate capacity
-#         if self.capacity < 1:
-#                 raise ValidationError({"capacity": "Capacity must be greater than zero."})
-            
-# # This method to ensure validation always runs without this, clean() may not run when saving from code.
-#     def save(self, *args, **kwargs):
-#          self.full_clean()
-#          super().save(*args, **kwargs) 
+        ] 
 
     def __str__(self):
         return f"{self.student_class.name} - {self.name}"

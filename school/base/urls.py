@@ -7,12 +7,9 @@ urlpatterns = [
 
           path('login/',views.LoginPage, name='loginPage'),
           path('logout/',views.Logoutpage, name='logoutPage'),
-          
           path('register/',views.Register,name='registerPage'),
 
           path('dashboard/', views.dashboard, name='dashboard'),
-          # path('add_student/', views.add_student, name='add_student'),
-          
           path('features/', views.features_view, name='features'),
           
           path('about/', views.about_view, name='about'),
