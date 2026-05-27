@@ -539,7 +539,6 @@ def transaction_create(request):
             transaction = form.save(commit=False)
             # Assign the current logged-in user to the excluded 'recorded_by' field
             transaction.recorded_by = request.user
-            # Now safely save to the database
             transaction.save()
             return redirect('transaction_list')
     else:
