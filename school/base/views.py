@@ -86,6 +86,78 @@ def Register(request):
 
     return render(request, 'login.html', {'form': form})
 
+
+# ========================= USER FUNCTIONS ==========================
+@login_required(login_url='loginPage')
+def user_list(request):
+    users = User.objects.all().order_by('-date_joined')
+
+    context = {"users": users}
+    return render(request,"users/all_users.html", context)
+
+
+@login_required(login_url='loginPage')
+def user_create(request):
+
+    form = UserForm( request.POST or None,request.FILES or None)
+
+    if form.is_valid():
+        form.save()
+
+        messages.success(request,"User created successfully.")
+        return redirect('user_list')
+
+    context = {"form": form}
+    return render(request,"users/user_form.html",context)
+
+
+@login_required(login_url='loginPage')
+def user_update(request, pk):
+
+    user = get_object_or_404(User,pk=pk)
+
+    form = UserForm(request.POST or None,request.FILES or None,instance=user)
+    if form.is_valid():
+        form.save()
+
+        messages.success(request,"User updated successfully.")
+        return redirect('user_list')
+
+    context = {"form": form}
+    return render(request,"users/user_form.html",context)
+
+
+@login_required(login_url='loginPage')
+def user_delete(request, pk):
+
+    user = get_object_or_404( User,pk=pk)
+
+    if request.method == "POST":
+        user.delete()
+
+        messages.success(request,"User deleted successfully.")
+        return redirect("user_list")
+
+    context = {"user": user}
+    return render(request,"users/user_confirm_delete.html",context)
+
+
+# ========================= USER PROFILE VIEW ==========================
+@login_required(login_url='loginPage')
+def profile(request):
+
+    form = UserForm(request.POST or None, request.FILES or None, instance=request.user)
+
+    if form.is_valid():
+        form.save()
+
+        messages.success(request,"Profile updated successfully.")
+        return redirect('profile')
+
+    context = {"form": form}
+    return render(request,"users/profile.html",context)
+
+# ========================= CONTACT VIEW WITH FAQS AND EMAIL NOTIFICATIONS ==========================
 def contact_view(request):
     
     if request.method == 'POST':
