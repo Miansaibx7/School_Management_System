@@ -11,18 +11,6 @@ A comprehensive, Django-based School Management System designed to streamline st
 
 ---
 
-## 📸 Screenshots
-
-| Dashboard Overview | Financial Reports |
-|--------------------|-------------------|
-| ![Dashboard](https://via.placeholder.com/400x200?text=Dashboard+Preview) | ![Financial Reports](https://via.placeholder.com/400x200?text=Financial+Reports) |
-
-| Student Management | Transaction History |
-|--------------------|----------------------|
-| ![Students](https://via.placeholder.com/400x200?text=Student+Management) | ![Transactions](https://via.placeholder.com/400x200?text=Transactions) |
-
----
-
 ## ✨ Features
 
 ### 📊 Dashboard
