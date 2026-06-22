@@ -27,8 +27,19 @@ class MyUserCreationForm(UserCreationForm):
               raise forms.ValidationError("Password must contain at least one number.")
 
          return password
-     
-     
+
+# ================= Profile Form ===================================
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = [
+            "name",
+            "email",
+            "phone",
+            "bio",
+            "avatar",
+        ]     
 
 # ================= USER FORM ======================================
 class UserForm(forms.ModelForm):

@@ -145,7 +145,7 @@ def user_delete(request, pk):
 # ========================= USER PROFILE VIEW ==========================
 @login_required(login_url='loginPage')
 def profile(request):
-
+           
     form = UserForm(request.POST or None, request.FILES or None, instance=request.user)
 
     if form.is_valid():
@@ -643,11 +643,11 @@ def transaction_delete(request, pk):
 @login_required(login_url='loginPage')
 def fee_list(request):
     fees = Fee.objects.all()
-    # 💰 TOTAL COLLECTED (PAID + PARTIAL)
+    # TOTAL COLLECTED (PAID + PARTIAL)
     collected_data = Fee.objects.filter(status__in=['paid', 'partial']).aggregate(total=Sum('amount'))
     total_collected = collected_data['total'] or Decimal('0.00')
 
-    # ⚠️ PENDING DUES
+    # PENDING DUES
     pending_data = Fee.objects.filter(status='pending').aggregate(total=Sum('amount'))
     pending_dues = pending_data['total'] or Decimal('0.00')
 

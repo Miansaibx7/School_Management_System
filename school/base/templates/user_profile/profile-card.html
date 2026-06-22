@@ -1,0 +1,38 @@
+<div class="user-profile">
+
+    <div class="user-avatar">
+
+        {% if request.user.avatar %}
+        <img src="{{ request.user.avatar.url }}" alt="{{ request.user.name }}">
+        {% else %}
+        <span>
+            {{ request.user.name|first|upper }}
+        </span>
+        {% endif %}
+
+    </div>
+
+    <div class="user-info">
+
+        <span class="user-name">
+            {{ request.user.name }}
+        </span>
+
+        <span class="user-role">
+
+            {% if request.user.is_admin %}
+            Administrator
+
+            {% elif request.user.is_accountant %}
+            Accountant
+
+            {% else %}
+            Staff User
+
+            {% endif %}
+
+        </span>
+
+    </div>
+
+</div>
