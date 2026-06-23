@@ -39,7 +39,17 @@ class ProfileForm(forms.ModelForm):
             "phone",
             "bio",
             "avatar",
-        ]     
+        ]
+        widgets = { 
+                "name": forms.TextInput(attrs={ "class": "form-control", "placeholder": "Enter your full name",}),
+
+                "email": forms.EmailInput(attrs={ "class": "form-control", "placeholder": "Enter email address",}),
+
+                "phone": forms.TextInput(attrs={ "class": "form-control", "placeholder": "Enter phone number",}),
+                
+                "bio": forms.Textarea(attrs={ "class": "form-control", "rows": 4, "placeholder": "Write something about yourself",}),
+            }
+  
 
 # ================= USER FORM ======================================
 class UserForm(forms.ModelForm):

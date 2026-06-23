@@ -35,19 +35,10 @@
                     <span class="notification-dot"></span>
                 </button>
 
-                <div class="user-profile">
-                    <div class="user-avatar">
-                        {% if request.user.avatar %}
-                        <img src="{{ request.user.avatar.url }}" alt="{{ request.user.name }}">
-                        {% else %}
-                        <span>{{ request.user.name|first|upper }}</span>
-                        {% endif %}
-                    </div>
-                    <div class="user-info">
-                        <span class="user-name">{{ request.user.name }}</span>
-                        <span class="user-role">{{ user_role }}</span>
-                    </div>
+                <div class="header-actions">             
+                    {% include "user_profile/profile-card.html" %}
                 </div>
+
             </div>
         </header>
 

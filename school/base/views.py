@@ -23,6 +23,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import (
             MyUserCreationForm,
             UserForm,
+            ProfileForm,
             TeacherForm,
             ClassForm,
             SectionForm,
@@ -143,19 +144,31 @@ def user_delete(request, pk):
 
 
 # ========================= USER PROFILE VIEW ==========================
-@login_required(login_url='loginPage')
+@login_required(login_url="loginPage")
 def profile(request):
-           
-    form = UserForm(request.POST or None, request.FILES or None, instance=request.user)
 
-    if form.is_valid():
-        form.save()
+    if request.user.is_admin:
+        user_role = "Administrator"
 
-        messages.success(request,"Profile updated successfully.")
-        return redirect('profile')
+    elif request.user.is_accountant:
+        user_role = "Accountant"
 
-    context = {"form": form}
-    return render(request,"users/profile.html",context)
+    else:
+        user_role = "Staff User"
+
+    form = ProfileForm( request.POST or None, request.FILES or None, instance=request.user )
+
+    if request.method == "POST":
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(request, "Profile updated successfully.")
+            return redirect("dashboard")
+
+    context = {"form": form, "user_role": user_role}
+    return render(request,"user_profile/profile.html",context)
+
 
 # ========================= CONTACT VIEW WITH FAQS AND EMAIL NOTIFICATIONS ==========================
 def contact_view(request):
