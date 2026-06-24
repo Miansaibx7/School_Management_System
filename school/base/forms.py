@@ -47,7 +47,7 @@ class ProfileForm(forms.ModelForm):
 
                 "phone": forms.TextInput(attrs={ "class": "form-control", "placeholder": "Enter phone number",}),
                 
-                "bio": forms.Textarea(attrs={ "class": "form-control", "rows": 4, "placeholder": "Write something about yourself",}),
+                "bio": forms.Textarea(attrs={ "class": "form-control", "rows": 4, "placeholder": "Write something about yourself...",}),
             }
   
 
@@ -63,7 +63,9 @@ class UserForm(forms.ModelForm):
             "bio",
             "avatar",
             "is_admin",
-            "is_accountant"
+            "is_accountant",
+            "is_staff",
+            "is_active",
         ]
 
 

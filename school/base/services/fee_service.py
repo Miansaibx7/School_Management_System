@@ -4,9 +4,6 @@ from .transaction_service import TransactionService
 
 
 class FeeService:
-    """
-    Handles all student fee related operations.
-    """
 
     @staticmethod
     def create_fee_payment(
@@ -19,7 +16,6 @@ class FeeService:
     ):
 
         with transaction.atomic():
-
             # Create financial transaction
             transaction_record = TransactionService.create_income(
                 title=f"Fee Payment - {student.full_name}",

@@ -4,9 +4,6 @@ from .transaction_service import TransactionService
 
 
 class SalaryService:
-    """
-    Handles teacher salary payments.
-    """
 
     @staticmethod
     def pay_salary(

@@ -34,10 +34,13 @@
                         <i class="fas fa-search search-icon"></i>
                         <input type="text" id="tableSearch" placeholder="Search class, section or teacher...">
                     </div>
+
                     <!-- ADD BUTTON -->
+                    {% if request.user.is_superuser or request.user.is_admin %}
                     <a href="{% url 'section_create' %}" class="tf-btn-add">
                         <i class="fas fa-plus-circle me-2"></i> Create New Section
                     </a>
+                    {% endif %}
                 </div>
             </div>
 

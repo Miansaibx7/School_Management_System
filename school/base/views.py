@@ -6,6 +6,8 @@ from decimal import Decimal
 import json
 from django.db.models.functions import Coalesce
 
+from .decorators import admin_required, accountant_required 
+
 from .models import (User,
             Teacher,
             Class,
@@ -384,10 +386,8 @@ def dashboard(request):
     paid__lt=F('class_room__monthly_fee')
     ).order_by('paid')[:10]
 
-    # =========================
     # CONTEXT
-    # =========================
-    context = {
+    context = { "user_role": request.user.role,
         'stats': {
             'students': total_students,
             'student_trend': students_this_month,
@@ -400,18 +400,21 @@ def dashboard(request):
 
         'recent_students': recent_students,
         'defaulters': defaulters,
-        'now': now,
+        'now': now,  
     }
-
     return render(request, 'dashboard.html', context)
+
+
 #========================= Teacher Function ===================================================================
 @login_required(login_url='loginPage')
+@admin_required
 def teacher_list(request):
     teachers = Teacher.objects.all()
     context = {"teachers": teachers}
     return render(request, "teachers/all_teacher.html", context)
 
 @login_required(login_url='loginPage')
+@admin_required
 def teacher_create(request):
     form = TeacherForm(request.POST or None, request.FILES or None)
     if form.is_valid():
@@ -422,6 +425,7 @@ def teacher_create(request):
     return render(request, "teachers/teacher_form.html", context)
 
 @login_required(login_url='loginPage')
+@admin_required
 def teacher_update(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
     form = TeacherForm(
@@ -437,6 +441,7 @@ def teacher_update(request, pk):
     return render(request, "teachers/teacher_form.html", context)
 
 @login_required(login_url='loginPage')
+@admin_required
 def teacher_delete(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
     
@@ -452,13 +457,16 @@ def teacher_delete(request, pk):
 
 #========================= Class Function =======================================================================================
 @login_required(login_url='loginPage')
+@admin_required
 def class_list(request):
     classes = Class.objects.prefetch_related('sections').order_by('name')
 
     context = {"classes": classes}
     return render(request, "classes/all_classes.html", context)
 
+
 @login_required(login_url='loginPage')
+@admin_required
 def class_create(request):
     form = ClassForm(request.POST or None)
     if form.is_valid():
@@ -467,7 +475,9 @@ def class_create(request):
         return redirect("class_list")
     return render(request, "classes/classes_form.html", {"form": form})
 
+
 @login_required(login_url='loginPage')
+@admin_required
 def class_update(request, pk):
     class_obj = get_object_or_404(Class, pk=pk)
     form = ClassForm(
@@ -481,7 +491,9 @@ def class_update(request, pk):
         return redirect("class_list")
     return render(request, "classes/classes_form.html", {"form": form})
 
+
 @login_required(login_url='loginPage')
+@admin_required
 def class_delete(request, pk):
     class_obj = get_object_or_404(Class, pk=pk)
     if request.method == 'POST':
@@ -495,11 +507,13 @@ def class_delete(request, pk):
 
 #========================= Section Function =======================================================================================
 @login_required(login_url='loginPage')
+@admin_required
 def section_list(request):
     sections = Section.objects.all()
     return render(request, "sections/all_sections.html", {"sections": sections})
 
 @login_required(login_url='loginPage')
+@admin_required
 def section_create(request):
     form = SectionForm(request.POST or None)
     if form.is_valid():
@@ -508,7 +522,8 @@ def section_create(request):
         return redirect("section_list")
     return render(request, "sections/section_form.html", {"form": form})
 
-@login_required(login_url='loginPage')    
+@login_required(login_url='loginPage')
+@admin_required    
 def section_update(request,pk):
     section_obj = get_object_or_404(Section, pk=pk)
     form = SectionForm(
@@ -523,6 +538,7 @@ def section_update(request,pk):
     return render(request,"sections/section_form.html",{"form": form})
 
 @login_required(login_url='loginPage')
+@admin_required
 def section_delete(request,pk):
     section_obj = get_object_or_404(Section, pk=pk)
     if request.method == 'POST':
@@ -536,11 +552,13 @@ def section_delete(request,pk):
 
 #========================= Student Function =======================================================================================
 @login_required(login_url='loginPage')
+@admin_required
 def student_list(request):
     student = Student.objects.all()
     return render(request,"students/all_student.html",{'student': student})
 
 @login_required(login_url='loginPage')
+@admin_required
 def student_create(request):
     form = StudentForm(request.POST or None, request.FILES or None)
     if form.is_valid():
@@ -550,6 +568,7 @@ def student_create(request):
     return render(request,"students/student_form.html",{"form": form})
 
 @login_required(login_url='loginPage')
+@admin_required
 def student_update(request, pk):
     student_obj = get_object_or_404(Student, pk=pk)
     form = StudentForm(
@@ -564,6 +583,7 @@ def student_update(request, pk):
     return render(request,"students/student_form.html",{"form": form})
 
 @login_required(login_url='loginPage')
+@admin_required
 def student_delete(request, pk):
     student_obj = get_object_or_404(Student, pk=pk)
     if request.method == 'POST':
@@ -577,6 +597,7 @@ def student_delete(request, pk):
 
 #========================= Transaction Function =======================================================================================
 @login_required(login_url='loginPage')
+@accountant_required
 def all_transactions(request):
     transactions = Transaction.objects.all().order_by('-date', '-created_at')
 
@@ -595,6 +616,7 @@ def all_transactions(request):
     return render(request, 'transactions/all_transaction.html', context)
 
 @login_required(login_url='loginPage')
+@accountant_required
 def transaction_list(request):
     # All Transactions
     transactions = Transaction.objects.all().order_by('-date', '-created_at')
@@ -616,6 +638,7 @@ def transaction_list(request):
     return render(request,"transactions/all_transaction.html",context)
 
 @login_required(login_url='loginPage')
+@accountant_required
 def transaction_create(request):
     if request.method == 'POST':
         form = TransactionForm(request.POST)
@@ -632,6 +655,7 @@ def transaction_create(request):
     return render(request, 'transactions/transaction_form.html', {'form': form, 'title': 'Add Transaction'})
 
 @login_required(login_url='loginPage')
+@accountant_required
 def transaction_update(request, pk):
     transaction = get_object_or_404(Transaction, pk=pk)
     if request.method == 'POST':
@@ -654,6 +678,7 @@ def transaction_delete(request, pk):
 
 #========================= Fee Function =======================================================================================
 @login_required(login_url='loginPage')
+@accountant_required
 def fee_list(request):
     fees = Fee.objects.all()
     # TOTAL COLLECTED (PAID + PARTIAL)
@@ -672,6 +697,7 @@ def fee_list(request):
     return render(request, "fees/all_fee.html", context)
 
 @login_required(login_url= 'loginPage')
+@accountant_required
 def fee_create(request):
     if request.method == 'POST':
         form = FeeForm(request.POST)
@@ -689,6 +715,7 @@ def fee_create(request):
     return render(request, 'fees/fee_form.html', {'form': form, 'title': 'Add Fee'})
     
 @login_required(login_url='loginPage')
+@accountant_required
 def fee_update(request,pk):
     fee = get_object_or_404(Fee, pk=pk)
     if request.method == 'POST':
@@ -704,6 +731,7 @@ def fee_update(request,pk):
     return render(request, 'fees/fee_form.html', {'form': form, 'title': 'Edit Fee'})
 
 @login_required(login_url='loginPage')
+@accountant_required
 def fee_delete(request, pk):
     fee = get_object_or_404(Fee, pk=pk)
     if request.method == 'POST':
@@ -715,6 +743,7 @@ def fee_delete(request, pk):
 
 #========================= Salary Function =======================================================================================
 @login_required(login_url='loginPage')
+@accountant_required
 def salary_list(request):
     salaries = Salary.objects.all().order_by('-created_at')
     # Total Disbursed Salary
@@ -735,6 +764,7 @@ def salary_list(request):
     return render(request, "salaries/all_salary.html", context)
 
 @login_required(login_url='loginPage')
+@accountant_required
 def salary_create(request):
     if request.method == 'POST':
         form = SalaryForm(request.POST)
@@ -757,6 +787,7 @@ def salary_create(request):
     return render(request, 'salaries/salary_form.html', {'form': form})
 
 @login_required(login_url='loginPage')
+@accountant_required
 def salary_update(request, pk):
     salary = get_object_or_404(Salary, pk=pk)
     if request.method == 'POST':
@@ -772,6 +803,7 @@ def salary_update(request, pk):
     return render(request, 'salaries/salary_form.html', {'form': form, 'title': 'Edit Salary'})
 
 @login_required(login_url='loginPage')
+@accountant_required
 def salary_delete(request, pk):
     salary = get_object_or_404(Salary, pk=pk)
     if request.method == 'POST':

@@ -51,15 +51,19 @@
     {% include 'navbar.html' %}
     
 
-    <div>
-        {% if messages %}
-            <ul class="messages-container">
-                {% for message in messages %}
-                <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    {% if messages %}
+    <div class="messages-container">
+
+        {% for message in messages %}
+        <div class="alert-message {{ message.tags }}">
+            <span>{{ message }}</span>
+            <button class="close-alert">&times;</button>
+        </div>
+        {% endfor %}
+        
     </div>
+    
+    {% endif %}
 
     {% block content %}
 
@@ -69,3 +73,93 @@
 </body>
 
 </html>
+<style>
+
+.messages-container{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:9999;
+    width:350px;
+}
+
+.alert-message{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 20px;
+    margin-bottom:10px;
+    border-radius:12px;
+    color:white;
+    font-weight:500;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    animation:slideIn .4s ease;
+}
+
+.alert-message.success{
+    background:#16a34a;
+}
+
+.alert-message.error{
+    background:#dc2626;
+}
+
+.alert-message.warning{
+    background:#f59e0b;
+}
+
+.alert-message.info{
+    background:#2563eb;
+}
+
+.close-alert{
+    border:none;
+    background:none;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+@keyframes slideIn{
+
+    from{
+        transform:translateX(100%);
+        opacity:0;
+    }
+
+    to{
+        transform:translateX(0);
+        opacity:1;
+    }
+
+}
+
+</style>
+
+<script>
+
+    document.querySelectorAll('.close-alert').forEach(btn => {
+
+        btn.addEventListener('click', function () {
+
+            this.parentElement.remove();
+
+        });
+
+    });
+
+    setTimeout(() => {
+
+        document.querySelectorAll('.alert-message').forEach(alert => {
+
+            alert.style.opacity = '0';
+
+            setTimeout(() => {
+                alert.remove();
+            }, 500);
+
+        });
+
+    }, 4000);
+
+</script>

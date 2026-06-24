@@ -47,7 +47,10 @@
             <!-- Welcome Section -->
             <div class="welcome-banner">
                 <div class="welcome-text">
-                    <h1>Welcome back, {{ request.user.name|default:"Admin" }}! 👋</h1>
+                    <h1>Welcome back, {{ request.user.name }} 👋</h1>
+                    <span class="profile-role">
+                        {{ request.user.role }}
+                    </span>
                     <p>Here's what's happening in your school today.</p>
                 </div>
                 <div class="welcome-date">
@@ -306,6 +309,7 @@
             <div class="quick-actions">
                 <h3>Quick Actions</h3>
                 <div class="actions-grid">
+                    
                     <a href="{% url 'student_create' %}" class="action-card">
                         <div class="action-icon blue">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -339,8 +343,9 @@
                         </div>
                         <span>Record Fee</span>
                     </a>
-
+                    
                     <a href="{% url 'financial_reports'%}" class="action-card">
+                
                         <div class="action-icon orange">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"></circle>

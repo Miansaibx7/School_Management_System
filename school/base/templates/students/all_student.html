@@ -43,10 +43,12 @@
                     </div>
                 
                     <!-- Add Button -->
+                    {% if request.user.is_superuser or request.user.is_admin %}
                     <a href="{% url 'student_create' %}" class="tf-btn-add">
                         <i class="fas fa-plus-circle me-1"></i>
                         Add New Student
                     </a>
+                    {% endif %}
                 
                 </div>
                 </div>

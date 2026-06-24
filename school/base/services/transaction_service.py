@@ -3,9 +3,6 @@ from ..models import Transaction
 
 
 class TransactionService:
-    """
-    Handles creation of financial transactions.
-    """
 
     @staticmethod
     def create_income(title, category, amount, date, user=None, description=""):
@@ -19,7 +16,6 @@ class TransactionService:
             recorded_by=user,
             description=description
         )
-
 
     @staticmethod
     def create_expense(title, category, amount, date, user=None, description=""):

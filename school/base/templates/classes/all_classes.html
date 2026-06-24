@@ -34,11 +34,14 @@
         
                     <input type="text" id="classSearch" placeholder="Search class or section...">
                 </div>
+
                 <!-- Add Button -->
+                {% if request.user.is_superuser or request.user.is_admin %}
                 <a href="{% url 'class_create' %}" class="tf-btn-add">
                     <i class="fas fa-plus me-2"></i>
                     Add New Class
                 </a>
+                {% endif %}
             </div>
         </div>
 

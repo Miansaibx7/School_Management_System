@@ -28,7 +28,6 @@ class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
     is_accountant = models.BooleanField(default=False)
     
-    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
 
@@ -37,6 +36,21 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+    
+    @property
+    def role(self):
+
+        if self.is_superuser:
+            return "Super Administrator"
+
+        elif self.is_admin:
+            return "Administrator"
+
+        elif self.is_accountant:
+            return "Accountant"
+
+        return "Staff User"
+    
 
 
 # ==================== TEACHER MODEL ==================================

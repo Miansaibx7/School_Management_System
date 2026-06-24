@@ -61,9 +61,12 @@
                         <i class="fas fa-search search-icon"></i>
                         <input type="text" placeholder="Search by Name or Admission No..." id="tableSearch">
                     </div>
+
+                    {% if request.user.is_superuser or request.user.is_accountant %}
                     <a href="{% url 'fee_create' %}" class="ff-btn-add">
                         <i class="fas fa-plus-circle me-1"></i> Record Fee
                     </a>
+                    {% endif %}
                 </div>
             </div>
 

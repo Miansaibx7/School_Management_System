@@ -3,29 +3,33 @@
 
 {% block content %}
 
-<div class="container py-5">
+<div class="profile-container">
 
-    <div class="card shadow border-0">
+    <div class="profile-card">
 
-        <div class="card-body p-5">
+        <div class="profile-header">
 
-            <div class="text-center mb-4">
+            {% if request.user.avatar %}
+            <img src="{{ request.user.avatar.url }}" class="profile-avatar">
+            {% else %}
+            <img src="{% static 'images/default-avatar.png' %}" class="profile-avatar">
+            {% endif %}
 
-                {% if request.user.avatar %}
-                <img src="{{ request.user.avatar.url }}" class="rounded-circle" width="150" height="150">
-                {% else %}
-                <img src="{% static 'images/default-avatar.png' %}" class="rounded-circle" width="150" height="150">
-                {% endif %}
+            <h2 class="profile-name">
+                {{ request.user.name }}
+            </h2>
 
-                <h3 class="mt-3">
-                    {{ request.user.name }}
-                </h3>
+            <span class="profile-role">
+                {{ user_role }}
+            </span>
 
-                <span class="badge bg-primary">
-                    {{ user_role }}
-                </span>
+        </div>
 
-            </div>
+        <div class="profile-body">
+
+            <h3 class="form-section-title">
+                Profile Information
+            </h3>
 
             <form method="POST" enctype="multipart/form-data">
 
@@ -33,52 +37,35 @@
 
                 <div class="row">
 
-                    <div class="col-md-6 mb-3">
-
-                        <label>Name</label>
-
+                    <div class="col-md-6 form-group">
+                        <label>Full Name</label>
                         {{ form.name }}
-
                     </div>
 
-                    <div class="col-md-6 mb-3">
-
-                        <label>Email</label>
-
+                    <div class="col-md-6 form-group">
+                        <label>Email Address</label>
                         {{ form.email }}
-
                     </div>
 
-                    <div class="col-md-6 mb-3">
-
-                        <label>Phone</label>
-
+                    <div class="col-md-6 form-group">
+                        <label>Phone Number</label>
                         {{ form.phone }}
-
                     </div>
 
-                    <div class="col-md-12 mb-3">
-
-                        <label>Bio</label>
-
+                    <div class="col-md-12 form-group">
+                        <label>Biography</label>
                         {{ form.bio }}
-
                     </div>
 
-                    <div class="col-md-12 mb-4">
-
-                        <label>Profile Photo</label>
-
+                    <div class="col-md-12 form-group">
+                        <label>Profile Picture</label>
                         {{ form.avatar }}
-
                     </div>
 
                 </div>
 
-                <button type="submit" class="btn btn-success">
-
+                <button type="submit" class="save-btn">
                     Save Changes
-
                 </button>
 
             </form>
@@ -88,5 +75,192 @@
     </div>
 
 </div>
+
+<style>
+
+:root{
+    --primary:#4f46e5;
+    --primary-hover:#4338ca;
+    --success:#10b981;
+    --success-hover:#059669;
+    --white:#ffffff;
+    --text:#1f2937;
+    --muted:#6b7280;
+    --border:#e5e7eb;
+    --bg:#f8fafc;
+    --shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+body{
+    background:var(--bg);
+}
+
+.profile-container{
+    max-width:900px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.profile-card{
+    background:var(--white);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+}
+
+.profile-header{
+    background:linear-gradient(
+        135deg,
+        #4f46e5,
+        #7c3aed
+    );
+    color:white;
+    padding:40px 20px;
+    text-align:center;
+}
+
+.profile-avatar{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid rgba(255,255,255,.3);
+    background:white;
+    transition:.3s;
+}
+
+.profile-avatar:hover{
+    transform:scale(1.05);
+}
+
+.profile-name{
+    margin-top:15px;
+    font-size:28px;
+    font-weight:700;
+}
+
+.profile-role{
+    display:inline-block;
+    margin-top:10px;
+    padding:8px 18px;
+    border-radius:50px;
+    background:rgba(255,255,255,.2);
+    backdrop-filter:blur(10px);
+    font-size:14px;
+}
+
+.profile-body{
+    padding:35px;
+}
+
+.form-section-title{
+    font-size:20px;
+    font-weight:600;
+    color:var(--text);
+    margin-bottom:25px;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--border);
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.form-control,
+input[type="text"],
+input[type="email"],
+input[type="file"],
+textarea{
+    width:100%;
+    padding:12px 15px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    font-size:15px;
+    transition:.3s;
+    background:white;
+}
+
+.form-control:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:0 0 0 4px rgba(79,70,229,.1);
+}
+
+textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+.save-btn{
+    background:var(--success);
+    color:white;
+    border:none;
+    padding:14px 30px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.save-btn:hover{
+    background:var(--success-hover);
+    transform:translateY(-2px);
+}
+
+.profile-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:30px;
+}
+
+.stat-card{
+    background:#f9fafb;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+}
+
+.stat-card h4{
+    margin:0;
+    color:var(--primary);
+    font-size:24px;
+}
+
+.stat-card p{
+    margin:5px 0 0;
+    color:var(--muted);
+    font-size:14px;
+}
+
+@media(max-width:768px){
+
+    .profile-body{
+        padding:20px;
+    }
+
+    .profile-stats{
+        grid-template-columns:1fr;
+    }
+
+    .profile-name{
+        font-size:22px;
+    }
+
+}
+
+</style>
+</style>
 
 {% endblock %}

@@ -64,11 +64,13 @@
         
                         <input type="text" placeholder="Search by teacher name or ID..." id="tableSearch">
                     </div>
-        
+
+                    {% if request.user.is_superuser or request.user.is_accountant %}
                     <a href="{% url 'salary_create' %}" class="sal-btn-add">
                         <i class="fas fa-plus-circle me-1"></i>
                         Disburse Salary
                     </a>
+                    {% endif %}
                 </div>
             </div>
         
