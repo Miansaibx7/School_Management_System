@@ -409,7 +409,7 @@ def teacher_create(request):
     form = TeacherForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         form.save()
-        messages.success(request, "Teacher created successfullys")
+        messages.success(request, "Teacher created successfully")
         return redirect("teacher_list")
     context = {"form":form}
     return render(request, "teachers/teacher_form.html", context)
