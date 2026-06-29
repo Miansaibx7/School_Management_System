@@ -331,17 +331,13 @@ def dashboard(request):
 
     now = timezone.now()
 
-    # =========================
     # REFRESH STUDENT FEE STATUS
-    # =========================
     students = Student.objects.select_related('class_room')
 
     for student in students:
         student.update_fee_status()
 
-    # =========================
     # BASIC STATS
-    # =========================
     total_students = Student.objects.count()
     total_teachers = Teacher.objects.count()
     total_classes = Class.objects.count()
@@ -353,12 +349,9 @@ def dashboard(request):
 
     teachers_this_month = Teacher.objects.filter(
         created_at__year=now.year,
-        created_at__month=now.month
-    ).count()
+        created_at__month=now.month).count()
 
-    # =========================
     # FINANCIAL STATS
-    # =========================
     total_income = Transaction.objects.filter(
         transaction_type='income'
     ).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
@@ -369,17 +362,14 @@ def dashboard(request):
 
     profit = total_income - total_expense
 
-    # =========================
     # RECENT STUDENTS
-    # =========================
     recent_students = Student.objects.select_related(
         'class_room',
         'section'
     ).order_by('-created_at')[:5]
 
-    # =========================
-    # 🔥 REAL FEE DEFAULTERS (IMPORTANT FIX)
-    # =========================
+
+    # REAL FEE DEFAULTERS (IMPORTANT FIX)
     defaulters = Student.objects.annotate(
     paid=Coalesce(Sum('fee_payments__amount'), Decimal('0.00'))
     ).filter(
@@ -419,7 +409,7 @@ def teacher_create(request):
     form = TeacherForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         form.save()
-        messages.success(request, "Teacher created successfully")
+        messages.success(request, "Teacher created successfullys")
         return redirect("teacher_list")
     context = {"form":form}
     return render(request, "teachers/teacher_form.html", context)
