@@ -42,7 +42,7 @@ class User(AbstractUser):
     """Custom User model using email as username"""
     username = None
     name = models.CharField(max_length=120)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, db_index=True)
     bio = models.TextField(null=True, blank=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
