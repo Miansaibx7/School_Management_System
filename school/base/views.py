@@ -85,7 +85,7 @@ def Register(request):
             login(request, user)
             return redirect('dashboard')
         else:
-            messages.error(request, 'An error occurring during registration')
+            messages.error(request, 'An error occurred during registration')
 
     return render(request, 'login.html', {'form': form})
 
