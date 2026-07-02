@@ -106,5 +106,5 @@ class SalaryAdmin(admin.ModelAdmin):
     list_filter = ('status', 'payment_method', 'payment_date')
     ordering = ('-payment_date',)
 
-# Optional: if you still want to use admin.site.register, do it only once:
+# if you still want to use admin.site.register, do it only once:
 # admin.site.register(User, UserAdmin)  # NOT needed if you used the decorator

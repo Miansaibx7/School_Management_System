@@ -13,9 +13,7 @@ def admin_required(view_func):
             return view_func(request, *args, **kwargs)
 
         messages.error(request," Access Denied! You don't have permission to access this section.")
-
         return redirect("dashboard")
-
     return wrapper
 
 
