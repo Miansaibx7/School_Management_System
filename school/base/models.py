@@ -1,4 +1,4 @@
-from django.db import models, transaction as db_transaction # Use alias to prevent naming conflicts
+from django.db import IntegrityError, models, transaction as db_transaction # Use alias to prevent naming conflicts
 from django.contrib.auth.models import AbstractUser,BaseUserManager
 
 from django.db.models import Sum, Q, F
@@ -22,7 +22,10 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.save(using=self._db)
+        try:
+         user.save(using=self._db)
+        except IntegrityError:
+         raise ValueError("A user with this email already exists.")
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
