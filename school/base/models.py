@@ -18,7 +18,7 @@ from django.db.models.functions import Coalesce
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError("Email address is required")
+            raise ValueError('Email address is required')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -26,9 +26,9 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_admin', True)
+        extra_fields['is_staff'] = True
+        extra_fields['is_superuser'] = True
+        extra_fields['is_admin'] = True
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
@@ -42,7 +42,7 @@ class User(AbstractUser):
     """Custom User model using email as username"""
     username = None
     name = models.CharField(max_length=120)
-    email = models.EmailField(unique=True, db_index=True)
+    email = models.EmailField(unique=True)
     bio = models.TextField(null=True, blank=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
