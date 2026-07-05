@@ -33,13 +33,8 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = [
-            "name",
-            "email",
-            "phone",
-            "bio",
-            "avatar",
-        ]
+        fields = ["name","email","phone","bio","avatar",]
+
         widgets = { 
                 "name": forms.TextInput(attrs={ "class": "form-control", "placeholder": "Enter your full name",}),
 
@@ -56,17 +51,8 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = [
-            "name",
-            "email",
-            "phone",
-            "bio",
-            "avatar",
-            "is_admin",
-            "is_accountant",
-            "is_staff",
-            "is_active",
-        ]
+        fields = ["name", "email", "phone", "bio", "avatar",
+            "is_admin", "is_accountant", "is_staff","is_active",]
 
 
 # ================= TEACHER FORM ======================================================
