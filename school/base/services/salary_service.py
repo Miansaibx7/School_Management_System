@@ -6,9 +6,7 @@ from .transaction_service import TransactionService
 class SalaryService:
 
     @staticmethod
-    def pay_salary(
-        teacher,
-        amount,
+    def pay_salary(teacher,amount,
         month_for,
         payment_date,
         payment_method,
