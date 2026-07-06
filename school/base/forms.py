@@ -37,11 +37,8 @@ class ProfileForm(forms.ModelForm):
 
         widgets = { 
                 "name": forms.TextInput(attrs={ "class": "form-control", "placeholder": "Enter your full name",}),
-
                 "email": forms.EmailInput(attrs={ "class": "form-control", "placeholder": "Enter email address",}),
-
                 "phone": forms.TextInput(attrs={ "class": "form-control", "placeholder": "Enter phone number",}),
-                
                 "bio": forms.Textarea(attrs={ "class": "form-control", "rows": 4, "placeholder": "Write something about yourself...",}),
             }
   
@@ -181,8 +178,7 @@ class SalaryForm(forms.ModelForm):
             'month_for': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'payment_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
-            'bank_reference': forms.TextInput(attrs={
-                'class': 'form-control',
+            'bank_reference': forms.TextInput(attrs={'class': 'form-control',
                 'placeholder': 'Enter bank transaction ID / reference'
             }),
         }

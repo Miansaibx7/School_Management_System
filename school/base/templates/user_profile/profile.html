@@ -15,21 +15,14 @@
             <img src="{% static 'images/default-avatar.png' %}" class="profile-avatar">
             {% endif %}
 
-            <h2 class="profile-name">
-                {{ request.user.name }}
-            </h2>
+            <h2 class="profile-name">{{ request.user.name }}</h2>
 
-            <span class="profile-role">
-                {{ user_role }}
-            </span>
-
+            <span class="profile-role">{{ user_role }}</span>
         </div>
 
         <div class="profile-body">
 
-            <h3 class="form-section-title">
-                Profile Information
-            </h3>
+            <h3 class="form-section-title">Profile Information</h3>
 
             <form method="POST" enctype="multipart/form-data">
 
@@ -38,28 +31,23 @@
                 <div class="row">
 
                     <div class="col-md-6 form-group">
-                        <label>Full Name</label>
-                        {{ form.name }}
+                        <label>Full Name</label>{{ form.name }}
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <label>Email Address</label>
-                        {{ form.email }}
+                        <label>Email Address</label>{{ form.email }}
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <label>Phone Number</label>
-                        {{ form.phone }}
+                        <label>Phone Number</label>{{ form.phone }}
                     </div>
 
                     <div class="col-md-12 form-group">
-                        <label>Biography</label>
-                        {{ form.bio }}
+                        <label>Biography</label>{{ form.bio }}
                     </div>
 
                     <div class="col-md-12 form-group">
-                        <label>Profile Picture</label>
-                        {{ form.avatar }}
+                        <label>Profile Picture</label>{{ form.avatar }}
                     </div>
 
                 </div>
@@ -109,11 +97,7 @@ body{
 }
 
 .profile-header{
-    background:linear-gradient(
-        135deg,
-        #4f46e5,
-        #7c3aed
-    );
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
     color:white;
     padding:40px 20px;
     text-align:center;
@@ -246,17 +230,11 @@ textarea{
 
 @media(max-width:768px){
 
-    .profile-body{
-        padding:20px;
-    }
+    .profile-body{padding:20px;}
 
-    .profile-stats{
-        grid-template-columns:1fr;
-    }
+    .profile-stats{grid-template-columns:1fr;}
 
-    .profile-name{
-        font-size:22px;
-    }
+    .profile-name{font-size:22px;}
 
 }
 

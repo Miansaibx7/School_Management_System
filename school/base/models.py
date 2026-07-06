@@ -67,13 +67,10 @@ class User(AbstractUser):
     
     @property
     def role(self):
-
         if self.is_superuser:
             return "Super Administrator"
-
         elif self.is_admin:
             return "Administrator"
-
         elif self.is_accountant:
             return "Accountant"
 

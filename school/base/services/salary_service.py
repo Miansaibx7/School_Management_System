@@ -9,7 +9,6 @@ class SalaryService:
     def pay_salary(teacher,amount, month_for, payment_date, payment_method, paid_by):
 
         with transaction.atomic():
-
             # Create financial transaction
             transaction_record = TransactionService.create_expense(title=f"Salary Payment - {teacher.full_name}",
                 category="salary", amount=amount, date=payment_date, user=paid_by)
