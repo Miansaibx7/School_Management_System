@@ -695,7 +695,7 @@ def fee_create(request):
             fee = form.save(commit=False)
             fee.received_by = request.user # Set the received_by field to the current user
             fee.save()
-            messages.success(request, 'Fee payment recorded successfully.')
+            messages.success(request, 'Fee payment record successfully.')
             return redirect('fee_list')
         else:
             messages.error(request, 'Please correct the errors below.')
