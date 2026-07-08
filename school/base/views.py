@@ -226,7 +226,7 @@ def pricing_view(request):
     return render(request, 'pricing.html')
 
 
-@login_required(login_url='loginPage')
+
 def features_view(request):
     features = [
         {

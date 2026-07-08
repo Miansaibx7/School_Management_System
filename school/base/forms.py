@@ -15,7 +15,10 @@ User = get_user_model()
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['email','name', 'password1', 'password2']
+        fields = ['email',
+                'name', 
+                'password1',
+                'password2']
 
     def clean_password1(self):
          password = self.cleaned_data.get('password1')
