@@ -216,7 +216,8 @@ def contact_view(request):
     context = {
         'faqs': CONTACT_FAQS,  # Use imported FAQ data
         'page_title': 'Contact Us - School Management System',
-        'meta_description': 'Get in touch with us for school management software inquiries. WhatsApp: +92 348 2258263, Email: hello@ourschoolsoftware.com',
+        'meta_description': 'Get in touch with us for school management software inquiries.'
+        ' WhatsApp: +92 306 8363688, Email: hello@ourschoolsoftware.com',
     }
     
     return render(request, 'contact.html', context)
