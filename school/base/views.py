@@ -345,8 +345,7 @@ def dashboard(request):
 
     students_this_month = Student.objects.filter(
         created_at__year=now.year,
-        created_at__month=now.month
-    ).count()
+        created_at__month=now.month).count()
 
     teachers_this_month = Teacher.objects.filter(
         created_at__year=now.year,
@@ -354,28 +353,21 @@ def dashboard(request):
 
     # FINANCIAL STATS
     total_income = Transaction.objects.filter(
-        transaction_type='income'
-    ).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
+        transaction_type='income').aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
 
     total_expense = Transaction.objects.filter(
-        transaction_type='expense'
-    ).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
+        transaction_type='expense').aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
 
     profit = total_income - total_expense
 
     # RECENT STUDENTS
-    recent_students = Student.objects.select_related(
-        'class_room',
-        'section'
-    ).order_by('-created_at')[:5]
+    recent_students = Student.objects.select_related('class_room','section').order_by('-created_at')[:5]
 
 
     # REAL FEE DEFAULTERS (IMPORTANT FIX)
     defaulters = Student.objects.annotate(
     paid=Coalesce(Sum('fee_payments__amount'), Decimal('0.00'))
-    ).filter(
-    paid__lt=F('class_room__monthly_fee')
-    ).order_by('paid')[:10]
+    ).filter(paid__lt=F('class_room__monthly_fee')).order_by('paid')[:10]
 
     # CONTEXT
     context = { "user_role": request.user.role,
