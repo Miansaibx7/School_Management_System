@@ -365,9 +365,9 @@ def dashboard(request):
 
 
     # REAL FEE DEFAULTERS (IMPORTANT FIX)
-    defaulters = Student.objects.annotate(
-    paid=Coalesce(Sum('fee_payments__amount'), Decimal('0.00'))
-    ).filter(paid__lt=F('class_room__monthly_fee')).order_by('paid')[:10]
+    defaulters = Student.objects.filter(
+        total_fee_due__gt=0  # Only get students who actually owe money
+    ).select_related('class_room', 'section').order_by('-total_fee_due')[:10]
 
     # CONTEXT
     context = { "user_role": request.user.role,
