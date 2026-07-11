@@ -366,7 +366,7 @@ def dashboard(request):
 
     # REAL FEE DEFAULTERS (IMPORTANT FIX)
     defaulters = Student.objects.filter(
-        total_fee_due__gt=0  # Only get students who actually owe money
+        total_fee_due__gt=0  # Only grab students who owe more than $0
     ).select_related('class_room', 'section').order_by('-total_fee_due')[:10]
 
     # CONTEXT
