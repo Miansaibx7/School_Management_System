@@ -364,7 +364,7 @@ def dashboard(request):
     recent_students = Student.objects.select_related('class_room','section').order_by('-created_at')[:5]
 
 
-    # REAL FEE DEFAULTERS (IMPORTANT FIX)
+    # REAL FEE DEFAULTERS 
     defaulters = Student.objects.filter(
         total_fee_due__gt=0  # Only grab students who owe more than $0
     ).select_related('class_room', 'section').order_by('-total_fee_due')[:10]
