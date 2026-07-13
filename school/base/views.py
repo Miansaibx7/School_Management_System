@@ -182,7 +182,7 @@ def contact_view(request):
         message = request.POST.get('message')
         newsletter = request.POST.get('newsletter')
         
-        # Process form data (send email, save to database, etc.)
+        # Process form data (send email, save to database)
         try:
             # Send email notification
             email_subject = f"New Contact Form Submission: {subject}"
