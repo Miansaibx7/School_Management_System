@@ -1,8 +1,6 @@
 
 
 
-# All the features are their
-
 
 
 features_info = [
