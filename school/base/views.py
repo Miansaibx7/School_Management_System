@@ -40,7 +40,7 @@ from django.conf import settings
 from .data.faqs import CONTACT_FAQS
 from .data.features import features_info
 
-from .services.fee_service import FeeService
+# from .services.fee_service import FeeService
 
 def home(request):
     context = {}
