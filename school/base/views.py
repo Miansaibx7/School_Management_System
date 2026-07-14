@@ -4,7 +4,6 @@ from django.utils import timezone
 from django.db.models import Sum
 from decimal import Decimal
 import json
-from django.db.models.functions import Coalesce
 
 from .decorators import admin_required, accountant_required 
 
