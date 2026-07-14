@@ -120,7 +120,7 @@ def about_view(request):
 def learn_more(request):
     context = {
         'title': 'Learn More - School Management System',
-        'meta_description': 'Discover powerful features of our school management system.',
+        'meta_description': 'Discover powerful features of our school management system..',
     }
     return render(request, 'learn_more.html', context)
 
