@@ -252,6 +252,7 @@ def profile(request):
     return render(request,"user_profile/profile.html",context)
 
 
+#=============================== Dashboard ==========================================================================
 @login_required(login_url='loginPage')
 def dashboard(request):
 
