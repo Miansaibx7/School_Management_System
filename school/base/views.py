@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.db.models import Sum,F
+from django.db.models import Sum
 from decimal import Decimal
 import json
 from django.db.models.functions import Coalesce
