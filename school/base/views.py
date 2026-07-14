@@ -195,8 +195,7 @@ def contact_view(request):
             Message:
             {message}
             
-            Newsletter Subscription: {'Yes' if newsletter else 'No'}
-            """
+            Newsletter Subscription: {'Yes' if newsletter else 'No'}"""
             
             send_mail(
                 email_subject,
@@ -508,11 +507,9 @@ def section_create(request):
 @admin_required    
 def section_update(request,pk):
     section_obj = get_object_or_404(Section, pk=pk)
-    form = SectionForm(
-        request.POST or None,
-        request.FILES or None,
-        instance= section_obj
-    )
+
+    form = SectionForm(request.POST or None,request.FILES or None,instance= section_obj)
+    
     if form.is_valid():
         form.save()
         messages.success(request,"Section updated successfully")
