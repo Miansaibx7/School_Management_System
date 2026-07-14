@@ -41,9 +41,89 @@ from .data.features import features_info
 
 # from .services.fee_service import FeeService
 
+
 def home(request):
     context = {}
     return render(request,'home.html',context)
+# ========================= CONTACT VIEW WITH FAQS AND EMAIL NOTIFICATIONS ==========================
+def contact_view(request):
+    
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        newsletter = request.POST.get('newsletter')
+        
+        # Process form data (send email, save to database)
+        try:
+            # Send email notification
+            email_subject = f"New Contact Form Submission: {subject}"
+            email_message = f"""
+            Name: {name}
+            Email: {email}
+            Phone: {phone}
+            Subject: {subject}
+            
+            Message:
+            {message}
+            
+            Newsletter Subscription: {'Yes' if newsletter else 'No'}"""
+            
+            send_mail(
+                email_subject,
+                email_message,
+                settings.DEFAULT_FROM_EMAIL,
+                ['hello@ourschoolsoftware.com'],
+                fail_silently=False,
+            )
+            
+            messages.success(request, 'Thank you for your message! We will get back to you soon.')
+            return redirect('contact')
+            
+        except Exception as e:
+            messages.error(request, 'Sorry, there was an error sending your message. Please try again later.')
+    
+    context = {
+        'faqs': CONTACT_FAQS,  # Use imported FAQ data
+        'page_title': 'Contact Us - School Management System',
+        'meta_description': 'Get in touch with us for school management software inquiries.'
+        ' WhatsApp: +92 306 8363688, Email: hello@ourschoolsoftware.com',
+    }
+    
+    return render(request, 'contact.html', context)
+
+
+def pricing_view(request):
+    return render(request, 'pricing.html')
+
+
+
+def features_view(request):
+
+    context = {
+        'features': features_info,
+        'page_title': 'Features - School Management System',
+        'meta_description': 'Explore the best features of our free school management system including mobile app, cloud access, multi-campus support, and more.',
+    }
+    
+    return render(request, 'features.html', context)
+
+
+def about_view(request):
+    context = {}
+    return render (request,'about.html',context)
+
+
+
+def learn_more(request):
+    context = {
+        'title': 'Learn More - School Management System',
+        'meta_description': 'Discover powerful features of our school management system.',
+    }
+    return render(request, 'learn_more.html', context)
+
 
 def LoginPage(request):
     page = 'loginPage_'
@@ -170,86 +250,6 @@ def profile(request):
 
     context = {"form": form, "user_role": user_role}
     return render(request,"user_profile/profile.html",context)
-
-
-# ========================= CONTACT VIEW WITH FAQS AND EMAIL NOTIFICATIONS ==========================
-def contact_view(request):
-    
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        subject = request.POST.get('subject')
-        message = request.POST.get('message')
-        newsletter = request.POST.get('newsletter')
-        
-        # Process form data (send email, save to database)
-        try:
-            # Send email notification
-            email_subject = f"New Contact Form Submission: {subject}"
-            email_message = f"""
-            Name: {name}
-            Email: {email}
-            Phone: {phone}
-            Subject: {subject}
-            
-            Message:
-            {message}
-            
-            Newsletter Subscription: {'Yes' if newsletter else 'No'}"""
-            
-            send_mail(
-                email_subject,
-                email_message,
-                settings.DEFAULT_FROM_EMAIL,
-                ['hello@ourschoolsoftware.com'],
-                fail_silently=False,
-            )
-            
-            messages.success(request, 'Thank you for your message! We will get back to you soon.')
-            return redirect('contact')
-            
-        except Exception as e:
-            messages.error(request, 'Sorry, there was an error sending your message. Please try again later.')
-    
-    context = {
-        'faqs': CONTACT_FAQS,  # Use imported FAQ data
-        'page_title': 'Contact Us - School Management System',
-        'meta_description': 'Get in touch with us for school management software inquiries.'
-        ' WhatsApp: +92 306 8363688, Email: hello@ourschoolsoftware.com',
-    }
-    
-    return render(request, 'contact.html', context)
-
-
-def pricing_view(request):
-    return render(request, 'pricing.html')
-
-
-
-def features_view(request):
-
-    context = {
-        'features': features_info,
-        'page_title': 'Features - School Management System',
-        'meta_description': 'Explore the best features of our free school management system including mobile app, cloud access, multi-campus support, and more.',
-    }
-    
-    return render(request, 'features.html', context)
-
-
-def about_view(request):
-    context = {}
-    return render (request,'about.html',context)
-
-
-
-def learn_more(request):
-    context = {
-        'title': 'Learn More - School Management System',
-        'meta_description': 'Discover powerful features of our school management system.',
-    }
-    return render(request, 'learn_more.html', context)
 
 
 @login_required(login_url='loginPage')
