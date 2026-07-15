@@ -15,10 +15,7 @@ User = get_user_model()
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['email',
-                'name', 
-                'password1',
-                'password2']
+        fields = ['email','name', 'password1','password2']
 
     def clean_password1(self):
          password = self.cleaned_data.get('password1')
@@ -84,7 +81,7 @@ class ClassForm(forms.ModelForm):
         model = Class
         fields = "__all__"
         
-        # This injects Bootstrap classes and our custom animation classes into the HTML.
+        # Injects Bootstrap classes and our custom animation classes into the HTML.
         widgets = {
             'name': forms.Select(attrs={'class': 'form-select custom-input-anim',}),
             'monthly_fee': forms.NumberInput(attrs={'class': 'form-control custom-input-anim',
