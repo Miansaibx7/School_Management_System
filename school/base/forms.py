@@ -103,7 +103,7 @@ class SectionForm(forms.ModelForm):
             'student_class': forms.Select(attrs={'class': 'form-select'}),
             'class_teacher': forms.Select(attrs={'class': 'form-select'}),
             'capacity': forms.NumberInput(attrs={'class': 'form-control', 'min': '1'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input', 'role': 'switch'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input', 'role': 'switch'})
         }
 
 
