@@ -17,7 +17,7 @@ class FeeService:
             fee = Fee.objects.create(student=student, amount=amount, month_for=month_for, payment_date=payment_date,
                 payment_method=payment_method, transaction=transaction_record, received_by=received_by )
 
-            # Update student's fee summary
+            # Update student fee summary
             student.update_fee_status()
 
             return fee
