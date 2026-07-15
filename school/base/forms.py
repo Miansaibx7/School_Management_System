@@ -148,7 +148,7 @@ class TransactionForm(forms.ModelForm):
             if not isinstance(field.widget, forms.CheckboxInput):
                 field.widget.attrs.update({'class': 'form-control'})
                 
-        # Fix for Select dropdowns to use the correct Bootstrap class
+        # Select dropdowns to use the correct Bootstrap class
         self.fields['transaction_type'].widget.attrs.update({'class': 'form-select'})
         self.fields['category'].widget.attrs.update({'class': 'form-select'})
 
@@ -180,7 +180,7 @@ class SalaryForm(forms.ModelForm):
             'notes': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
             'bank_reference': forms.TextInput(attrs={'class': 'form-control',
                 'placeholder': 'Enter bank transaction ID / reference'
-            }),
+            })
         }
 
     def __init__(self, *args, **kwargs):
