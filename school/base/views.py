@@ -777,7 +777,7 @@ def financial_reports(request):
 
     # RECENT TRANSACTIONS
     recent_transactions = Transaction.objects.order_by('-date','-created_at')[:10]
-    # CONTEXT
+  
     context = {
         'total_students': total_students,
         'total_teachers': total_teachers,
