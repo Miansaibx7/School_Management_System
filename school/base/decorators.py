@@ -17,7 +17,7 @@ def admin_required(view_func):
     return wrapper
 
 
-
+# Decorator for accountant
 def accountant_required(view_func):
 
     def wrapper(request, *args, **kwargs):
