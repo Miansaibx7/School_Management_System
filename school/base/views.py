@@ -125,6 +125,7 @@ def learn_more(request):
     return render(request, 'learn_more.html', context)
 
 
+#========================== LoginPage View ======================================================================
 def LoginPage(request):
     page = 'loginPage_'
 
