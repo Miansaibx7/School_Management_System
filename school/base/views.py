@@ -341,7 +341,7 @@ def teacher_update(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
 
     form = TeacherForm(request.POST or None,request.FILES or None,instance=teacher)
-    
+
     if form.is_valid():
         form.save()
         messages.success(request, "Teacher updated successfully")
@@ -389,11 +389,9 @@ def class_create(request):
 @admin_required
 def class_update(request, pk):
     class_obj = get_object_or_404(Class, pk=pk)
-    form = ClassForm(
-        request.POST or None,
-        request.FILES or None,
-        instance=class_obj
-    )
+    
+    form = ClassForm(request.POST or None,request.FILES or None,instance=class_obj)
+    
     if form.is_valid():
         form.save()
         messages.success(request, "Class updated successfully")
