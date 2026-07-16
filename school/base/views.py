@@ -391,7 +391,7 @@ def class_update(request, pk):
     class_obj = get_object_or_404(Class, pk=pk)
     
     form = ClassForm(request.POST or None,request.FILES or None,instance=class_obj)
-    
+
     if form.is_valid():
         form.save()
         messages.success(request, "Class updated successfully")
@@ -757,10 +757,7 @@ def financial_reports(request):
     current_year = now.year
 
     for month in range(1, 13):
-        month_name = timezone.datetime(current_year,
-            month,
-            1
-        ).strftime('%b')
+        month_name = timezone.datetime(current_year,month,1).strftime('%b')
 
         months.append(month_name)
 
