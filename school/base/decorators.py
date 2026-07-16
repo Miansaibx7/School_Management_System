@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.contrib import messages
 
-
+# Decorator for admin
 def admin_required(view_func):
 
     def wrapper(request, *args, **kwargs):
@@ -15,6 +15,7 @@ def admin_required(view_func):
         messages.error(request," Access Denied! You don't have permission to access this section.")
         return redirect("dashboard")
     return wrapper
+
 
 
 def accountant_required(view_func):
