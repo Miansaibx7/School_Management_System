@@ -171,7 +171,7 @@ def Register(request):
     return render(request, 'login.html', {'form': form})
 
 
-# ========================= USER FUNCTIONS ==========================
+# ========================= USER FUNCTIONS ==============================================================================
 @login_required(login_url='loginPage')
 def user_list(request):
     users = User.objects.all().order_by('-date_joined')
