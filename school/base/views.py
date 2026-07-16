@@ -153,6 +153,7 @@ def Logoutpage(request):
     return redirect('home')
 
 
+#====================== Register View ===================================================================================
 def Register(request):
     form = MyUserCreationForm()
 
