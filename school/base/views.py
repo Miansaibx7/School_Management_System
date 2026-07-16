@@ -339,11 +339,9 @@ def teacher_create(request):
 @admin_required
 def teacher_update(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
-    form = TeacherForm(
-        request.POST or None,
-        request.FILES or None,
-        instance=teacher
-    )
+
+    form = TeacherForm(request.POST or None,request.FILES or None,instance=teacher)
+    
     if form.is_valid():
         form.save()
         messages.success(request, "Teacher updated successfully")
