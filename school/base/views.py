@@ -227,7 +227,7 @@ def user_delete(request, pk):
     return render(request,"users/user_confirm_delete.html",context)
 
 
-# ========================= USER PROFILE VIEW ==========================
+# ========================= USER PROFILE VIEW ===========================================================================
 @login_required(login_url="loginPage")
 def profile(request):
 
