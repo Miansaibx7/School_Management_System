@@ -6,60 +6,44 @@
 <div class="profile-container">
 
     <div class="profile-card">
-
         <div class="profile-header">
-
             {% if request.user.avatar %}
             <img src="{{ request.user.avatar.url }}" class="profile-avatar">
             {% else %}
             <img src="{% static 'images/default-avatar.png' %}" class="profile-avatar">
             {% endif %}
-
             <h2 class="profile-name">{{ request.user.name }}</h2>
-
             <span class="profile-role">{{ user_role }}</span>
         </div>
 
         <div class="profile-body">
-
             <h3 class="form-section-title">Profile Information</h3>
-
             <form method="POST" enctype="multipart/form-data">
-
                 {% csrf_token %}
 
                 <div class="row">
-
                     <div class="col-md-6 form-group">
                         <label>Full Name</label>{{ form.name }}
                     </div>
-
                     <div class="col-md-6 form-group">
                         <label>Email Address</label>{{ form.email }}
                     </div>
-
                     <div class="col-md-6 form-group">
                         <label>Phone Number</label>{{ form.phone }}
                     </div>
-
                     <div class="col-md-12 form-group">
                         <label>Biography</label>{{ form.bio }}
                     </div>
-
                     <div class="col-md-12 form-group">
                         <label>Profile Picture</label>{{ form.avatar }}
                     </div>
-
                 </div>
 
                 <button type="submit" class="save-btn">
                     Save Changes
                 </button>
-
             </form>
-
         </div>
-
     </div>
 
 </div>
