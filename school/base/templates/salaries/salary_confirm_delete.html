@@ -150,7 +150,8 @@
             <div class="warning-icon">⚠️</div>
             <h2>Confirm Salary Deletion</h2>
 
-            <!-- Assuming your context variable is named 'salary'. Update 'employee.full_name' if your model uses a different relation like 'staff' or 'teacher' -->
+            <!-- Assuming your context variable is named 'salary'. Update 'employee.full_name' 
+             if your model uses a different relation like 'staff' or 'teacher' -->
             <p>Are you absolutely sure you want to delete the salary record for <br>
                 <span class="salary-highlight">{{ salary.teacher.full_name }}</span> <br>
                 Amount: <span class="salary-highlight">${{ salary.amount }}</span>? <br><br>
