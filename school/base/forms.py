@@ -129,7 +129,7 @@ class StudentForm(forms.ModelForm):
                 field.widget.attrs.update({'class': 'form-control'})
 
 
-# ================= TRANSACTION FORM ===================================
+# ============================= TRANSACTION FORM ==============================================
 class TransactionForm(forms.ModelForm):
 
     class Meta:
