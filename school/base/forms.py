@@ -167,7 +167,7 @@ class FeeForm(forms.ModelForm):
         }
 
 
-# ================= SALARY FORM ===================================================
+# ================================== SALARY FORM ===================================================
 class SalaryForm(forms.ModelForm):
 
     class Meta:
