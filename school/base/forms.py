@@ -74,7 +74,7 @@ class TeacherForm(forms.ModelForm):
         }
 
 
-# ================= CLASS FORM =========================================================
+# =============================== CLASS FORM =========================================================
 class ClassForm(forms.ModelForm):
 
     class Meta:
