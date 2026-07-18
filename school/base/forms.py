@@ -92,7 +92,7 @@ class ClassForm(forms.ModelForm):
             # 'class_teacher': forms.Select(attrs={'class': 'form-select custom-input-anim'}),
         }
 
-# ================= SECTION FORM =====================================
+# =============================== SECTION FORM =========================================================
 class SectionForm(forms.ModelForm):
 
     class Meta:
