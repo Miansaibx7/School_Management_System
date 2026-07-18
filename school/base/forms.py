@@ -28,7 +28,7 @@ class MyUserCreationForm(UserCreationForm):
 
          return password
 
-# ================= Profile Form ===================================
+# ============================== Profile Form ===================================================================
 class ProfileForm(forms.ModelForm):
 
     class Meta:
