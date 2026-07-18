@@ -43,7 +43,7 @@ class ProfileForm(forms.ModelForm):
             }
   
 
-# ================= USER FORM ======================================
+# ============================= USER FORM ===========================================================
 class UserForm(forms.ModelForm):
 
     class Meta:
