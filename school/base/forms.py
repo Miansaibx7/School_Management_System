@@ -107,7 +107,7 @@ class SectionForm(forms.ModelForm):
         }
 
 
-# ================= STUDENT FORM ================================
+# =============================== STUDENT FORM =====================================================
 class StudentForm(forms.ModelForm):
 
     class Meta:
