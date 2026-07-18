@@ -52,7 +52,7 @@ class UserForm(forms.ModelForm):
             "is_admin", "is_accountant", "is_staff","is_active",]
 
 
-# ================= TEACHER FORM ======================================================
+# ================================ TEACHER FORM ======================================================
 class TeacherForm(forms.ModelForm):
 
     class Meta:
