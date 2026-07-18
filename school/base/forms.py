@@ -153,7 +153,7 @@ class TransactionForm(forms.ModelForm):
         self.fields['category'].widget.attrs.update({'class': 'form-select'})
 
 
-# ================= FEE FORM ==================================================
+# ================================ FEE FORM ==================================================
 class FeeForm(forms.ModelForm):
 
     class Meta:
