@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ==============================
     // Income vs Expense Chart
-    // ==============================
     const incomeExpenseCanvas = document.getElementById("incomeExpenseChart");
 
     if (incomeExpenseCanvas) {
