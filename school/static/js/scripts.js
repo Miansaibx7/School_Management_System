@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ==============================
     // Income vs Expense Chart
     const incomeExpenseCanvas = document.getElementById("incomeExpenseChart");
 
@@ -84,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    // ==============================
     // Fee Status Chart
     // ==============================
     const feeCanvas = document.getElementById("feeChart");
