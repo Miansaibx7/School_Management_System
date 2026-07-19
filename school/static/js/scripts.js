@@ -84,11 +84,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Fee Status Chart
-    // ==============================
     const feeCanvas = document.getElementById("feeChart");
 
     if (feeCanvas) {
-
         const paidFees = feeCanvas.dataset.paid;
         const partialFees = feeCanvas.dataset.partial;
         const pendingFees = feeCanvas.dataset.pending;

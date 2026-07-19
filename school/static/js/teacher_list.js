@@ -21,13 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const navLogo = document.getElementById('nav-logo');
     const rows = document.querySelectorAll('.t-row');
 
-    // 1. Sidebar Toggle
+    // Sidebar Toggle
     toggleBtn.addEventListener('click', () => {
         sidebar.classList.toggle('collapsed');
         navLogo.classList.toggle('hidden');
     });
 
-    // 2. Real-time Staggered Animation
+    //  Real-time Staggered Animation
     rows.forEach((row, index) => {
         setTimeout(() => {
             row.style.transition = "all 0.4s ease";
