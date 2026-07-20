@@ -2,7 +2,7 @@ from django.db import transaction
 from ..models import Fee
 from .transaction_service import TransactionService
 
-
+# fee logic are here
 class FeeService:
 
     @staticmethod
