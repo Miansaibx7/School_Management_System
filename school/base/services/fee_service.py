@@ -9,7 +9,7 @@ class FeeService:
     def create_fee_payment(student, amount,month_for,payment_date, payment_method,received_by):
 
         with transaction.atomic():
-            # Create financial transaction
+            # Create financial transaction and also load TransactionService in this file
             transaction_record = TransactionService.create_income( title=f"Fee Payment - {student.full_name}",
                 category="fee", amount=amount, date=payment_date, user=received_by)
 
