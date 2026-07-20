@@ -40,7 +40,7 @@ class TeacherAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('created_at', 'updated_at', 'total_salary_paid', 'salary_due')
 
-# ==================== Class Admin ====================
+# ======================= Class Admin ==========================================================
 @admin.register(Class)
 class ClassAdmin(admin.ModelAdmin):
     list_display = ('name', 'monthly_fee', 'is_active')
