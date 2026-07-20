@@ -73,7 +73,7 @@ class StudentAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('created_at', 'updated_at', 'total_fee_paid', 'total_fee_due')
 
-# ==================== Transaction Admin ====================
+# =========================== Transaction Admin ==============================================
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('title', 'transaction_type', 'category', 'amount', 'date', 'recorded_by')
