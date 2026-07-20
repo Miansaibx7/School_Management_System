@@ -81,7 +81,7 @@ class TransactionAdmin(admin.ModelAdmin):
     list_filter = ('transaction_type', 'category', 'date')
     ordering = ('-date',)
 
-# ==================== Fee Admin ====================
+# ============================= Fee Admin =======================================================
 @admin.register(Fee)
 class FeeAdmin(admin.ModelAdmin):
     list_display = ('student', 'amount', 'month_for', 'status', 'payment_date', 'payment_method')
