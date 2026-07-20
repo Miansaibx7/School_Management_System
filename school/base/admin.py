@@ -89,7 +89,7 @@ class FeeAdmin(admin.ModelAdmin):
     list_filter = ('status', 'payment_method', 'payment_date')
     ordering = ('-payment_date',)
 
-# ============================== Salary Admin =====================================
+# ============================== Salary Admin ====================================================
 @admin.register(Salary)
 class SalaryAdmin(admin.ModelAdmin):
     list_display = ('teacher', 'amount', 'month_for', 'status', 'payment_date', 'payment_method')
