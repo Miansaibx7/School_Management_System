@@ -24,7 +24,7 @@ class UserAdmin(admin.ModelAdmin):
         }),
     )
 
-# ==================== Teacher Admin ====================
+# ========================= Teacher Admin ===================================================
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'teacher_id', 'designation', 'phone_number', 'is_active')
