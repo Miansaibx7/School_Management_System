@@ -57,7 +57,7 @@ class SectionAdmin(admin.ModelAdmin):
     ordering = ('student_class', 'name')
     readonly_fields = ('student_count', 'available_seats')
 
-# ==================== Student Admin ====================
+# ======================== Student Admin ==========================================================
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'admission_number', 'class_room', 'section', 'roll_number', 'is_active')
