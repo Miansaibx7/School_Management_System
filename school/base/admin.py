@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import User,Teacher,Class,Section,Student,Transaction,Fee,Salary
 
 
-# ==================== User Admin ====================
+# ====================== User Admin ====================================================
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('email', 'name', 'role', 'is_active', 'is_staff', 'is_superuser')
