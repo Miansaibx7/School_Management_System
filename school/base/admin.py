@@ -48,7 +48,7 @@ class ClassAdmin(admin.ModelAdmin):
     list_filter = ('is_active',)
     ordering = ('name',)
 
-# ==================== Section Admin ====================
+# ======================= Section Admin ==========================================================
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('student_class', 'name', 'class_teacher', 'capacity', 'student_count', 'is_active')
