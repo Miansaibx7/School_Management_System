@@ -1,6 +1,6 @@
 from ..models import Transaction
 
-
+# transaction logic
 class TransactionService:
 
     @staticmethod
