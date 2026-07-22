@@ -176,7 +176,7 @@ class Teacher(models.Model):
 
 # ==================== CLASS MODEL ==================================
 class Class(models.Model):
-    """Model for school classes/grades"""
+    """ Model for school classes/grades """
     CLASS_CHOICES = [
         ('Nursery', 'Nursery'),
         ('Class 1', 'Class 1'),
