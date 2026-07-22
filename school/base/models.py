@@ -92,7 +92,7 @@ class Teacher(models.Model):
         ('HOD', 'Head of Department'),
         ('Senior Teacher', 'Senior Teacher'),
         ('Teacher', 'Teacher'),
-        ('Assistant Teacher', 'Assistant Teacher'),
+        ('Assistant Teacher', 'Assistant Teacher')
     )
 # Link to User model (for portal access to the teacher if the admin want )
     user = models.OneToOneField(
