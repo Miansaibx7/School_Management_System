@@ -200,7 +200,7 @@ class Class(models.Model):
     is_active = models.BooleanField(default=True)
     
     class Meta:
-        ordering = ["name"] # Note: sort alphabetically (Class 1, Class 2).
+        ordering = ["name"] # sort alphabetically (Class 1, Class 2).
         verbose_name = "Class"
         verbose_name_plural = "Classes"
         
