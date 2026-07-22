@@ -17,7 +17,7 @@ class MyUserCreationForm(UserCreationForm):
         model = User
         fields = ['email','name', 'password1','password2']
 
-    def clean_password1(self):
+    def clean_password1(self)->str:
          password = self.cleaned_data.get('password1')
 
          if len(password) < 6:
