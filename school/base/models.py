@@ -84,7 +84,7 @@ class Teacher(models.Model):
     GENDER_CHOICES = (
         ('Male', 'Male'),
         ('Female', 'Female'),
-        ('Other', 'Other'),
+        ('Other', 'Other')
     )  
     DESIGNATIONS = (
         ('Principal', 'Principal'),
