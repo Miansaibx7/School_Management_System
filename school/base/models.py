@@ -14,7 +14,7 @@ from django.db.models.functions import Coalesce
 
 
 
-# ====================CUSTOM USER MANAGER==========================================
+# ====================================== CUSTOM USER MANAGER =================================================================
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
