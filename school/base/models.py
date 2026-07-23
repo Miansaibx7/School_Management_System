@@ -262,7 +262,7 @@ class Section(models.Model):
         return self.capacity - self.student_count
 
 
-# ==================== STUDENT MODEL ====================
+# ========================== STUDENT MODEL =================================================================================
 class Student(models.Model):
     """Student model for School Management System"""
     GENDER_CHOICES = (
