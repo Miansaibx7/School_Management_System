@@ -391,7 +391,7 @@ class Student(models.Model):
 
 
 
-# ==================== EXPENSE/INCOME MODEL ====================
+# ============================= EXPENSE/INCOME MODEL ======================================================================
 class Transaction(models.Model):
     """General school transactions for profit/loss tracking"""
     TRANSACTION_TYPES = (
@@ -509,7 +509,7 @@ class Transaction(models.Model):
         ).order_by('month')    
 
 
-# ==================== FEE MODEL ====================
+# ======================= FEE MODEL =======================================================================================
 class Fee(models.Model):
     """Student fee payment records"""
     PAYMENT_METHODS = (
@@ -599,7 +599,7 @@ class Fee(models.Model):
                 self.student.update_fee_status()
 
 
-# ==================== SALARY MODEL ====================
+# ========================== SALARY MODEL ================================================================================
 class Salary(models.Model):
     """Teacher salary payment records"""
     PAYMENT_METHODS = (
