@@ -40,7 +40,7 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
     
-#===================== USER MODEL ==========================================
+#============================ USER MODEL ===================================================================================
 class User(AbstractUser):
     """Custom User model using email as username"""
     username = None
