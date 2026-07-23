@@ -78,7 +78,7 @@ class User(AbstractUser):
     
 
 
-# ==================== TEACHER MODEL ==================================
+# ================================== TEACHER MODEL ===========================================================================
 class Teacher(models.Model):
     """Complete Teacher model with salary tracking"""
     GENDER_CHOICES = (
@@ -174,7 +174,7 @@ class Teacher(models.Model):
 
 
 
-# ==================== CLASS MODEL ==================================
+# ======================== CLASS MODEL ================================================================================
 class Class(models.Model):
     """ Model for school classes/grades """
     CLASS_CHOICES = [
