@@ -209,7 +209,7 @@ class Class(models.Model):
         
 
 
-#=================== SECTION MODEL ======================
+#=============================== SECTION MODEL ==============================================================================
 class Section(models.Model):
     """Model for class sections (A, B, C...)"""
     name = models.CharField(max_length=5, default='A')
