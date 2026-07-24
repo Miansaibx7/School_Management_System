@@ -12,6 +12,7 @@ from .models import (Teacher,
 
 User = get_user_model()
 
+# ============================== MyUserCreationForm ===================================================================
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
