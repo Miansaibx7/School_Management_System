@@ -87,5 +87,5 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 import os
-MEDIA_URL = '/media/' # User upload Images
+MEDIA_URL = '/media/' # For user upload Images
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
