@@ -1,5 +1,4 @@
-from django.db import IntegrityError, models, transaction as db_transaction # Use alias to prevent naming conflicts
-from django.contrib.auth.models import AbstractUser,BaseUserManager
+from django.db import  models, transaction as db_transaction # Use alias to prevent naming conflicts
 
 from django.db.models import Sum, Q, F
 from decimal import Decimal
@@ -10,9 +9,8 @@ from django.core.exceptions import ValidationError
 # TruncMonth converts a date into the first day of its month
           # Example: 2026-03-15 → 2026-03-01
 from django.db.models.functions import TruncMonth, Coalesce # Coalesce to prevent 'None' values in charts
-from django.db.models.functions import Coalesce
 
-
+from django.conf import settings
 
 
 
@@ -35,7 +33,7 @@ class Teacher(models.Model):
     )
 # Link to User model (for portal access to the teacher if the admin want )
     user = models.OneToOneField(
-        User, 
+        settings.AUTH_USER_MODEL, 
         on_delete=models.SET_NULL, 
         null=True, 
         blank=True,
@@ -218,7 +216,7 @@ class Student(models.Model):
     
 # Link to User model (optional - for portal access)
     user = models.OneToOneField(
-        'User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -357,7 +355,7 @@ class Transaction(models.Model):
     date = models.DateField(default=timezone.now)
     description = models.TextField(blank=True)
     receipt_number = models.CharField(max_length=50, blank=True)
-    recorded_by = models.ForeignKey(User, on_delete=models.SET_NULL,
+    recorded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
                                     null=True,
                                     blank=True,
                                     related_name="recorded_transactions"
@@ -487,7 +485,7 @@ class Fee(models.Model):
     
 # Staff member who received the payment
     received_by = models.ForeignKey(
-        User, 
+        settings.AUTH_USER_MODEL, 
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -575,7 +573,7 @@ class Salary(models.Model):
 # User (admin/accountant) who recorded the payment
 # If the user is deleted, the field will become NULL
     paid_by = models.ForeignKey(
-        User, 
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

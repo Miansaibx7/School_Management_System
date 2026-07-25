@@ -2,36 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from .models import (
-    User,
-    Teacher,
-    Class,
-    Section,
-    Student,
-    Transaction,
-    Fee,
-    Salary
-)
+from .models import (Teacher,Class,Section,Student,Transaction,Fee,Salary)
 
-# ==================== User Admin ====================
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'name', 'role', 'is_active', 'is_staff', 'is_superuser')
-    list_filter = ('is_active', 'is_staff', 'is_superuser', 'is_admin', 'is_accountant')
-    search_fields = ('email', 'name', 'phone')
-    ordering = ('-date_joined',)
-    fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        ('Personal Info', {'fields': ('name', 'bio', 'phone', 'avatar')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_admin', 'is_accountant', 'groups', 'user_permissions')}),
-        ('Important Dates', {'fields': ('last_login', 'date_joined')}),
-    )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('email', 'name', 'password1', 'password2', 'is_active', 'is_staff', 'is_superuser'),
-        }),
-    )
 
 # ==================== Teacher Admin ====================
 @admin.register(Teacher)
