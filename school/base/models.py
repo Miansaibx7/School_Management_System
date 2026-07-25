@@ -10,7 +10,6 @@ from django.core.exceptions import ValidationError
 # TruncMonth converts a date into the first day of its month
           # Example: 2026-03-15 → 2026-03-01
 from django.db.models.functions import TruncMonth, Coalesce # Coalesce to prevent 'None' values in charts
-from django.db.models.functions import Coalesce
 
 
 
