@@ -1,4 +1,4 @@
-from django.db import models, transaction as db_transaction # Use alias to prevent naming conflicts
+from django.db import IntegrityError, models, transaction as db_transaction # Use alias to prevent naming conflicts
 from django.contrib.auth.models import AbstractUser,BaseUserManager
 
 from django.db.models import Sum, Q, F
@@ -9,82 +9,21 @@ from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ValidationError
 # TruncMonth converts a date into the first day of its month
           # Example: 2026-03-15 → 2026-03-01
-from django.db.models.functions import TruncMonth, Coalesce # ADDED: Coalesce to prevent 'None' values in charts
+from django.db.models.functions import TruncMonth, Coalesce # Coalesce to prevent 'None' values in charts
 from django.db.models.functions import Coalesce
 
 
 
-# ====================CUSTOM USER MANAGER==========================================
-class CustomUserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        if not email:
-            raise ValueError('Email address is required')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields['is_staff'] = True
-        extra_fields['is_superuser'] = True
-        extra_fields['is_admin'] = True
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-
-        return self.create_user(email, password, **extra_fields)
-    
-#===================== USER MODEL ==========================================
-class User(AbstractUser):
-    """Custom User model using email as username"""
-    username = None
-    name = models.CharField(max_length=120)
-    email = models.EmailField(unique=True)
-    bio = models.TextField(null=True, blank=True)
-    phone = models.CharField(max_length=15, blank=True, null=True)
-    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
-    
-    # Role flags for dashboard access control
-    is_admin = models.BooleanField(default=False)
-    is_accountant = models.BooleanField(default=False)
-    
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']
-
-    objects = CustomUserManager()
-
-    class Meta:
-        ordering = ['-date_joined']
-
-    def __str__(self):
-        return self.email
-    
-    @property
-    def role(self):
-
-        if self.is_superuser:
-            return "Super Administrator"
-
-        elif self.is_admin:
-            return "Administrator"
-
-        elif self.is_accountant:
-            return "Accountant"
-
-        return "Staff User"
-    
 
 
-# ==================== TEACHER MODEL ==================================
+
+# ================================== TEACHER MODEL ===========================================================================
 class Teacher(models.Model):
     """Complete Teacher model with salary tracking"""
     GENDER_CHOICES = (
         ('Male', 'Male'),
         ('Female', 'Female'),
-        ('Other', 'Other'),
+        ('Other', 'Other')
     )  
     DESIGNATIONS = (
         ('Principal', 'Principal'),
@@ -92,7 +31,7 @@ class Teacher(models.Model):
         ('HOD', 'Head of Department'),
         ('Senior Teacher', 'Senior Teacher'),
         ('Teacher', 'Teacher'),
-        ('Assistant Teacher', 'Assistant Teacher'),
+        ('Assistant Teacher', 'Assistant Teacher')
     )
 # Link to User model (for portal access to the teacher if the admin want )
     user = models.OneToOneField(
@@ -174,9 +113,9 @@ class Teacher(models.Model):
 
 
 
-# ==================== CLASS MODEL ==================================
+# ======================== CLASS MODEL ================================================================================
 class Class(models.Model):
-    """Model for school classes/grades"""
+    """ Model for school classes/grades """
     CLASS_CHOICES = [
         ('Nursery', 'Nursery'),
         ('Class 1', 'Class 1'),
@@ -200,7 +139,7 @@ class Class(models.Model):
     is_active = models.BooleanField(default=True)
     
     class Meta:
-        ordering = ["name"] # Note: sort alphabetically (Class 1, Class 2).
+        ordering = ["name"] # sort alphabetically (Class 1, Class 2).
         verbose_name = "Class"
         verbose_name_plural = "Classes"
         
@@ -209,7 +148,7 @@ class Class(models.Model):
         
 
 
-#=================== SECTION MODEL ======================
+#=============================== SECTION MODEL ==============================================================================
 class Section(models.Model):
     """Model for class sections (A, B, C...)"""
     name = models.CharField(max_length=5, default='A')
@@ -262,7 +201,7 @@ class Section(models.Model):
         return self.capacity - self.student_count
 
 
-# ==================== STUDENT MODEL ====================
+# ========================== STUDENT MODEL =================================================================================
 class Student(models.Model):
     """Student model for School Management System"""
     GENDER_CHOICES = (
@@ -391,7 +330,7 @@ class Student(models.Model):
 
 
 
-# ==================== EXPENSE/INCOME MODEL ====================
+# ============================= EXPENSE/INCOME MODEL ======================================================================
 class Transaction(models.Model):
     """General school transactions for profit/loss tracking"""
     TRANSACTION_TYPES = (
@@ -509,7 +448,7 @@ class Transaction(models.Model):
         ).order_by('month')    
 
 
-# ==================== FEE MODEL ====================
+# ======================= FEE MODEL =======================================================================================
 class Fee(models.Model):
     """Student fee payment records"""
     PAYMENT_METHODS = (
@@ -599,7 +538,7 @@ class Fee(models.Model):
                 self.student.update_fee_status()
 
 
-# ==================== SALARY MODEL ====================
+# ========================== SALARY MODEL ================================================================================
 class Salary(models.Model):
     """Teacher salary payment records"""
     PAYMENT_METHODS = (
