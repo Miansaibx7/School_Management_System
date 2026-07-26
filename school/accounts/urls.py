@@ -17,5 +17,14 @@ urlpatterns = [
 
     # ===================== Profile URLS ====================================
     path('profile/', views.profile, name='profile'),
+
+
+    path('',views.home, name='home'),
+    path('features/', views.features_view, name='features'),
+              
+    path('about/', views.about_view, name='about'),
+    path('learn-more/', views.learn_more, name='learn_more'),
+    path('contact/', views.contact_view, name='contact'),
+    path('pricing/', views.pricing_view, name='pricing'),
         
 ]

@@ -2,22 +2,14 @@ from django.urls import path, include
 from .import views
 
 urlpatterns = [
-       
-          path('',views.home, name='home'),
+      
           path('dashboard/', views.dashboard, name='dashboard'),
-          path('features/', views.features_view, name='features'),
-          
-          path('about/', views.about_view, name='about'),
-          path('learn-more/', views.learn_more, name='learn_more'),
-          path('contact/', views.contact_view, name='contact'),
-          path('pricing/', views.pricing_view, name='pricing'),
           
           # ===================== TEACHER URLS =====================
           path('teachers/', views.teacher_list, name='teacher_list'),
           path('teachers/create/', views.teacher_create, name='teacher_create'),
           path('teachers/update/<int:pk>/', views.teacher_update, name='teacher_update'),
           path('teachers/delete/<int:pk>/', views.teacher_delete, name='teacher_delete'),
-
 
           # ===================== CLASS URLS =====================
           path('classes/', views.class_list, name='class_list'),
