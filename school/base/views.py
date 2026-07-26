@@ -14,17 +14,8 @@ from django.contrib import messages
 
 from django.contrib.auth import authenticate, login, logout
 
-from .forms import (
-            MyUserCreationForm,
-            UserForm,
-            ProfileForm,
-            TeacherForm,
-            ClassForm,
-            SectionForm,
-            StudentForm,
-            TransactionForm,
-            FeeForm,
-            SalaryForm)
+from .forms import (MyUserCreationForm,UserForm,ProfileForm,TeacherForm,ClassForm,
+            SectionForm,StudentForm,TransactionForm,FeeForm,SalaryForm)
 
 from django.core.mail import send_mail
 from django.conf import settings
