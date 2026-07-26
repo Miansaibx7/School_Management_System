@@ -7,14 +7,8 @@ import json
 
 from .decorators import admin_required, accountant_required 
 
-from .models import (User,
-            Teacher,
-            Class,
-            Section,
-            Student,
-            Transaction,
-            Fee,
-            Salary)
+from .models import (User,Teacher,Class,Section,
+            Student,Transaction,Fee,Salary)
 
 from django.contrib import messages
 
