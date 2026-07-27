@@ -54,7 +54,7 @@ urlpatterns = [
           path('fees/update/<int:pk>/', views.fee_update, name='fee_update'),
           path('fees/delete/<int:pk>/', views.fee_delete, name='fee_delete'),
 
-          # ===================== Salary URLS ====================================
+          # ===================== Salary CRUD URLS ====================================
           path('salaries/', views.salary_list, name='salary_list'),
           path('salaries/create/', views.salary_create, name='salary_create'),
           path('salaries/update/<int:pk>/', views.salary_update, name='salary_update'),
