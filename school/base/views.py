@@ -396,7 +396,7 @@ def class_delete(request, pk):
     return render(request, "classes/class_confirm_delete.html", context)
     
 
-#========================= Section Function =======================================================================================
+#========================= Section CRUD Functions =======================================================================================
 @login_required(login_url='loginPage')
 @admin_required
 def section_list(request):
