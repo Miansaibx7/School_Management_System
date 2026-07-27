@@ -439,7 +439,7 @@ def section_delete(request,pk):
     return render(request,'sections/section_confirm_delete.html',context)
 
 
-#========================= Student Function =======================================================================================
+#========================= Student CRUD Functions =======================================================================================
 @login_required(login_url='loginPage')
 @admin_required
 def student_list(request):
