@@ -30,7 +30,7 @@ urlpatterns = [
           path('classes/update/<int:pk>/', views.class_update, name='class_update'),
           path('classes/delete/<int:pk>/', views.class_delete, name='class_delete'),
 
-          # ===================== Sections URLS =====================
+          # ===================== Sections CRUD URLS =====================
           path('sections/', views.section_list, name='section_list'),
           path('sections/create/', views.section_create, name='section_create'),
           path('sections/update/<int:pk>/', views.section_update, name='section_update'),
