@@ -630,7 +630,7 @@ def fee_delete(request, pk):
     return render(request, 'fees/fee_confirm_delete.html', {'fee': fee})
 
 
-#========================= Salary CRUD Functions =======================================================================================
+# ========================= Salary CRUD Functions =======================================================================================
 @login_required(login_url='loginPage')
 @accountant_required
 def salary_list(request):
