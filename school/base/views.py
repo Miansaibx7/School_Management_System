@@ -300,7 +300,7 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 
-#========================= Teacher Function ===================================================================
+#========================= Teacher CRUD Functions ===================================================================
 @login_required(login_url='loginPage')
 @admin_required
 def teacher_list(request):
