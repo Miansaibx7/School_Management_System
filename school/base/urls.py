@@ -24,7 +24,7 @@ urlpatterns = [
           path('teachers/delete/<int:pk>/', views.teacher_delete, name='teacher_delete'),
 
 
-          # ===================== CLASS URLS =====================
+          # ===================== CLASS CRUD URLS =====================
           path('classes/', views.class_list, name='class_list'),
           path('classes/create/', views.class_create, name='class_create'),
           path('classes/update/<int:pk>/', views.class_update, name='class_update'),
