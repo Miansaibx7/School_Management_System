@@ -484,7 +484,7 @@ def student_delete(request, pk):
     return render(request,'students/student_confirm_delete.html',context)
 
 
-#========================= Transaction Function =======================================================================================
+#========================= Transaction CRUD Functions =======================================================================================
 @login_required(login_url='loginPage')
 @accountant_required
 def all_transactions(request):
