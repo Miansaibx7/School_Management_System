@@ -348,7 +348,7 @@ def teacher_delete(request, pk):
     return render(request, "teachers/teacher_confirm_delete.html", context)
 
 
-#========================= Class Function =======================================================================================
+#========================= Class CRUD Functions =======================================================================================
 @login_required(login_url='loginPage')
 @admin_required
 def class_list(request):
