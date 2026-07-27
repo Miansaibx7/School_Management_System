@@ -702,6 +702,7 @@ def salary_delete(request, pk):
     return render(request, 'salaries/salary_confirm_delete.html', {'salary': salary})
 
 
+# ========================= Financial Reports Function =======================================================================================
 @login_required(login_url='loginPage')
 def financial_reports(request):
 
