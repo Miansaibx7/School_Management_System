@@ -565,7 +565,7 @@ def transaction_delete(request, pk):
     return render(request, 'transactions/transaction_confirm_delete.html', {'transaction': transaction})
 
 
-#========================= Fee Function =======================================================================================
+#========================= Fee CRUD Functions =======================================================================================
 @login_required(login_url='loginPage')
 @accountant_required
 def fee_list(request):
