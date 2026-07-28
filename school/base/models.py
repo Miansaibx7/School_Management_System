@@ -266,11 +266,9 @@ class Section(models.Model):
 # ========================== STUDENT MODEL =================================================================================
 class Student(models.Model):
     """ Student model for School Management System """
-    GENDER_CHOICES = (
-        ('Male', 'Male'),
-        ('Female', 'Female'),
-        ('Other', 'Other'),
-    )
+
+    GENDER_CHOICES = ( ('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other'))
+    
     BLOOD_GROUP_CHOICES = (
         ('A+', 'A+'), ('A-', 'A-'),
         ('B+', 'B+'), ('B-', 'B-'),
