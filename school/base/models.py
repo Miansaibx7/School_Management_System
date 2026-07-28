@@ -383,16 +383,16 @@ class Student(models.Model):
 
     @property
     def full_name(self):
-        """Returns student's full name"""
+        """ Returns student's full name. """
         return f"{self.first_name} {self.last_name}"
 
 
 
 # ============================= EXPENSE/INCOME MODEL ======================================================================
 class Transaction(models.Model):
-    """General school transactions for profit/loss tracking"""
-    TRANSACTION_TYPES = (
-        ('income', 'Income'),
+    """ General school transactions for profit/loss tracking """
+    
+    TRANSACTION_TYPES = (('income', 'Income'),
         ('expense', 'Expense'),
     )
      
