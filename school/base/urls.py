@@ -36,7 +36,7 @@ urlpatterns = [
           path('sections/update/<int:pk>/', views.section_update, name='section_update'),
           path('sections/delete/<int:pk>/', views.section_delete, name='section_delete'),
 
-          # ===================== Sudents CRUD URLS =====================
+          # ===================== Sudents CRUD URLS ====================================
           path('students/', views.student_list, name='student_list'),
           path('students/create/', views.student_create, name='student_create'),
           path('students/update/<int:pk>/', views.student_update, name='student_update'),
