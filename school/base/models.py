@@ -353,7 +353,7 @@ class Student(models.Model):
         return super().save(*args,**kwargs)
     
     def update_fee_status(self):
-        """Update fee status - calculate total paid and due amounts"""
+        """ Update fee status - calculate total paid and due amounts. """
 # Calculate total fees paid by student
         total_paid = Fee.objects.filter(student=self).aggregate(
                                          total=Sum('amount')
