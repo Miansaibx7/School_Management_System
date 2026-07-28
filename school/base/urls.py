@@ -63,13 +63,13 @@ urlpatterns = [
          # ===================== Financial Reports URLS ==============================
           path('financial-reports/',views.financial_reports,name='financial_reports'),
 
-         # ===================== User CRUD URLS =====================================
+         # ===================== User CRUD URLS ======================================
           path('users/',views.user_list,name='user_list'),
           path('users/create/',views.user_create,name='user_create'),
           path('users/update/<str:pk>/',views.user_update,name='user_update'),
           path('users/delete/<str:pk>/',views.user_delete,name='user_delete'),
 
-         # ===================== Profile URLS ====================================
+         # ===================== Profile URLS =======================================
           path('profile/',views.profile,name='profile'),
 
 ]
