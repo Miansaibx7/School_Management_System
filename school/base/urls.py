@@ -42,7 +42,7 @@ urlpatterns = [
           path('students/update/<int:pk>/', views.student_update, name='student_update'),
           path('students/delete/<int:pk>/', views.student_delete, name='student_delete'),
 
-          # ===================== Transactions CRUD URLS =====================
+          # ===================== Transactions CRUD URLS =================================
           path('transactions/', views.transaction_list, name='transaction_list'),
           path('transactions/create/', views.transaction_create, name='transaction_create'),
           path('transactions/update/<int:pk>/', views.transaction_update, name='transaction_update'),
