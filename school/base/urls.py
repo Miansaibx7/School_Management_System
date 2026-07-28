@@ -17,7 +17,7 @@ urlpatterns = [
           path('contact/', views.contact_view, name='contact'),
           path('pricing/', views.pricing_view, name='pricing'),
           
-          # ===================== TEACHER CRUD URLS =====================
+          # ===================== TEACHER CRUD URLS ===================================
           path('teachers/', views.teacher_list, name='teacher_list'),
           path('teachers/create/', views.teacher_create, name='teacher_create'),
           path('teachers/update/<int:pk>/', views.teacher_update, name='teacher_update'),
