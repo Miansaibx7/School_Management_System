@@ -391,10 +391,8 @@ class Student(models.Model):
 # ============================= EXPENSE/INCOME MODEL ======================================================================
 class Transaction(models.Model):
     """ General school transactions for profit/loss tracking """
-    
-    TRANSACTION_TYPES = (('income', 'Income'),
-        ('expense', 'Expense'),
-    )
+
+    TRANSACTION_TYPES = (('income', 'Income'),('expense', 'Expense'))
      
     CATEGORIES = (
         ('fee', 'Student Fees'),
