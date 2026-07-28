@@ -413,11 +413,12 @@ class Transaction(models.Model):
     date = models.DateField(default=timezone.now)
     description = models.TextField(blank=True)
     receipt_number = models.CharField(max_length=50, blank=True)
+
     recorded_by = models.ForeignKey(User, on_delete=models.SET_NULL,
                                     null=True,
                                     blank=True,
                                     related_name="recorded_transactions"
-                                    )
+                                )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta: 
