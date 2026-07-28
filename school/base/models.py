@@ -355,9 +355,7 @@ class Student(models.Model):
     def update_fee_status(self):
         """ Update fee status - calculate total paid and due amounts. """
 # Calculate total fees paid by student
-        total_paid = Fee.objects.filter(student=self).aggregate(
-                                         total=Sum('amount')
-                                        )['total'] or Decimal('0.00')  
+        total_paid = Fee.objects.filter(student=self).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')  
            
 # Calculate expected fee based on months since admission
         months_enrolled = self.calculate_months_since_admission()
