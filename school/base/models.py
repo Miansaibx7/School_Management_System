@@ -212,7 +212,7 @@ class Class(models.Model):
 
 #=============================== SECTION MODEL ==============================================================================
 class Section(models.Model):
-    """Model for class sections (A, B, C...)"""
+    """ Model for class sections (A, B, C...) """
     name = models.CharField(max_length=5, default='A')
 # One Class can have many Sections (ForeignKey relationship)
     student_class = models.ForeignKey("Class",
@@ -265,7 +265,7 @@ class Section(models.Model):
 
 # ========================== STUDENT MODEL =================================================================================
 class Student(models.Model):
-    """Student model for School Management System"""
+    """ Student model for School Management System """
     GENDER_CHOICES = (
         ('Male', 'Male'),
         ('Female', 'Female'),
