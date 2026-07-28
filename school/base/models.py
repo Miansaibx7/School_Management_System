@@ -371,7 +371,7 @@ class Student(models.Model):
         )
 
     def calculate_months_since_admission(self):
-        """Calculate months since admission for fee calculation"""
+        """ Calculate months since admission for fee calculation. """
         today = timezone.now().date()
         diff = relativedelta(today, self.admission_date)
         return diff.months + (diff.years * 12) + 1
