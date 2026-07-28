@@ -101,6 +101,7 @@ class Teacher(models.Model):
         blank=True,
         related_name='teacher_profile'
     )
+
 # Fully delete the data of a user each and every thing  
     def delete(self, *args, **kwargs):
         if self.user:
@@ -152,14 +153,14 @@ class Teacher(models.Model):
         return f"{self.first_name} {self.last_name}"
 
     def update_salary_status(self):
-        """Recalculate salary totals based on Salary records"""
+        """ Recalculate salary totals based on Salary records """
         total = Salary.objects.filter(teacher=self).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
         self.total_salary_paid = total
-# Calculate expected salary based on months since joining
+    # Calculate expected salary based on months since joining
         months = self.calculate_months_since_joining()
         expected = self.monthly_salary * months
         self.salary_due = expected - self.total_salary_paid
-# Use update() to avoid triggering signals/recursion
+    # Use update() to avoid triggering signals/recursion
         self.__class__.objects.filter(pk=self.pk).update(
             total_salary_paid=self.total_salary_paid,
             salary_due=self.salary_due
