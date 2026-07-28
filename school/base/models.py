@@ -165,9 +165,10 @@ class Teacher(models.Model):
             total_salary_paid=self.total_salary_paid,
             salary_due=self.salary_due
         )
-# Use for when every the teacher is joining the school and their salary calculation
+
+    # Use for when every the teacher is joining the school and their salary calculation
     def calculate_months_since_joining(self):
-        """Calculate months employed for salary calculation"""
+        """ Calculate months employed for salary calculation """
         today = timezone.now().date()
         diff = relativedelta(today, self.date_of_joining)
         return diff.months + (diff.years * 12) + 1
