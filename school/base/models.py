@@ -268,7 +268,7 @@ class Student(models.Model):
     """ Student model for School Management System """
 
     GENDER_CHOICES = ( ('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other'))
-    
+
     BLOOD_GROUP_CHOICES = (
         ('A+', 'A+'), ('A-', 'A-'),
         ('B+', 'B+'), ('B-', 'B-'),
@@ -343,7 +343,7 @@ class Student(models.Model):
         verbose_name_plural = "Students"
     
     def clean(self):
-        """Ensure that the selected section belongs to the selected class."""
+        """ Ensure that the selected section belongs to the selected class. """
         if self.section and self.section.student_class != self.class_room:
             raise ValidationError({"section": "The selected section does not belong to the chosen class."
         })
