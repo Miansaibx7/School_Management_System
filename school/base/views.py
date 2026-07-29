@@ -635,7 +635,6 @@ def salary_create(request):
                 salary.save()
                 messages.success(request, 'Salary payment recorded successfully.')
                 return redirect('salary_list')
-
             except Exception as e:
                 messages.error(request, str(e))  
         else:
@@ -712,14 +711,13 @@ def financial_reports(request):
 
     for month in range(1, 13):
         month_name = timezone.datetime(current_year,month,1).strftime('%b')
-
         months.append(month_name)
 
         monthly_income = Transaction.objects.filter(transaction_type='income',date__year=current_year,
         date__month=month).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
 
         monthly_expense = Transaction.objects.filter(transaction_type='expense',date__year=current_year,
-                                                     date__month=month).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
+                                        date__month=month).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
 
         income_chart.append(float(monthly_income))
         expense_chart.append(float(monthly_expense))
