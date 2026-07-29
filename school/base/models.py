@@ -465,18 +465,15 @@ class Transaction(models.Model):
         # Sum of all expense transactions
         total_expense=Coalesce(Sum('amount', filter=Q(transaction_type='expense')), Decimal('0.00'))
         )
-    # Handle None values if no transactions exist Return profit or loss
+        # Handle None values if no transactions exist Return profit or loss
         return result['total_income'] - result['total_expense']
     
     
 # Returns total transaction amount grouped by category.Useful for category-based charts.    
     @classmethod
-    def get_category_totals(cls):
-        
-        return cls.objects.values('category').annotate(
-            # Sum of all transactions in each category
-            total_amount = Sum('amount')
-        ).order_by('-total_amount')
+    def get_category_totals(cls):                       
+        return cls.objects.values('category').annotate(total_amount = Sum('amount')).order_by('-total_amount')
+                                                    # Sum of all transactions in each category
 
 
 # Calculate monthly profit or loss for a given year.       
