@@ -457,7 +457,7 @@ class Transaction(models.Model):
 
         if not year:
            year = timezone.now().year
-    # Aggregate total income and expense in one query
+        # Aggregate total income and expense in one query
         result = cls.objects.filter(date__year=year).aggregate(
         # Sum of all income transactions
         # FIXED: Added Coalesce to prevent math errors on empty records
