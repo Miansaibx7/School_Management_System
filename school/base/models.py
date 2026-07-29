@@ -444,7 +444,7 @@ class Transaction(models.Model):
         # into the first day of its month Example: 2026-03-15 → 2026-03-01
         # Group results by the month field                                                     
         ).values('month').annotate( 
-            # FIXED: Added Coalesce so charts get '0' instead of 'None' if no data exists
+            # Added Coalesce so charts get '0' instead of 'None' if no data exists
             total_income=Coalesce(Sum('amount', filter=Q(transaction_type='income')), Decimal('0.00')),    
             total_expense=Coalesce(Sum('amount', filter=Q(transaction_type='expense')), Decimal('0.00'))   
         ).order_by('month') # Order results chronologically from January to December
