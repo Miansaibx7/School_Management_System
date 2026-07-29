@@ -255,13 +255,9 @@ def dashboard(request):
     total_teachers = Teacher.objects.count()
     total_classes = Class.objects.count()
 
-    students_this_month = Student.objects.filter(
-        created_at__year=now.year,
-        created_at__month=now.month).count()
+    students_this_month = Student.objects.filter(created_at__year=now.year,created_at__month=now.month).count()
 
-    teachers_this_month = Teacher.objects.filter(
-        created_at__year=now.year,
-        created_at__month=now.month).count()
+    teachers_this_month = Teacher.objects.filter(created_at__year=now.year,created_at__month=now.month).count()
 
     # FINANCIAL STATS
     total_income = Transaction.objects.filter(
