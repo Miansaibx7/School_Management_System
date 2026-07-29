@@ -584,7 +584,7 @@ class Salary(models.Model):
     PAYMENT_METHODS = (('cash', 'Cash'), ('bank', 'Bank Transfer'), ('check', 'Check'))
     
     STATUS_CHOICES = (('paid','Paid'), ('pending','Pending'), ('cancelled','Cancelled'))
-    
+
 # One Teacher can have multiple monthly Salary payments
     teacher = models.ForeignKey(
         Teacher, 
@@ -605,8 +605,7 @@ class Salary(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
     bank_reference  = models.CharField(max_length=100, blank=True)
     notes = models.TextField(blank=True)
-# User (admin/accountant) who recorded the payment
-# If the user is deleted, the field will become NULL
+# User (admin/accountant) who recorded the payment If the user is deleted, the field will become NULL
     paid_by = models.ForeignKey(
         User, 
         on_delete=models.SET_NULL,
@@ -640,7 +639,6 @@ class Salary(models.Model):
             raise ValidationError("Salary must be greater than zero.")
         
 # Require transaction ID if payment method is bank transfer
-        # Changed self.transaction_id to self.bank_reference
         if self.payment_method == 'bank' and not self.bank_reference:
             raise ValidationError("Bank Reference required for bank payments.")
 
