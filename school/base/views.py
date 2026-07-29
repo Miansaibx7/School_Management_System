@@ -495,12 +495,10 @@ def all_transactions(request):
 def transaction_list(request):
     # All Transactions
     transactions = Transaction.objects.all().order_by('-date', '-created_at')
-    
     # Total Income
     total_income = Transaction.objects.filter(transaction_type='income').aggregate( total=Sum('amount'))['total'] or 0
     # Total Expense
     total_expense = Transaction.objects.filter(transaction_type='expense').aggregate(total=Sum('amount'))['total'] or 0
-
     # Final Balance
     total_balance = total_income - total_expense
 
@@ -523,7 +521,6 @@ def transaction_create(request):
             return redirect('transaction_list')
     else:
         form = TransactionForm()
-    
     return render(request, 'transactions/transaction_form.html', {'form': form, 'title': 'Add Transaction'})
 
 @login_required(login_url='loginPage')
@@ -561,11 +558,7 @@ def fee_list(request):
     pending_data = Fee.objects.filter(status='pending').aggregate(total=Sum('amount'))
     pending_dues = pending_data['total'] or Decimal('0.00')
 
-    context = {
-        "fees": fees,
-        "total_collected": total_collected,
-        "pending_dues": pending_dues,}
-
+    context = {"fees": fees,"total_collected": total_collected,"pending_dues": pending_dues}
     return render(request, "fees/all_fee.html", context)
 
 @login_required(login_url= 'loginPage')
