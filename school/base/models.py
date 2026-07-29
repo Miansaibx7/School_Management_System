@@ -580,17 +580,11 @@ class Fee(models.Model):
 # ========================== SALARY MODEL ================================================================================
 class Salary(models.Model):
     """ Teacher salary payment records """
-    PAYMENT_METHODS = (
-        ('cash', 'Cash'),
-        ('bank', 'Bank Transfer'),
-        ('check', 'Check'),
-    )
+
+    PAYMENT_METHODS = (('cash', 'Cash'), ('bank', 'Bank Transfer'), ('check', 'Check'))
     
-    STATUS_CHOICES = (
-        ('paid','Paid'),
-        ('pending','Pending'),
-        ('cancelled','Cancelled')
-    )
+    STATUS_CHOICES = (('paid','Paid'), ('pending','Pending'), ('cancelled','Cancelled'))
+    
 # One Teacher can have multiple monthly Salary payments
     teacher = models.ForeignKey(
         Teacher, 
