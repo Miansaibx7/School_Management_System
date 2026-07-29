@@ -482,29 +482,27 @@ class Transaction(models.Model):
         
         if not year:
             year = timezone.now().year
-            
+                                                        # Extract month from date
         return cls.objects.filter(date__year=year).annotate(
-            # Extract month from date
-            month=TruncMonth('date') # TruncMonth converts a date into the first day of its month Example: 2026-03-15 → 2026-03-01
+        month=TruncMonth('date') # TruncMonth converts a date into the first day of its month Example: 2026-03-15 → 2026-03-01
             
         ).values('month').annotate(
             
-            # Monthly income
-            # FIXED: Coalesced values to ensure profit calculation works
+            # Monthly income Coalesced values to ensure profit calculation works
             total_income=Coalesce(Sum('amount', filter=Q(transaction_type='income')), Decimal('0.00')),
             # Monthly expense
             total_expense=Coalesce(Sum('amount', filter=Q(transaction_type='expense')), Decimal('0.00'))
         ).annotate(
 
         # F Use for the value from the database column when performing the calculation.
-        profit=F('total_income') - F('total_expense')
-                                # Profit = income - expense
-        ).order_by('month')    
+        profit=F('total_income') - F('total_expense')).order_by('month') 
+        # Profit = income - expense   
+
 
 
 # ======================= FEE MODEL =======================================================================================
 class Fee(models.Model):
-    """Student fee payment records"""
+    """ Student fee payment records """
     PAYMENT_METHODS = (
         ('cash', 'Cash'),
         ('bank', 'Bank Transfer'),
