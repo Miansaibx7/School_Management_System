@@ -656,7 +656,6 @@ class Salary(models.Model):
                 'recorded_by': self.paid_by
             }
             
-
             if self.transaction:
                 # Updates the expense record if salary amount/date changes
                 Transaction.objects.filter(id=self.transaction.id).update(**transaction_data)
