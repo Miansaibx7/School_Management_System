@@ -552,9 +552,8 @@ class Fee(models.Model):
 
     def save(self, *args, **kwargs):
         with db_transaction.atomic(): # Ensure fee save and student fee status update happen in a single database transaction
-                                      # ( Use the aliased db_transaction )
-        # Check transaction_id to safely see if the relationship exists yet
-        # CHANGED: Logic now updates the existing transaction if the Fee is edited
+                                    # ( Use the aliased db_transaction )
+        # Check transaction_id safely see if the relationship exists. Now updates the existing transaction if the Fee is edited
             transaction_data = {
                 'title': f"Fee Payment - {self.student.full_name}",
                 'transaction_type': 'income',
@@ -565,7 +564,7 @@ class Fee(models.Model):
             }
 
             if self.transaction:
-                # FIXED: This ensures that if you change the Fee amount, the Transaction record also updates
+                # This ensures that if you change the Fee amount, the Transaction record also updates
                 Transaction.objects.filter(id=self.transaction.id).update(**transaction_data)
             else:
                 new_trans = Transaction.objects.create(**transaction_data)
@@ -580,7 +579,7 @@ class Fee(models.Model):
 
 # ========================== SALARY MODEL ================================================================================
 class Salary(models.Model):
-    """Teacher salary payment records"""
+    """ Teacher salary payment records """
     PAYMENT_METHODS = (
         ('cash', 'Cash'),
         ('bank', 'Bank Transfer'),
