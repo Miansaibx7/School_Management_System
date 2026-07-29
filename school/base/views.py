@@ -480,7 +480,6 @@ def all_transactions(request):
 
     total_income = Transaction.objects.filter(transaction_type='income'
     ).aggregate(total=Sum('amount'))['total'] or 0
-
     total_expense = Transaction.objects.filter(transaction_type='expense'
     ).aggregate(total=Sum('amount'))['total'] or 0
 
@@ -489,7 +488,6 @@ def all_transactions(request):
     context = {'transactions': transactions,'total_income': total_income,
         'total_expense': total_expense,'total_balance': total_balance,
     }
-
     return render(request, 'transactions/all_transaction.html', context)
 
 @login_required(login_url='loginPage')
@@ -499,18 +497,15 @@ def transaction_list(request):
     transactions = Transaction.objects.all().order_by('-date', '-created_at')
     
     # Total Income
-    total_income = Transaction.objects.filter(transaction_type='income'
-    ).aggregate( total=Sum('amount'))['total'] or 0
-
+    total_income = Transaction.objects.filter(transaction_type='income').aggregate( total=Sum('amount'))['total'] or 0
     # Total Expense
-    total_expense = Transaction.objects.filter(transaction_type='expense'
-    ).aggregate(total=Sum('amount'))['total'] or 0
+    total_expense = Transaction.objects.filter(transaction_type='expense').aggregate(total=Sum('amount'))['total'] or 0
 
     # Final Balance
     total_balance = total_income - total_expense
 
     context = {"transactions": transactions,"total_income": total_income,
-            "total_expense": total_expense,"total_balance": total_balance,
+            "total_expense": total_expense,"total_balance": total_balance
         }
     return render(request,"transactions/all_transaction.html",context)
 
