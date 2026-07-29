@@ -647,8 +647,6 @@ class Salary(models.Model):
         self.full_clean()
 
         with db_transaction.atomic(): # Ensure salary save and teacher salary status update happen in a single database transaction
-         # Check transaction_id to safely see if the relationship exists yet
-         # CHANGED: Logic now updates the existing transaction if the Salary is edited
             transaction_data = {
                 'title': f"Salary Payment - {self.teacher.full_name}",
                 'transaction_type': 'expense',
@@ -660,7 +658,7 @@ class Salary(models.Model):
             
 
             if self.transaction:
-                # FIXED: Updates the expense record if salary amount/date changes
+                # Updates the expense record if salary amount/date changes
                 Transaction.objects.filter(id=self.transaction.id).update(**transaction_data)
             else:
                 new_trans = Transaction.objects.create(**transaction_data)
