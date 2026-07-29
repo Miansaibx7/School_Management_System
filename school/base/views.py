@@ -576,7 +576,6 @@ def fee_create(request):
             messages.error(request, 'Please correct the errors below.')
     else:
         form = FeeForm()
-
     return render(request, 'fees/fee_form.html', {'form': form, 'title': 'Add Fee'})
     
 @login_required(login_url='loginPage')
@@ -612,20 +611,14 @@ def fee_delete(request, pk):
 def salary_list(request):
     salaries = Salary.objects.all().order_by('-created_at')
     # Total Disbursed Salary
-    total_disbursed_data = Salary.objects.filter(status='paid'
-    ).aggregate(total=Sum('amount'))
+    total_disbursed_data = Salary.objects.filter(status='paid').aggregate(total=Sum('amount'))
     total_disbursed = total_disbursed_data['total'] or Decimal('0.00')
 
     # Pending Salaries
-    pending_salary_data = Salary.objects.filter(status='pending'
-    ).aggregate(total=Sum('amount'))
+    pending_salary_data = Salary.objects.filter(status='pending').aggregate(total=Sum('amount'))
     pending_salaries = pending_salary_data['total'] or Decimal('0.00')
 
-    context = {
-        "salaries": salaries,
-        "total_disbursed": total_disbursed,
-        "pending_salaries": pending_salaries,}
-
+    context = {"salaries": salaries,"total_disbursed": total_disbursed,"pending_salaries": pending_salaries}
     return render(request, "salaries/all_salary.html", context)
 
 @login_required(login_url='loginPage')
