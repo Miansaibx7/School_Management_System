@@ -502,19 +502,11 @@ class Transaction(models.Model):
 
 # ======================= FEE MODEL =======================================================================================
 class Fee(models.Model):
-    """ Student fee payment records """
-    PAYMENT_METHODS = (
-        ('cash', 'Cash'),
-        ('bank', 'Bank Transfer'),
-        ('check', 'Check'),
-        ('online', 'Online Payment'),
-    )
+    """ Student fee payment records. """
+
+    PAYMENT_METHODS = (('cash', 'Cash'), ('bank', 'Bank Transfer'), ('check', 'Check'), ('online', 'Online Payment'))
     
-    STATUS_CHOICES = (
-        ('paid', 'Paid'),
-        ('pending', 'Pending'),
-        ('partial', 'Partial'),
-    )
+    STATUS_CHOICES = (('paid', 'Paid'), ('pending', 'Pending'), ('partial', 'Partial'))
     
 # One student can have multiple monthly fee payments
     student = models.ForeignKey(
@@ -549,12 +541,8 @@ class Fee(models.Model):
 
     class Meta:
         ordering = ['-payment_date']
-        constraints = [
-            models.UniqueConstraint(
-                    fields=['student','month_for'],
-                    name='unique_student_fee_month'
-                )
-            ]
+        constraints = [models.UniqueConstraint(fields=['student','month_for'],
+            name='unique_student_fee_month')]
         verbose_name = 'Fee Payment'
         verbose_name_plural = 'Fee Payments'
 
