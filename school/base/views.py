@@ -256,13 +256,11 @@ def dashboard(request):
     total_classes = Class.objects.count()
 
     students_this_month = Student.objects.filter(created_at__year=now.year,created_at__month=now.month).count()
-
     teachers_this_month = Teacher.objects.filter(created_at__year=now.year,created_at__month=now.month).count()
 
     # FINANCIAL STATS
     total_income = Transaction.objects.filter(
         transaction_type='income').aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
-
     total_expense = Transaction.objects.filter(
         transaction_type='expense').aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
 
@@ -271,21 +269,16 @@ def dashboard(request):
     # RECENT STUDENTS
     recent_students = Student.objects.select_related('class_room','section').order_by('-created_at')[:5]
 
-
     # REAL FEE DEFAULTERS 
-    defaulters = Student.objects.filter(
-        total_fee_due__gt=0  # Only grab students who owe more than $0
+    defaulters = Student.objects.filter(total_fee_due__gt=0  # Only grab students who owe more than $0
     ).select_related('class_room', 'section').order_by('-total_fee_due')[:10]
 
     # CONTEXT
     context = { "user_role": request.user.role,
         'stats': {
-            'students': total_students,
-            'student_trend': students_this_month,
-            'teachers': total_teachers,
-            'teachers_trend': teachers_this_month,
-            'classes': total_classes,
-            'monthly_revenue': total_income,
+            'students': total_students, 'student_trend': students_this_month,
+            'teachers': total_teachers, 'teachers_trend': teachers_this_month,
+            'classes': total_classes, 'monthly_revenue': total_income,
             'profit': profit,
         },
 
@@ -349,7 +342,6 @@ def teacher_delete(request, pk):
 @admin_required
 def class_list(request):
     classes = Class.objects.prefetch_related('sections').order_by('name')
-
     context = {"classes": classes}
     return render(request, "classes/all_classes.html", context)
 
