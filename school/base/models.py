@@ -459,8 +459,8 @@ class Transaction(models.Model):
            year = timezone.now().year
         # Aggregate total income and expense in one query
         result = cls.objects.filter(date__year=year).aggregate(
-        # Sum of all income transactions
-        # FIXED: Added Coalesce to prevent math errors on empty records
+        
+        # Added Coalesce so charts get '0' instead of 'None' if no data exists
             total_income=Coalesce(Sum('amount', filter=Q(transaction_type='income')), Decimal('0.00')),
         # Sum of all expense transactions
         total_expense=Coalesce(Sum('amount', filter=Q(transaction_type='expense')), Decimal('0.00'))
