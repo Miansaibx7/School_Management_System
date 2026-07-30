@@ -146,16 +146,13 @@
         const submenuParents = document.querySelectorAll(".has-submenu");
 
         submenuParents.forEach(function (parent) {
-
             const trigger = parent.querySelector("a");
             const submenu = parent.querySelector(".submenu");
             const arrow = parent.querySelector(".arrow");
 
             // Hide submenu initially
             submenu.style.maxHeight = "0px";
-
             trigger.addEventListener("click", function (e) {
-
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -166,28 +163,20 @@
                 submenuParents.forEach(function (item) {
 
                     item.classList.remove("active");
-
                     const itemSubmenu = item.querySelector(".submenu");
                     const itemArrow = item.querySelector(".arrow");
-
                     itemSubmenu.style.maxHeight = "0px";
 
-                    if (itemArrow) {
-                        itemArrow.style.transform = "rotate(0deg)";
-                    }
-
+                    if (itemArrow) {itemArrow.style.transform = "rotate(0deg)";}
                 });
 
                 // Open current menu again if it was closed
                 if (!isOpen) {
 
                     parent.classList.add("active");
-
                     submenu.style.maxHeight = submenu.scrollHeight + "px";
 
-                    if (arrow) {
-                        arrow.style.transform = "rotate(90deg)";
-                    }
+                    if (arrow) {arrow.style.transform = "rotate(90deg)";}
                 }
 
             });
