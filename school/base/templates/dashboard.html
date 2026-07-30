@@ -159,7 +159,7 @@
             <!-- CONTENT GRID SECTION -->
             <div class="content-grid">
             
-                <!--RECENT STUDENTS -->
+                <!-- RECENT STUDENTS -->
                 <div class="content-card recent-students">
                     <div class="card-header">
                         <h3>Recent Admissions</h3>
@@ -188,9 +188,7 @@
                                                 {% if student.photo %}
                                                 <img src="{{ student.photo.url }}" alt="{{ student.first_name }}">
                                                 {% else %}
-                                                <span>
-                                                    {{ student.first_name|first }}{{ student.last_name|first }}
-                                                </span>
+                                                <span> {{ student.first_name|first }}{{ student.last_name|first }}</span>
                                                 {% endif %}
                                             </div>
     
