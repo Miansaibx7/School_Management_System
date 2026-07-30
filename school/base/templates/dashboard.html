@@ -363,7 +363,7 @@
         const notificationBtn = document.querySelector('.action-btn');
         const tableRows = document.querySelectorAll('.table-row-animated');
 
-        // --- 2. Sidebar Logic ---
+        // --- Sidebar Logic ---
         const toggleSidebar = (e) => {
             if (e) e.stopPropagation(); // Prevent event bubbling
             if (sidebar) sidebar.classList.toggle('active');
@@ -389,13 +389,13 @@
             }
         });
 
-        // --- 3. Submenu Accordion ---
+        // --- Submenu Accordion ---
         submenuToggles.forEach(toggle => {
             toggle.addEventListener('click', function (e) {
                 e.preventDefault();
                 const parent = this.parentElement;
 
-                // Optional: Close other open submenus for a clean accordion effect
+                // Close other open submenus for a clean accordion effect
                 document.querySelectorAll('.has-submenu').forEach(item => {
                     if (item !== parent) item.classList.remove('open');
                 });
@@ -404,7 +404,7 @@
             });
         });
 
-        // --- 4. Optimized Counter Animation ---
+        // --- Optimized Counter Animation ---
         function animateCounter(element, target) {
             let start = 0;
             const duration = 250; 
@@ -441,7 +441,7 @@
 
         statValues.forEach(el => counterObserver.observe(el));
 
-        // --- 5. UI Enhancements ---
+        // --- UI Enhancements ---
 
         // Table Row Stagger
         tableRows.forEach((row, index) => {
