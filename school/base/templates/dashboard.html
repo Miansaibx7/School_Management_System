@@ -210,9 +210,7 @@
                                     </td>
             
                                     <!-- Admission Date -->
-                                    <td>
-                                        {{ student.admission_date|date:"M d, Y" }}
-                                    </td>
+                                    <td>{{ student.admission_date|date:"M d, Y" }}</td>
 
                                     <!-- Status -->
                                     <td>            
@@ -249,9 +247,7 @@
                 <div class="content-card defaulters">
                     <div class="card-header">
                         <h3>Fee Defaulters</h3>
-                        <span class="badge-alert">
-                            {{ defaulters|length }} Pending
-                        </span>
+                        <span class="badge-alert">{{ defaulters|length }} Pending</span>
                     </div>
             
                     <div class="defaulters-list">
