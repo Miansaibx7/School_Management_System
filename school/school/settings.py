@@ -21,11 +21,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'base.apps.BaseConfig',
+    "django_browser_reload",
 ]
 
 AUTH_USER_MODEL = 'base.User'
 
 MIDDLEWARE = [
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
