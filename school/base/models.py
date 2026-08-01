@@ -1,5 +1,4 @@
-from django.db import IntegrityError, models, transaction as db_transaction # Use alias to prevent naming conflicts
-from django.contrib.auth.models import AbstractUser,BaseUserManager
+from django.db import  models, transaction as db_transaction # Use alias to prevent naming conflicts
 
 from django.db.models import Sum, Q, F
 from decimal import Decimal
@@ -11,70 +10,9 @@ from django.core.exceptions import ValidationError
           # Example: 2026-03-15 → 2026-03-01
 from django.db.models.functions import TruncMonth, Coalesce # Coalesce to prevent 'None' values in charts
 
+from django.conf import settings
 
 
-# ====================================== CUSTOM USER MANAGER =================================================================
-class CustomUserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        if not email:
-            raise ValueError('Email address is required')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        try:
-         user.save(using=self._db)
-        except IntegrityError:
-         raise ValueError("A user with this email already exists.")
-        return user
-
-    def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields['is_staff'] = True
-        extra_fields['is_superuser'] = True
-        extra_fields['is_admin'] = True
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-
-        return self.create_user(email, password, **extra_fields)
-    
-# ============================ USER MODEL ===================================================================================
-class User(AbstractUser):
-    """Custom User model using email as username"""
-    username = None
-    name = models.CharField(max_length=120)
-    email = models.EmailField(unique=True)
-    bio = models.TextField(null=True, blank=True)
-    phone = models.CharField(max_length=15, blank=True, null=True)
-    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
-    
-    # Role flags for dashboard access control
-    is_admin = models.BooleanField(default=False)
-    is_accountant = models.BooleanField(default=False)
-    
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']
-
-    objects = CustomUserManager()
-
-    class Meta:
-        ordering = ['-date_joined']
-
-    def __str__(self):
-        return self.email
-    
-    @property
-    def role(self):
-        if self.is_superuser:
-            return "Super Administrator"
-        elif self.is_admin:
-            return "Administrator"
-        elif self.is_accountant:
-            return "Accountant"
-
-        return "Staff User"
-    
 
 
 # ================================== TEACHER MODEL ===========================================================================
@@ -95,13 +33,12 @@ class Teacher(models.Model):
     )
 # Link to User model (for portal access to the teacher if the admin want )
     user = models.OneToOneField(
-        User, 
+        settings.AUTH_USER_MODEL, 
         on_delete=models.SET_NULL, 
         null=True, 
         blank=True,
         related_name='teacher_profile'
     )
-
 # Fully delete the data of a user each and every thing  
     def delete(self, *args, **kwargs):
         if self.user:
@@ -153,22 +90,21 @@ class Teacher(models.Model):
         return f"{self.first_name} {self.last_name}"
 
     def update_salary_status(self):
-        """ Recalculate salary totals based on Salary records """
+        """Recalculate salary totals based on Salary records"""
         total = Salary.objects.filter(teacher=self).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
         self.total_salary_paid = total
-    # Calculate expected salary based on months since joining
+# Calculate expected salary based on months since joining
         months = self.calculate_months_since_joining()
         expected = self.monthly_salary * months
         self.salary_due = expected - self.total_salary_paid
-    # Use update() to avoid triggering signals/recursion
+# Use update() to avoid triggering signals/recursion
         self.__class__.objects.filter(pk=self.pk).update(
             total_salary_paid=self.total_salary_paid,
             salary_due=self.salary_due
         )
-
-    # Use for when every the teacher is joining the school and their salary calculation
+# Use for when every the teacher is joining the school and their salary calculation
     def calculate_months_since_joining(self):
-        """ Calculate months employed for salary calculation """
+        """Calculate months employed for salary calculation"""
         today = timezone.now().date()
         diff = relativedelta(today, self.date_of_joining)
         return diff.months + (diff.years * 12) + 1
@@ -212,7 +148,7 @@ class Class(models.Model):
 
 #=============================== SECTION MODEL ==============================================================================
 class Section(models.Model):
-    """ Model for class sections (A, B, C...) """
+    """Model for class sections (A, B, C...)"""
     name = models.CharField(max_length=5, default='A')
 # One Class can have many Sections (ForeignKey relationship)
     student_class = models.ForeignKey("Class",
@@ -265,10 +201,12 @@ class Section(models.Model):
 
 # ========================== STUDENT MODEL =================================================================================
 class Student(models.Model):
-    """ Student model for School Management System """
-
-    GENDER_CHOICES = ( ('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other'))
-
+    """Student model for School Management System"""
+    GENDER_CHOICES = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    )
     BLOOD_GROUP_CHOICES = (
         ('A+', 'A+'), ('A-', 'A-'),
         ('B+', 'B+'), ('B-', 'B-'),
@@ -278,7 +216,7 @@ class Student(models.Model):
     
 # Link to User model (optional - for portal access)
     user = models.OneToOneField(
-        'User',
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -343,7 +281,7 @@ class Student(models.Model):
         verbose_name_plural = "Students"
     
     def clean(self):
-        """ Ensure that the selected section belongs to the selected class. """
+        """Ensure that the selected section belongs to the selected class."""
         if self.section and self.section.student_class != self.class_room:
             raise ValidationError({"section": "The selected section does not belong to the chosen class."
         })
@@ -353,9 +291,11 @@ class Student(models.Model):
         return super().save(*args,**kwargs)
     
     def update_fee_status(self):
-        """ Update fee status - calculate total paid and due amounts. """
+        """Update fee status - calculate total paid and due amounts"""
 # Calculate total fees paid by student
-        total_paid = Fee.objects.filter(student=self).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')  
+        total_paid = Fee.objects.filter(student=self).aggregate(
+                                         total=Sum('amount')
+                                        )['total'] or Decimal('0.00')  
            
 # Calculate expected fee based on months since admission
         months_enrolled = self.calculate_months_since_admission()
@@ -371,7 +311,7 @@ class Student(models.Model):
         )
 
     def calculate_months_since_admission(self):
-        """ Calculate months since admission for fee calculation. """
+        """Calculate months since admission for fee calculation"""
         today = timezone.now().date()
         diff = relativedelta(today, self.admission_date)
         return diff.months + (diff.years * 12) + 1
@@ -383,16 +323,18 @@ class Student(models.Model):
 
     @property
     def full_name(self):
-        """ Returns student's full name. """
+        """Returns student's full name"""
         return f"{self.first_name} {self.last_name}"
 
 
 
 # ============================= EXPENSE/INCOME MODEL ======================================================================
 class Transaction(models.Model):
-    """ General school transactions for profit/loss tracking """
-
-    TRANSACTION_TYPES = (('income', 'Income'),('expense', 'Expense'))
+    """General school transactions for profit/loss tracking"""
+    TRANSACTION_TYPES = (
+        ('income', 'Income'),
+        ('expense', 'Expense'),
+    )
      
     CATEGORIES = (
         ('fee', 'Student Fees'),
@@ -413,12 +355,11 @@ class Transaction(models.Model):
     date = models.DateField(default=timezone.now)
     description = models.TextField(blank=True)
     receipt_number = models.CharField(max_length=50, blank=True)
-
-    recorded_by = models.ForeignKey(User, on_delete=models.SET_NULL,
+    recorded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
                                     null=True,
                                     blank=True,
                                     related_name="recorded_transactions"
-                                )
+                                    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta: 
@@ -444,7 +385,7 @@ class Transaction(models.Model):
         # into the first day of its month Example: 2026-03-15 → 2026-03-01
         # Group results by the month field                                                     
         ).values('month').annotate( 
-            # Added Coalesce so charts get '0' instead of 'None' if no data exists
+            # FIXED: Added Coalesce so charts get '0' instead of 'None' if no data exists
             total_income=Coalesce(Sum('amount', filter=Q(transaction_type='income')), Decimal('0.00')),    
             total_expense=Coalesce(Sum('amount', filter=Q(transaction_type='expense')), Decimal('0.00'))   
         ).order_by('month') # Order results chronologically from January to December
@@ -457,23 +398,26 @@ class Transaction(models.Model):
 
         if not year:
            year = timezone.now().year
-        # Aggregate total income and expense in one query
+    # Aggregate total income and expense in one query
         result = cls.objects.filter(date__year=year).aggregate(
-        
-        # Added Coalesce so charts get '0' instead of 'None' if no data exists
+        # Sum of all income transactions
+        # FIXED: Added Coalesce to prevent math errors on empty records
             total_income=Coalesce(Sum('amount', filter=Q(transaction_type='income')), Decimal('0.00')),
         # Sum of all expense transactions
         total_expense=Coalesce(Sum('amount', filter=Q(transaction_type='expense')), Decimal('0.00'))
         )
-        # Handle None values if no transactions exist Return profit or loss
+    # Handle None values if no transactions exist Return profit or loss
         return result['total_income'] - result['total_expense']
     
     
 # Returns total transaction amount grouped by category.Useful for category-based charts.    
     @classmethod
-    def get_category_totals(cls):                       
-        return cls.objects.values('category').annotate(total_amount = Sum('amount')).order_by('-total_amount')
-                                                    # Sum of all transactions in each category
+    def get_category_totals(cls):
+        
+        return cls.objects.values('category').annotate(
+            # Sum of all transactions in each category
+            total_amount = Sum('amount')
+        ).order_by('-total_amount')
 
 
 # Calculate monthly profit or loss for a given year.       
@@ -482,31 +426,41 @@ class Transaction(models.Model):
         
         if not year:
             year = timezone.now().year
-                                                        # Extract month from date
+            
         return cls.objects.filter(date__year=year).annotate(
-        month=TruncMonth('date') # TruncMonth converts a date into the first day of its month Example: 2026-03-15 → 2026-03-01
+            # Extract month from date
+            month=TruncMonth('date') # TruncMonth converts a date into the first day of its month Example: 2026-03-15 → 2026-03-01
             
         ).values('month').annotate(
             
-            # Monthly income Coalesced values to ensure profit calculation works
+            # Monthly income
+            # FIXED: Coalesced values to ensure profit calculation works
             total_income=Coalesce(Sum('amount', filter=Q(transaction_type='income')), Decimal('0.00')),
             # Monthly expense
             total_expense=Coalesce(Sum('amount', filter=Q(transaction_type='expense')), Decimal('0.00'))
         ).annotate(
 
         # F Use for the value from the database column when performing the calculation.
-        profit=F('total_income') - F('total_expense')).order_by('month') 
-        # Profit = income - expense   
-
+        profit=F('total_income') - F('total_expense')
+                                # Profit = income - expense
+        ).order_by('month')    
 
 
 # ======================= FEE MODEL =======================================================================================
 class Fee(models.Model):
-    """ Student fee payment records. """
-
-    PAYMENT_METHODS = (('cash', 'Cash'), ('bank', 'Bank Transfer'), ('check', 'Check'), ('online', 'Online Payment'))
+    """Student fee payment records"""
+    PAYMENT_METHODS = (
+        ('cash', 'Cash'),
+        ('bank', 'Bank Transfer'),
+        ('check', 'Check'),
+        ('online', 'Online Payment'),
+    )
     
-    STATUS_CHOICES = (('paid', 'Paid'), ('pending', 'Pending'), ('partial', 'Partial'))
+    STATUS_CHOICES = (
+        ('paid', 'Paid'),
+        ('pending', 'Pending'),
+        ('partial', 'Partial'),
+    )
     
 # One student can have multiple monthly fee payments
     student = models.ForeignKey(
@@ -531,7 +485,7 @@ class Fee(models.Model):
     
 # Staff member who received the payment
     received_by = models.ForeignKey(
-        User, 
+        settings.AUTH_USER_MODEL, 
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -541,8 +495,12 @@ class Fee(models.Model):
 
     class Meta:
         ordering = ['-payment_date']
-        constraints = [models.UniqueConstraint(fields=['student','month_for'],
-            name='unique_student_fee_month')]
+        constraints = [
+            models.UniqueConstraint(
+                    fields=['student','month_for'],
+                    name='unique_student_fee_month'
+                )
+            ]
         verbose_name = 'Fee Payment'
         verbose_name_plural = 'Fee Payments'
 
@@ -552,8 +510,9 @@ class Fee(models.Model):
 
     def save(self, *args, **kwargs):
         with db_transaction.atomic(): # Ensure fee save and student fee status update happen in a single database transaction
-                                    # ( Use the aliased db_transaction )
-        # Check transaction_id safely see if the relationship exists. Now updates the existing transaction if the Fee is edited
+                                      # ( Use the aliased db_transaction )
+        # Check transaction_id to safely see if the relationship exists yet
+        # CHANGED: Logic now updates the existing transaction if the Fee is edited
             transaction_data = {
                 'title': f"Fee Payment - {self.student.full_name}",
                 'transaction_type': 'income',
@@ -564,7 +523,7 @@ class Fee(models.Model):
             }
 
             if self.transaction:
-                # This ensures that if you change the Fee amount, the Transaction record also updates
+                # FIXED: This ensures that if you change the Fee amount, the Transaction record also updates
                 Transaction.objects.filter(id=self.transaction.id).update(**transaction_data)
             else:
                 new_trans = Transaction.objects.create(**transaction_data)
@@ -579,12 +538,18 @@ class Fee(models.Model):
 
 # ========================== SALARY MODEL ================================================================================
 class Salary(models.Model):
-    """ Teacher salary payment records """
-
-    PAYMENT_METHODS = (('cash', 'Cash'), ('bank', 'Bank Transfer'), ('check', 'Check'))
+    """Teacher salary payment records"""
+    PAYMENT_METHODS = (
+        ('cash', 'Cash'),
+        ('bank', 'Bank Transfer'),
+        ('check', 'Check'),
+    )
     
-    STATUS_CHOICES = (('paid','Paid'), ('pending','Pending'), ('cancelled','Cancelled'))
-
+    STATUS_CHOICES = (
+        ('paid','Paid'),
+        ('pending','Pending'),
+        ('cancelled','Cancelled')
+    )
 # One Teacher can have multiple monthly Salary payments
     teacher = models.ForeignKey(
         Teacher, 
@@ -605,9 +570,10 @@ class Salary(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES,default='pending')
     bank_reference  = models.CharField(max_length=100, blank=True)
     notes = models.TextField(blank=True)
-# User (admin/accountant) who recorded the payment If the user is deleted, the field will become NULL
+# User (admin/accountant) who recorded the payment
+# If the user is deleted, the field will become NULL
     paid_by = models.ForeignKey(
-        User, 
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -639,6 +605,7 @@ class Salary(models.Model):
             raise ValidationError("Salary must be greater than zero.")
         
 # Require transaction ID if payment method is bank transfer
+        # Changed self.transaction_id to self.bank_reference
         if self.payment_method == 'bank' and not self.bank_reference:
             raise ValidationError("Bank Reference required for bank payments.")
 
@@ -647,6 +614,8 @@ class Salary(models.Model):
         self.full_clean()
 
         with db_transaction.atomic(): # Ensure salary save and teacher salary status update happen in a single database transaction
+         # Check transaction_id to safely see if the relationship exists yet
+         # CHANGED: Logic now updates the existing transaction if the Salary is edited
             transaction_data = {
                 'title': f"Salary Payment - {self.teacher.full_name}",
                 'transaction_type': 'expense',
@@ -656,8 +625,9 @@ class Salary(models.Model):
                 'recorded_by': self.paid_by
             }
             
+
             if self.transaction:
-                # Updates the expense record if salary amount/date changes
+                # FIXED: Updates the expense record if salary amount/date changes
                 Transaction.objects.filter(id=self.transaction.id).update(**transaction_data)
             else:
                 new_trans = Transaction.objects.create(**transaction_data)

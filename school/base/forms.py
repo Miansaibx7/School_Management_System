@@ -1,59 +1,10 @@
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
 
 from django import forms
-from .models import (Teacher,
-    Class,
-    Section,
-    Student,
-    Transaction,
-    Fee,
-    Salary)
-
-User = get_user_model()
-
-# ============================== MyUserCreationForm ===================================================================
-class MyUserCreationForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ['email','name', 'password1','password2']
-
-    def clean_password1(self)->str:
-         password = self.cleaned_data.get('password1')
-
-         if len(password) < 6:
-            raise forms.ValidationError("Password must be at least 6 characters.")
-
-         if not any(char.isdigit() for char in password):
-              raise forms.ValidationError("Password must contain at least one number.")
-
-         return password
-
-# ============================== Profile Form ===================================================================
-class ProfileForm(forms.ModelForm):
-
-    class Meta:
-        model = User
-        fields = ["name","email","phone","bio","avatar",]
-
-        widgets = { 
-                "name": forms.TextInput(attrs={ "class": "form-control", "placeholder": "Enter your full name",}),
-                "email": forms.EmailInput(attrs={ "class": "form-control", "placeholder": "Enter email address",}),
-                "phone": forms.TextInput(attrs={ "class": "form-control", "placeholder": "Enter phone number",}),
-                "bio": forms.Textarea(attrs={ "class": "form-control", "rows": 4, "placeholder": "Write something about yourself...",}),
-            }
-  
-
-# ================================ USER FORM ===========================================================
-class UserForm(forms.ModelForm):
-
-    class Meta:
-        model = User
-        fields = ["name", "email", "phone", "bio", "avatar",
-            "is_admin", "is_accountant", "is_staff","is_active",]
+from .models import (Teacher,Class,Section,Student,Transaction,Fee,Salary)
 
 
-# ================================ TEACHER FORM ======================================================
+
+# ================= TEACHER FORM ======================================================
 class TeacherForm(forms.ModelForm):
 
     class Meta:
@@ -75,14 +26,14 @@ class TeacherForm(forms.ModelForm):
         }
 
 
-# =============================== CLASS FORM =========================================================
+# ================= CLASS FORM =========================================================
 class ClassForm(forms.ModelForm):
 
     class Meta:
         model = Class
         fields = "__all__"
         
-        # Injects Bootstrap classes and our custom animation classes into the HTML.
+        # This injects Bootstrap classes and our custom animation classes into the HTML.
         widgets = {
             'name': forms.Select(attrs={'class': 'form-select custom-input-anim',}),
             'monthly_fee': forms.NumberInput(attrs={'class': 'form-control custom-input-anim',
@@ -93,7 +44,7 @@ class ClassForm(forms.ModelForm):
             # 'class_teacher': forms.Select(attrs={'class': 'form-select custom-input-anim'}),
         }
 
-# =============================== SECTION FORM =========================================================
+# ================= SECTION FORM =====================================
 class SectionForm(forms.ModelForm):
 
     class Meta:
@@ -104,11 +55,11 @@ class SectionForm(forms.ModelForm):
             'student_class': forms.Select(attrs={'class': 'form-select'}),
             'class_teacher': forms.Select(attrs={'class': 'form-select'}),
             'capacity': forms.NumberInput(attrs={'class': 'form-control', 'min': '1'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input', 'role': 'switch'})
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input', 'role': 'switch'}),
         }
 
 
-# =============================== STUDENT FORM =====================================================
+# ================= STUDENT FORM ================================
 class StudentForm(forms.ModelForm):
 
     class Meta:
@@ -130,7 +81,7 @@ class StudentForm(forms.ModelForm):
                 field.widget.attrs.update({'class': 'form-control'})
 
 
-# ============================= TRANSACTION FORM ==============================================
+# ================= TRANSACTION FORM ===================================
 class TransactionForm(forms.ModelForm):
 
     class Meta:
@@ -149,12 +100,12 @@ class TransactionForm(forms.ModelForm):
             if not isinstance(field.widget, forms.CheckboxInput):
                 field.widget.attrs.update({'class': 'form-control'})
                 
-        # Select dropdowns to use the correct Bootstrap class
+        # Fix for Select dropdowns to use the correct Bootstrap class
         self.fields['transaction_type'].widget.attrs.update({'class': 'form-select'})
         self.fields['category'].widget.attrs.update({'class': 'form-select'})
 
 
-# ================================ FEE FORM ==================================================
+# ================= FEE FORM ==================================================
 class FeeForm(forms.ModelForm):
 
     class Meta:
@@ -168,7 +119,7 @@ class FeeForm(forms.ModelForm):
         }
 
 
-# ================================== SALARY FORM ===================================================
+# ================= SALARY FORM ===================================================
 class SalaryForm(forms.ModelForm):
 
     class Meta:
@@ -179,9 +130,10 @@ class SalaryForm(forms.ModelForm):
             'month_for': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'payment_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'notes': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
-            'bank_reference': forms.TextInput(attrs={'class': 'form-control',
+            'bank_reference': forms.TextInput(attrs={
+                'class': 'form-control',
                 'placeholder': 'Enter bank transaction ID / reference'
-            })
+            }),
         }
 
     def __init__(self, *args, **kwargs):

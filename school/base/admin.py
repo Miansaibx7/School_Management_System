@@ -1,31 +1,11 @@
 from django.contrib import admin
 
+# Register your models here.
 from django.contrib import admin
-from .models import User,Teacher,Class,Section,Student,Transaction,Fee,Salary
+from .models import (Teacher,Class,Section,Student,Transaction,Fee,Salary)
 
 
-# ====================== User Admin ====================================================
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'name', 'role', 'is_active', 'is_staff', 'is_superuser')
-    list_filter = ('is_active', 'is_staff', 'is_superuser', 'is_admin', 'is_accountant')
-    search_fields = ('email', 'name', 'phone')
-    ordering = ('-date_joined',)
-    fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        ('Personal Info', {'fields': ('name', 'bio', 'phone', 'avatar')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 
-                        'is_admin', 'is_accountant', 'groups', 'user_permissions')}),
-        ('Important Dates', {'fields': ('last_login', 'date_joined')}),
-    )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('email', 'name', 'password1', 'password2', 'is_active', 'is_staff', 'is_superuser'),
-        }),
-    )
-
-# ========================= Teacher Admin ===================================================
+# ==================== Teacher Admin ====================
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'teacher_id', 'designation', 'phone_number', 'is_active')
@@ -41,7 +21,7 @@ class TeacherAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('created_at', 'updated_at', 'total_salary_paid', 'salary_due')
 
-# ======================= Class Admin ==========================================================
+# ==================== Class Admin ====================
 @admin.register(Class)
 class ClassAdmin(admin.ModelAdmin):
     list_display = ('name', 'monthly_fee', 'is_active')
@@ -49,7 +29,7 @@ class ClassAdmin(admin.ModelAdmin):
     list_filter = ('is_active',)
     ordering = ('name',)
 
-# ======================= Section Admin ==========================================================
+# ==================== Section Admin ====================
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('student_class', 'name', 'class_teacher', 'capacity', 'student_count', 'is_active')
@@ -58,7 +38,7 @@ class SectionAdmin(admin.ModelAdmin):
     ordering = ('student_class', 'name')
     readonly_fields = ('student_count', 'available_seats')
 
-# ======================== Student Admin ==========================================================
+# ==================== Student Admin ====================
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'admission_number', 'class_room', 'section', 'roll_number', 'is_active')
@@ -74,7 +54,7 @@ class StudentAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('created_at', 'updated_at', 'total_fee_paid', 'total_fee_due')
 
-# =========================== Transaction Admin ==============================================
+# ==================== Transaction Admin ====================
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('title', 'transaction_type', 'category', 'amount', 'date', 'recorded_by')
@@ -82,7 +62,7 @@ class TransactionAdmin(admin.ModelAdmin):
     list_filter = ('transaction_type', 'category', 'date')
     ordering = ('-date',)
 
-# ============================= Fee Admin =======================================================
+# ==================== Fee Admin ====================
 @admin.register(Fee)
 class FeeAdmin(admin.ModelAdmin):
     list_display = ('student', 'amount', 'month_for', 'status', 'payment_date', 'payment_method')
@@ -90,7 +70,7 @@ class FeeAdmin(admin.ModelAdmin):
     list_filter = ('status', 'payment_method', 'payment_date')
     ordering = ('-payment_date',)
 
-# ============================== Salary Admin ====================================================
+# ==================== Salary Admin ====================
 @admin.register(Salary)
 class SalaryAdmin(admin.ModelAdmin):
     list_display = ('teacher', 'amount', 'month_for', 'status', 'payment_date', 'payment_method')
@@ -98,5 +78,5 @@ class SalaryAdmin(admin.ModelAdmin):
     list_filter = ('status', 'payment_method', 'payment_date')
     ordering = ('-payment_date',)
 
-# if you still want to use admin.site.register, do it only once
+# Optional: if you still want to use admin.site.register, do it only once:
 # admin.site.register(User, UserAdmin)  # NOT needed if you used the decorator

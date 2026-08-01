@@ -1,7 +1,8 @@
 
 
 
-# All the features data are there we can use it in views
+
+
 
 features_info = [
         {
