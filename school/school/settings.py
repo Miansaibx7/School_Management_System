@@ -21,6 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'base.apps.BaseConfig',
+    'accounts.apps.AccountsConfig',
+    'django_browser_reload',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
