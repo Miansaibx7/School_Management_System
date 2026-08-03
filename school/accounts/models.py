@@ -16,7 +16,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
-        """Create and return a superuser with the given email and password."""
+        """ Create and return a superuser with the given email and password. """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_admin', True)
@@ -31,7 +31,7 @@ class CustomUserManager(BaseUserManager):
     
 #============================ USER MODEL ===================================================================================
 class User(AbstractUser):
-    """Custom User model using email as username"""
+    """ Custom User model using email as username """
     username = None
     name = models.CharField(max_length=120)
     email = models.EmailField(unique=True)
