@@ -22,7 +22,7 @@ INSTALLED_APPS = [
 
     'base.apps.BaseConfig',
     'accounts.apps.AccountsConfig',
-    'django_browser_reload'
+    'django_browser_reload',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
