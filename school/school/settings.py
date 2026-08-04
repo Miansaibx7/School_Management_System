@@ -20,8 +20,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Local Apps
     'base.apps.BaseConfig',
     'accounts.apps.AccountsConfig',
+    
+    # Third Party Apps
     'django_browser_reload'
 ]
 
