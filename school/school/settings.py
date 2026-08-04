@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     # Local Apps
     'base.apps.BaseConfig',
     'accounts.apps.AccountsConfig',
-    
+
     # Third Party Apps
     'django_browser_reload'
 ]
@@ -31,6 +31,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
+    # Third Party Middleware
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     
     'django.middleware.security.SecurityMiddleware',
