@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
 
     # Third Party Apps
-    'django_browser_reload'
+    'django_browser_reload',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
