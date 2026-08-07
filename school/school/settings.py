@@ -20,12 +20,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third Party Apps
+    'django_browser_reload',
+
     # Local Apps
     'base.apps.BaseConfig',
     'accounts.apps.AccountsConfig',
-
-    # Third Party Apps
-    'django_browser_reload',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
