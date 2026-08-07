@@ -32,7 +32,7 @@ AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     # Third Party Middleware
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware", # django-browser-reload 
     
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
