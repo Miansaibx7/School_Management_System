@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path,include
 
 urlpatterns = [
+    # Admin site URL pattern
     path('admin/', admin.site.urls),
     # Include the URL patterns for the base app
     path('', include('base.urls')),
