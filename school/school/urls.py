@@ -11,4 +11,4 @@ urlpatterns = [
 # First installed the django_browser_reload package using pip install django-browser-reload. or uv add django-browser-reload
 # Then added 'django_browser_reload' to the INSTALLED_APPS list in settings.py.
 # After that, Included the BrowserReloadMiddleware in the MIDDLEWARE list. 
-# Finally, I added the URL pattern for django_browser_reload in urls.py.
+# Finally, added the URL pattern for django_browser_reload in urls.py.
