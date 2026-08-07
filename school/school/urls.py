@@ -10,6 +10,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     # django-browser-reload URL pattern
     path("__reload__/", include("django_browser_reload.urls")),
+    
 ]
 
 # First installed the django_browser_reload package using pip install django-browser-reload. or uv add django-browser-reload
