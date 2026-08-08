@@ -258,20 +258,9 @@ def student_delete(request, pk):
 def all_transactions(request):
     transactions = Transaction.objects.all().order_by("-date", "-created_at")
 
-    total_income = (
-        Transaction.objects.filter(transaction_type="income").aggregate(
-            total=Sum("amount")
-        )["total"]
-        or 0
-    )
-
-    total_expense = (
-        Transaction.objects.filter(transaction_type="expense").aggregate(
-            total=Sum("amount")
-        )["total"]
-        or 0
-    )
-
+    total_income = Transaction.objects.filter(transaction_type="income").aggregate(total=Sum("amount"))["total"] or 0
+    total_expense = Transaction.objects.filter(transaction_type="expense").aggregate(total=Sum("amount"))["total"] or 0
+    
     total_balance = total_income - total_expense
 
     context = {
