@@ -4,7 +4,7 @@
 
 <div class="auth-wrapper">
     <div class="auth-card">
-        
+
         <!-- Display Django Messages if any -->
         {% if messages %}
         {% for message in messages %}
@@ -19,7 +19,7 @@
         {% if page == 'loginPage_' %}
         <form method="POST" action="">
             {% csrf_token %}
-            
+
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Enter email" autocomplete="email" required>
@@ -49,7 +49,7 @@
 
         <form method="POST" action="">
             {% csrf_token %}
-            
+
             {# Render form fields manually for consistent styling #}
             {% for field in form %}
             <div class="form-group">
@@ -63,7 +63,7 @@
                 {% endif %}
             </div>
             {% endfor %}
-            
+
             <button type="submit" class="btn-submit">Register</button>
         </form>
 

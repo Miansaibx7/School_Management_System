@@ -543,7 +543,7 @@
     .nav-links {
         gap: 32px;
     }
-    
+
     .nav-link {
         font-size: 15px;
         padding: 10px 6px;
@@ -554,20 +554,20 @@
     .navbar {
         gap: 16px;
     }
-    
+
     .nav-links {
         gap: 18px;
     }
-    
+
     .whatsapp-text span {
         display: none;
     }
-    
+
     .whatsapp-btn {
         padding: 8px 12px;
         border-radius: 50%;
     }
-    
+
     .whatsapp-icon-wrap {
         width: 36px;
         height: 36px;
@@ -578,26 +578,26 @@
     .navbar {
         gap: 12px;
     }
-    
+
     .nav-links {
         gap: 14px;
     }
-    
+
     .nav-link {
         font-size: 13px;
         padding: 6px 2px;
     }
-    
+
     .user-name {
         max-width: 80px;
         font-size: 12px;
     }
-    
+
     .btn {
         padding: 6px 12px;
         font-size: 12px;
     }
-    
+
     .auth-links {
         gap: 8px;
         margin-left: 8px;
@@ -622,11 +622,11 @@
         overflow-y: auto;
         align-items: stretch;
     }
-    
+
     .nav-links.active {
         transform: translateY(0);
     }
-    
+
     .nav-link {
         padding: 16px 20px;
         width: 100%;
@@ -636,33 +636,33 @@
         border-radius: 8px;
         margin: 2px 0;
     }
-    
+
     .nav-link:hover {
         background: #f8fafc;
         transform: translateX(10px);
     }
-    
+
     .nav-link::after {
         display: none;
     }
-    
+
     /* Mobile dashboard special */
     .nav-link[href*="dashboard"] {
         background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
         border: 2px solid rgba(59, 130, 246, 0.3);
         margin: 8px 0;
     }
-    
+
     .nav-link[href*="dashboard"]:hover {
         transform: translateX(10px) scale(1.02);
         background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%);
     }
-    
+
     .whatsapp-btn,
     .auth-links {
         display: none;
     }
-    
+
     .mobile-toggle {
         display: flex;
     }
@@ -672,16 +672,16 @@
     .navbar {
         height: 70px;
     }
-    
+
     .logo-brand {
         font-size: 18px;
     }
-    
+
     .logo-icon {
         width: 40px;
         height: 40px;
     }
-    
+
     .logo-icon svg {
         width: 20px;
         height: 20px;
@@ -692,11 +692,11 @@
     .container {
         padding: 0 16px;
     }
-    
+
     .logo-text {
         display: none;
     }
-    
+
     .logo-mark {
         width: 44px;
         height: 44px;

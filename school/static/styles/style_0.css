@@ -102,7 +102,7 @@ html {
     color: white;
     position: relative;
     z-index: 2;
-    box-shadow: 
+    box-shadow:
         0 4px 15px rgba(102, 126, 234, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.3),
         inset 0 -1px 0 rgba(0, 0, 0, 0.1);
@@ -301,7 +301,7 @@ html {
     .hero-content h2 {
         font-size: 28px;
     }
-    
+
     .navbar {
         flex-direction: column;
         height: auto;

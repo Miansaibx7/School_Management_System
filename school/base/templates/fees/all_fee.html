@@ -73,7 +73,7 @@
             <div class="p-4">
                 <div class="table-responsive">
                     <table class="table align-middle" id="feeTable">
-            
+
                         <thead>
                             <tr>
                                 <th>Student Name</th>
@@ -86,61 +86,61 @@
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
-            
+
                         <tbody>
                             {% for fee in fees %}
                             <tr>
-            
+
                                 <!-- Student Name -->
                                 <td class="student-name">
                                     <div class="fw-bold text-dark">
                                         {{ fee.student.full_name }}
                                     </div>
                                 </td>
-            
+
                                 <!-- Admission Number -->
                                 <td class="student-admission">
                                     <span class="fw-bold text-primary">
                                         {{ fee.student.admission_number }}
                                     </span>
                                 </td>
-            
+
                                 <!-- Month -->
                                 <td class="fw-bold text-primary">
                                     {{ fee.month_for|date:"F Y" }}
                                 </td>
-            
+
                                 <!-- Payment Date -->
                                 <td>{{ fee.payment_date|date:"M d, Y" }}</td>
                                 <!-- Method -->
                                 <td>
                                     <span class="section-tag">{{ fee.get_payment_method_display }}</span>
                                 </td>
-            
+
                                 <!-- Status -->
                                 <td>
                                     {% if fee.status == 'paid' %}
                                     <span class="status-badge status-paid">
                                         <i class="fas fa-check-circle me-1"></i>Paid
                                     </span>
-            
+
                                     {% elif fee.status == 'pending' %}
                                     <span class="status-badge status-pending">
                                         <i class="fas fa-clock me-1"></i>Pending
                                     </span>
-            
+
                                     {% elif fee.status == 'partial' %}
                                     <span class="status-badge status-partial">
                                         <i class="fas fa-adjust me-1"></i>Partial
                                     </span>
                                     {% endif %}
                                 </td>
-            
+
                                 <!-- Amount -->
                                 <td class="fw-bold {% if fee.status == 'pending' %}text-danger{% else %}text-success{% endif %}">
                                     ${{ fee.amount }}
                                 </td>
-            
+
                                 <!-- Actions -->
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
@@ -152,9 +152,9 @@
                                         </a>
                                     </div>
                                 </td>
-            
+
                             </tr>
-            
+
                             {% empty %}
                             <tr>
                                 <td colspan="8" class="text-center py-5 text-muted">
@@ -163,7 +163,7 @@
                             </tr>
                             {% endfor %}
                         </tbody>
-            
+
                     </table>
                 </div>
             </div>

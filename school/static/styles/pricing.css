@@ -362,11 +362,11 @@ input:checked + .toggle-slider:before {
     .pricing-card.popular {
         transform: scale(1);
     }
-    
+
     .pricing-card.popular:hover {
         transform: translateY(-10px);
     }
-    
+
     .faq-grid {
         grid-template-columns: 1fr;
     }
@@ -376,15 +376,15 @@ input:checked + .toggle-slider:before {
     .pricing-header h2 {
         font-size: 2rem;
     }
-    
+
     .trust-badges {
         grid-template-columns: 1fr;
     }
-    
+
     .pricing-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .pricing-price .amount {
         font-size: 3rem;
     }

@@ -57,11 +57,11 @@
                     <h1><i class="fas fa-wallet me-2"></i>Staff Payroll</h1>
                     <p>Overview of staff salary disbursements and statuses</p>
                 </div>
-        
+
                 <div class="d-flex align-items-center gap-3">
                     <div class="sal-search-box">
                         <i class="fas fa-search search-icon"></i>
-        
+
                         <input type="text" placeholder="Search by teacher name or ID..." id="tableSearch">
                     </div>
 
@@ -73,12 +73,12 @@
                     {% endif %}
                 </div>
             </div>
-        
+
             <div class="p-4">
                 <div class="table-responsive">
-        
+
                     <table class="table align-middle" id="salaryTable">
-        
+
                         <thead>
                             <tr>
                                 <th>Teacher Name</th>
@@ -91,43 +91,43 @@
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
-        
+
                         <tbody>
-        
+
                             {% for salary in salaries %}
                             <tr>
-        
+
                                 <!-- Teacher Name -->
                                 <td class="teacher-name">
                                     <div class="fw-bold text-dark">
                                         {{ salary.teacher.full_name }}
                                     </div>
                                 </td>
-        
+
                                 <!-- Teacher ID -->
                                 <td class="teacher-id">
                                     <span class="fw-bold text-primary">
                                         {{ salary.teacher.teacher_id }}
                                     </span>
                                 </td>
-        
+
                                 <!-- Salary Month -->
                                 <td class="fw-bold text-primary">
                                     {{ salary.month_for|date:"F Y" }}
                                 </td>
-        
+
                                 <!-- Payment Date -->
                                 <td>
                                     {{ salary.payment_date|date:"M d, Y" }}
                                 </td>
-        
+
                                 <!-- Payment Method -->
                                 <td>
                                     <span class="section-tag">
                                         {{ salary.get_payment_method_display }}
                                     </span>
                                 </td>
-        
+
                                 <!-- Status -->
                                 <td>
                                     {% if salary.status == 'paid' %}
@@ -135,13 +135,13 @@
                                         <i class="fas fa-check-circle me-1"></i>
                                         Paid
                                     </span>
-        
+
                                     {% elif salary.status == 'pending' %}
                                     <span class="status-badge status-pending">
                                         <i class="fas fa-clock me-1"></i>
                                         Pending
                                     </span>
-        
+
                                     {% elif salary.status == 'processing' %}
                                     <span class="status-badge status-processing">
                                         <i class="fas fa-spinner fa-spin me-1"></i>
@@ -149,32 +149,32 @@
                                     </span>
                                     {% endif %}
                                 </td>
-        
+
                                 <!-- Amount -->
                                 <td
                                     class="fw-bold {% if salary.status == 'pending' %}text-danger{% else %}text-success{% endif %}">
                                     ${{ salary.amount }}
                                 </td>
-        
+
                                 <!-- Actions -->
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-        
+
                                         <a href="{% url 'salary_update' salary.pk %}" class="btn-action btn-edit">
                                             <i class="fas fa-edit"></i>
                                             Edit
                                         </a>
-        
+
                                         <a href="{% url 'salary_delete' salary.pk %}" class="btn-action btn-delete">
                                             <i class="fas fa-trash-alt"></i>
                                             Delete
                                         </a>
-        
+
                                     </div>
                                 </td>
-        
+
                             </tr>
-        
+
                             {% empty %}
                             <tr>
                                 <td colspan="8" class="text-center py-5 text-muted">
@@ -182,7 +182,7 @@
                                 </td>
                             </tr>
                             {% endfor %}
-        
+
                         </tbody>
                     </table>
                 </div>

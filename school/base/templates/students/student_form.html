@@ -20,7 +20,7 @@
         </div>
         {% endfor %}
         {% endif %}
-        
+
         <div class="sf-card sf-animate">
             <div class="sf-header-box">
                 <div class="sf-header-text">
@@ -52,63 +52,63 @@
 
                 <!-- Academic Section -->
                 <div class="sf-section-block">
-                
+
                     <h3>
                         <i class="fas fa-graduation-cap"></i>
                         Academic Details
                     </h3>
-                
+
                     <div class="sf-fields-row">
-                
+
                         <!-- Admission Number -->
                         <div class="sf-field-group">
                             {{ form.admission_number.label_tag }}
                             {{ form.admission_number }}
                         </div>
-                
+
                         <!-- Roll Number -->
                         <div class="sf-field-group">
                             {{ form.roll_number.label_tag }}
                             {{ form.roll_number }}
                         </div>
-                
+
                         <!-- Active Status -->
                         <div class="sf-field-group">
-                        
+
                             <label class="sf-label" for="{{ form.is_active.id_for_label }}">
                                 Active Status:
                             </label>
-                        
+
                             <div class="checkbox-wrapper">
                                 {{ form.is_active }}
-                        
+
                                 <span class="checkbox-text">
                                     Student is Active
                                 </span>
                             </div>
-                        
+
                         </div>
-                
+
                         <!-- Class -->
                         <div class="sf-field-group">
                             {{ form.class_room.label_tag }}
                             {{ form.class_room }}
                         </div>
-                
+
                         <!-- Section -->
                         <div class="sf-field-group">
                             {{ form.section.label_tag }}
                             {{ form.section }}
                         </div>
-                
+
                         <!-- Admission Date -->
                         <div class="sf-field-group">
                             {{ form.admission_date.label_tag }}
                             {{ form.admission_date }}
                         </div>
-                
+
                     </div>
-                
+
                 </div>
 
                 <!-- Contact/Guardian Section -->

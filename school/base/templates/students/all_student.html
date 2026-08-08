@@ -23,7 +23,7 @@
         </div>
         {% endfor %}
         {% endif %}
-        
+
         <div class="tf-card tf-animate">
 
             <!-- Header Box -->
@@ -32,16 +32,16 @@
                     <h1><i class="fas fa-user-graduate me-2"></i>Student Directory</h1>
                     <p>Managing {{ student.count }} registered students in the system</p>
                 </div>
-            
+
                 <!-- Right Side -->
                 <div class="d-flex align-items-center gap-3 flex-wrap">
-                
+
                     <!-- Search Box -->
                     <div class="tf-search-box">
                         <i class="fas fa-search search-icon"></i>
                         <input type="text" id="studentSearch" placeholder="Search by Admission Number...">
                     </div>
-                
+
                     <!-- Add Button -->
                     {% if request.user.is_superuser or request.user.is_admin %}
                     <a href="{% url 'student_create' %}" class="tf-btn-add">
@@ -49,7 +49,7 @@
                         Add New Student
                     </a>
                     {% endif %}
-                
+
                 </div>
                 </div>
 
@@ -96,7 +96,7 @@
                                 </td>
                                 <td>
                                     <div class="small"><i class="fas fa-phone-alt me-1"></i> {{ s.phone_number }}</div>
-                                    <div class="small text-muted"><i class="fas fa-envelope me-1"></i> 
+                                    <div class="small text-muted"><i class="fas fa-envelope me-1"></i>
                                         {{ s.email|default:"No Email" }}</div>
                                 </td>
                                 <td>

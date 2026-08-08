@@ -31,7 +31,7 @@
                 <!-- Search Box -->
                 <div class="tf-search-box">
                     <i class="fas fa-search search-icon"></i>
-        
+
                     <input type="text" id="classSearch" placeholder="Search class or section...">
                 </div>
 
@@ -59,11 +59,11 @@
                         </tr>
                     </thead>
                     <tbody>
-        
+
                         {% for class_obj in classes %}
-        
+
                         {% if class_obj.sections.all %}
-        
+
                         {% for section in class_obj.sections.all %}
                         <tr>
                             <!-- Serial Number -->
@@ -109,11 +109,11 @@
                             </td>
                             <!-- Actions -->
                             <td class="text-end pe-4">
-                                <div class="d-flex justify-content-end gap-2">    
-                                    <a href="{% url 'class_update' class_obj.id %}" class="btn-action btn-edit">       
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="{% url 'class_update' class_obj.id %}" class="btn-action btn-edit">
                                         <i class="fas fa-edit"></i>Edit
                                     </a>
-        
+
                                     <a href="{% url 'class_delete' class_obj.id %}" class="btn-action btn-delete">
                                         <i class="fas fa-trash-alt"></i>Delete
                                     </a>
@@ -121,7 +121,7 @@
                             </td>
                         </tr>
                         {% endfor %}
-        
+
                         {% else %}
                         <tr>
                             <!-- Serial Number -->
@@ -130,14 +130,14 @@
                                     {{ forloop.counter }}
                                 </span>
                             </td>
-        
+
                             <!-- Class Name -->
                             <td>
                                 <div class="fw-bold text-dark">
                                     {{ class_obj.name }}
                                 </div>
                             </td>
-        
+
                             <!-- Section -->
                             <td>
                                 <span class="text-muted">No Section</span>
@@ -149,23 +149,23 @@
                             <!-- Status -->
                             <td>
                                 {% if class_obj.is_active %}
-        
+
                                 <span class="status-active">
                                     <i class="fas fa-check-circle me-1"></i>
                                     Active
                                 </span>
-        
+
                                 {% else %}
-        
+
                                 <span class="status-inactive">
                                     <i class="fas fa-times-circle me-1"></i>
                                     Inactive
                                 </span>
-        
+
                                 {% endif %}
-        
+
                             </td>
-        
+
                             <!-- Actions -->
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
@@ -173,27 +173,27 @@
                                         <i class="fas fa-edit"></i>
                                         Edit
                                     </a>
-        
+
                                     <a href="{% url 'class_delete' class_obj.id %}" class="btn-action btn-delete">
                                         <i class="fas fa-trash-alt"></i>
                                         Delete
                                     </a>
                                 </div>
                             </td>
-        
+
                         </tr>
-        
+
                         {% endif %}
-        
+
                         {% empty %}
-        
+
                         <tr>
                             <td colspan="6" class="text-center py-5">
                                 <div class="text-muted">
                                     <i class="fas fa-folder-open fa-2x mb-3"></i>
                                     <p class="mb-0">No classes available.</p>
                                 </div>
-        
+
                             </td>
                         </tr>
                         {% endfor %}

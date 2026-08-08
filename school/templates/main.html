@@ -49,7 +49,7 @@
 </head>
 <body>
     {% include 'navbar.html' %}
-    
+
 
     {% if messages %}
     <div class="messages-container">
@@ -60,16 +60,16 @@
             <button class="close-alert">&times;</button>
         </div>
         {% endfor %}
-        
+
     </div>
-    
+
     {% endif %}
 
     {% block content %}
 
 
     {% endblock %}
-    
+
 </body>
 
 </html>

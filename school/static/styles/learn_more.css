@@ -271,28 +271,28 @@
     .lm-hero h1 {
         font-size: 2.5rem;
     }
-    
+
     .lm-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .lm-card {
         padding: 30px;
     }
-    
+
     .lm-stat-number {
         font-size: 2.5rem;
     }
-    
+
     .lm-cta h2 {
         font-size: 2rem;
     }
-    
+
     .lm-cta-buttons {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .lm-btn-primary,
     .lm-btn-secondary {
         width: 100%;
@@ -305,11 +305,11 @@
     .lm-hero {
         padding: 80px 20px 60px;
     }
-    
+
     .lm-hero h1 {
         font-size: 2rem;
     }
-    
+
     .lm-section-header h2 {
         font-size: 1.75rem;
     }

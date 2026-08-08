@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const rows = document.querySelectorAll(".table-row");
-    
+
     rows.forEach((row, index) => {
         // Hide initially
         row.style.opacity = "0";
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(() => {
             row.style.opacity = "1";
             row.style.transform = "translateX(0)";
-        }, 100 * index); 
+        }, 100 * index);
     });
 });
 
