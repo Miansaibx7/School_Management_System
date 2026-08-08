@@ -11,15 +11,8 @@ from django.utils import timezone
 from .decorators import accountant_required, admin_required
 
 # from django.contrib.auth.forms import UserCreationForm
-from .forms import (
-    ClassForm,
-    FeeForm,
-    SalaryForm,
-    SectionForm,
-    StudentForm,
-    TeacherForm,
-    TransactionForm,
-)
+from .forms import (ClassForm, FeeForm, SalaryForm, SectionForm, StudentForm,
+    TeacherForm, TransactionForm )
 from .models import Class, Fee, Salary, Section, Student, Teacher, Transaction
 
 
