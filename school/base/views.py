@@ -366,9 +366,7 @@ def transaction_delete(request, pk):
 def fee_list(request):
     fees = Fee.objects.all()
     # TOTAL COLLECTED (PAID + PARTIAL)
-    collected_data = Fee.objects.filter(status__in=["paid", "partial"]).aggregate(
-        total=Sum("amount")
-    )
+    collected_data = Fee.objects.filter(status__in=["paid", "partial"]).aggregate(total=Sum("amount"))
     total_collected = collected_data["total"] or Decimal("0.00")
 
     # PENDING DUES
@@ -391,9 +389,7 @@ def fee_create(request):
         form = FeeForm(request.POST)
         if form.is_valid():
             fee = form.save(commit=False)
-            fee.received_by = (
-                request.user
-            )  # Set the received_by field to the current user
+            fee.received_by = (request.user)  # Set the received_by field to the current user
             fee.save()
             messages.success(request, "Fee payment recorded successfully.")
             return redirect("fee_list")
