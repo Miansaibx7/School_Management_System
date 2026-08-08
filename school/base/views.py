@@ -18,7 +18,6 @@ from .models import Class, Fee, Salary, Section, Student, Teacher, Transaction
 def dashboard(request):
 
     now = timezone.now()
-
     # REFRESH STUDENT FEE STATUS
     students = Student.objects.select_related("class_room")
 
@@ -30,37 +29,21 @@ def dashboard(request):
     total_teachers = Teacher.objects.count()
     total_classes = Class.objects.count()
 
-    students_this_month = Student.objects.filter(
-        created_at__year=now.year, created_at__month=now.month
-    ).count()
-
-    teachers_this_month = Teacher.objects.filter(
-        created_at__year=now.year, created_at__month=now.month
-    ).count()
+    students_this_month = Student.objects.filter(created_at__year=now.year, created_at__month=now.month).count()
+    teachers_this_month = Teacher.objects.filter(created_at__year=now.year, created_at__month=now.month).count()
 
     # FINANCIAL STATS
-    total_income = Transaction.objects.filter(transaction_type="income").aggregate(
-        total=Sum("amount")
-    )["total"] or Decimal("0.00")
-
-    total_expense = Transaction.objects.filter(transaction_type="expense").aggregate(
-        total=Sum("amount")
-    )["total"] or Decimal("0.00")
+    total_income = Transaction.objects.filter(transaction_type="income").aggregate( total=Sum("amount"))["total"] or Decimal("0.00")
+    total_expense = Transaction.objects.filter(transaction_type="expense").aggregate(total=Sum("amount"))["total"] or Decimal("0.00")
 
     profit = total_income - total_expense
 
     # RECENT STUDENTS
-    recent_students = Student.objects.select_related("class_room", "section").order_by(
-        "-created_at"
-    )[:5]
+    recent_students = Student.objects.select_related("class_room", "section").order_by("-created_at")[:5]
 
     # REAL FEE DEFAULTERS (IMPORTANT FIX)
-    defaulters = (
-        Student.objects.annotate(
-            paid=Coalesce(Sum("fee_payments__amount"), Decimal("0.00"))
-        )
-        .filter(paid__lt=F("class_room__monthly_fee"))
-        .order_by("paid")[:10]
+    defaulters = (Student.objects.annotate(paid=Coalesce(Sum("fee_payments__amount"), Decimal("0.00"))
+        ).filter(paid__lt=F("class_room__monthly_fee")).order_by("paid")[:10]
     )
 
     # CONTEXT
