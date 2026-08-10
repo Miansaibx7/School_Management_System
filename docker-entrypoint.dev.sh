@@ -18,3 +18,11 @@ python school/manage.py collectstatic --noinput --clear || true
 
 echo "Starting Django development server..."
 exec python school/manage.py runserver 0.0.0.0:8000
+
+
+
+
+# "The docker-entrypoint.dev.sh script prepares and verifies the Django application
+# when the container starts. It can run Django checks, apply database migrations, wait
+# for required services, and finally start the Django server. If an important command 
+# fails, the container can stop because of set -e."
