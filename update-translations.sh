@@ -6,20 +6,18 @@ echo "=========================================="
 echo " Updating Django translations"
 echo "=========================================="
 
-LANGUAGES="en ur ja"
+LANGUAGES="ur ja ar"
 
 for LANGUAGE in $LANGUAGES
 do
-    echo "Updating translation: $LANGUAGE"
-    python manage.py makemessages -l "$LANGUAGE"
+    echo "Updating $LANGUAGE translations..."
+    uv run python manage.py makemessages -l "$LANGUAGE"
 done
 
-echo ""
-echo "Compiling translation files..."
+echo "Compiling translations..."
 
-python manage.py compilemessages
+uv run python manage.py compilemessages
 
-echo ""
 echo "=========================================="
-echo " Translation update completed"
+echo " Translation update completed successfully"
 echo "=========================================="
