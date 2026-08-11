@@ -143,8 +143,7 @@
         btn.addEventListener('click', function () {this.parentElement.remove();});
     });
 
-    setTimeout(() => {
-        document.querySelectorAll('.alert-message').forEach(alert => { 
+    setTimeout(() => { document.querySelectorAll('.alert-message').forEach(alert => { 
             alert.style.opacity = '0';
             setTimeout(() => {alert.remove();}, 500);
         });
