@@ -141,7 +141,6 @@
     document.querySelectorAll('.close-alert').forEach(btn => {
         btn.addEventListener('click', function () {this.parentElement.remove();});
     });
-
     setTimeout(() => { 
            document.querySelectorAll('.alert-message').forEach(alert => { 
             alert.style.opacity = '0';
