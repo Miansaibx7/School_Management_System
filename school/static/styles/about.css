@@ -41,16 +41,9 @@
     background-clip: text;
 }
 
-.about-paragraph {
-    max-width: 500px;
-}
+.about-paragraph {max-width: 500px;}
 
-.about-paragraph p {
-    font-size: 1.1rem;
-    color: #64748b;
-    line-height: 1.8;
-    margin: 0;
-}
+.about-paragraph p {font-size: 1.1rem;color: #64748b;line-height: 1.8;margin: 0;}
 
 /* Buttons */
 .about-buttons {
