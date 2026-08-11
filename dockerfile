@@ -2,7 +2,8 @@
 
 FROM python:3.13-slim-bookworm
 
-# Prevent Python from creating .pyc files and make output appear immediately. Set Python environment.
+# Prevent Python from creating .pyc files and make output appear immediately.
+# Set Python environment.
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONFAULTHANDLER=1 \
