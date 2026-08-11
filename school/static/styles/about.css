@@ -83,12 +83,7 @@
 .btn-secondary:hover {background: #667eea;color: white;transform: translateY(-2px);}
 
 /* Right Side - Image */
-.mobile-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
+.mobile-image {display: flex;justify-content: center;align-items: center;position: relative;}
 
 .mobile-image::before {
     content: '';
