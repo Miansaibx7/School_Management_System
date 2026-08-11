@@ -139,8 +139,5 @@
     .about-buttons {flex-direction: column;width: 100%;}
 
     .btn-primary,
-    .btn-secondary {
-        width: 100%;
-        justify-content: center;
-    }
+    .btn-secondary {width: 100%;justify-content: center;}
 }
