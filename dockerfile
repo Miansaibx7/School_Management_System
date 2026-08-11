@@ -16,7 +16,6 @@ RUN apt-get update \
         build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-
 # Install uv (and uvx)
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
 
