@@ -128,10 +128,7 @@
     }
     .about-heading h1 {font-size: 2.5rem;}
     .about-paragraph {max-width: 100%;}
-
-    .about-buttons {
-        justify-content: center;
-    }
+    .about-buttons {justify-content: center;}
 
     .mobile-image::before {
         width: 300px;
