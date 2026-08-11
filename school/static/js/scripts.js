@@ -2,9 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Income vs Expense Chart
     const incomeExpenseCanvas = document.getElementById("incomeExpenseChart");
-
     if (incomeExpenseCanvas) {
-
         const months = JSON.parse(incomeExpenseCanvas.dataset.months);
         const incomeData = JSON.parse(incomeExpenseCanvas.dataset.income);
         const expenseData = JSON.parse(incomeExpenseCanvas.dataset.expense);
