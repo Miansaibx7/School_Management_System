@@ -80,11 +80,7 @@
     transition: all 0.3s ease;
 }
 
-.btn-secondary:hover {
-    background: #667eea;
-    color: white;
-    transform: translateY(-2px);
-}
+.btn-secondary:hover {background: #667eea;color: white;transform: translateY(-2px);}
 
 /* Right Side - Image */
 .mobile-image {
