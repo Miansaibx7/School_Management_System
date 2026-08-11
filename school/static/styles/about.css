@@ -136,10 +136,7 @@
     .about-main-container {padding: 60px 15px;}
     .about-heading h1 {font-size: 2rem;}
     .about-paragraph p {font-size: 1rem;}
-    .about-buttons {
-        flex-direction: column;
-        width: 100%;
-    }
+    .about-buttons {flex-direction: column;width: 100%;}
 
     .btn-primary,
     .btn-secondary {
