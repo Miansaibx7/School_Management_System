@@ -105,9 +105,7 @@
     transition: transform 0.3s ease;
 }
 
-.mobile-image img:hover {
-    transform: translateY(-10px);
-}
+.mobile-image img:hover {transform: translateY(-10px);}
 
 /* Animation */
 @keyframes pulse {
