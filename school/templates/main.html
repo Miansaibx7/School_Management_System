@@ -144,12 +144,10 @@
     });
 
     setTimeout(() => {
-        document.querySelectorAll('.alert-message').forEach(alert => { alert.style.opacity = '0';
-
+        document.querySelectorAll('.alert-message').forEach(alert => { 
+            alert.style.opacity = '0';
             setTimeout(() => {alert.remove();}, 500);
-
         });
-
     }, 4000);
 
 </script>
