@@ -76,7 +76,7 @@
             <div class="auth-links">
                 {% if request.user.is_authenticated %}
                 <div class="user-menu">
-                    <!-- <span class="user-name">Welcome, {{ request.user.name }}</span> -->
+                    <!--<span class="user-name">Welcome, {{ request.user.name }}</span>-->
                     <a href="{% url 'logoutPage' %}" class="btn btn-outline">Logout</a>
                 </div>
                 {% else %}
