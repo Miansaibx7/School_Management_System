@@ -8,8 +8,7 @@ services:
 
     container_name: school_management_web
 
-    # Environment variables used by Django.
-    # Put your real development values in .env.
+    # Environment variables used by Django. Put your real development values in .env.
     env_file:
       - .env
 
