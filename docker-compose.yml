@@ -43,15 +43,14 @@ services:
     # ENTRYPOINT ["/docker-entrypoint.dev.sh"]
     #
     # Therefore we intentionally do NOT specify command here.
-    #
-    # The entrypoint will:
-    #   1. Check Python
-    #   2. Check Django
-    #   3. Run Django checks
-    #   4. Run migrations
-    #   5. Collect static files
-    #   6. Start runserver
-    #
+    
+# The entrypoint will:
+    # Check Python
+    # Check Django
+    # Run Django checks
+    # Run migrations
+    # Collect static files
+    # Start runserver
     restart: unless-stopped
 
     # Development health check.
