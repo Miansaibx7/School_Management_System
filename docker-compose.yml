@@ -1,8 +1,6 @@
 services:
 
-  # ==========================================================
-  # Django Web Application
-  # ==========================================================
+# Django Web Application
   web:
     build:
       context: .
