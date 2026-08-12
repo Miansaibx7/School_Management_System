@@ -22,14 +22,15 @@ services:
       - "8000:8000"
 
     # Development bind mount.
-    #
+    
     # Your local source code is mounted into the container so
     # changes made on your computer are immediately available.
-    #
+    
     # IMPORTANT:
     # Keep .venv as an anonymous Docker volume. Otherwise the
     # host .venv can overwrite the Linux virtual environment
     # created inside the image.
+
     volumes:
       - .:/School_Management_System
       - school_venv:/School_Management_System/.venv
@@ -51,10 +52,7 @@ services:
     # This checks whether Django is responding on port 8000.
     healthcheck:
       test:
-        [
-          "CMD-SHELL",
-          "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/', timeout=5)\""
-        ]
+        ["CMD-SHELL","python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/', timeout=5)\""]
       interval: 30s
       timeout: 10s
       retries: 5
