@@ -55,7 +55,6 @@ services:
     restart: unless-stopped
 
     # Development health check.
-    #
     # This checks whether Django is responding on port 8000.
     healthcheck:
       test:
