@@ -39,9 +39,7 @@ services:
       - school_venv:/School_Management_System/.venv
 
     # The Dockerfile already contains:
-    #
     # ENTRYPOINT ["/docker-entrypoint.dev.sh"]
-    #
     # Therefore we intentionally do NOT specify command here.
     
 # The entrypoint will:
