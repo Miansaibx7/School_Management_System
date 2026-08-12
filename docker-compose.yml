@@ -69,12 +69,8 @@ services:
       start_period: 30s
 
 
-# ============================================================
 # Volumes
-# ============================================================
-#
 # Keeps the Linux .venv created inside the Docker image/container
 # separate from your Windows host environment.
-#
 volumes:
   school_venv:
