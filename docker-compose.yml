@@ -1,1 +1,80 @@
-# this file is empty because in this project i didn't use it
+services:
+
+  # ==========================================================
+  # Django Web Application
+  # ==========================================================
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: school_management_web
+
+    # Environment variables used by Django.
+    #
+    # Put your real development values in .env.
+    env_file:
+      - .env
+
+    environment:
+      DJANGO_SETTINGS_MODULE: school.settings
+      DJANGO_HOST: 0.0.0.0
+      DJANGO_PORT: 8000
+
+    # Django development server
+    ports:
+      - "8000:8000"
+
+    # Development bind mount.
+    #
+    # Your local source code is mounted into the container so
+    # changes made on your computer are immediately available.
+    #
+    # IMPORTANT:
+    # Keep .venv as an anonymous Docker volume. Otherwise the
+    # host .venv can overwrite the Linux virtual environment
+    # created inside the image.
+    volumes:
+      - .:/School_Management_System
+      - school_venv:/School_Management_System/.venv
+
+    # The Dockerfile already contains:
+    #
+    # ENTRYPOINT ["/docker-entrypoint.dev.sh"]
+    #
+    # Therefore we intentionally do NOT specify command here.
+    #
+    # The entrypoint will:
+    #   1. Check Python
+    #   2. Check Django
+    #   3. Run Django checks
+    #   4. Run migrations
+    #   5. Collect static files
+    #   6. Start runserver
+    #
+    restart: unless-stopped
+
+    # Development health check.
+    #
+    # This checks whether Django is responding on port 8000.
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/', timeout=5)\""
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+
+# ============================================================
+# Volumes
+# ============================================================
+#
+# Keeps the Linux .venv created inside the Docker image/container
+# separate from your Windows host environment.
+#
+volumes:
+  school_venv:
