@@ -16,10 +16,6 @@ from django.db.models.functions import Coalesce,TruncMonth # Coalesce to prevent
 from django.utils import timezone
 
 
-# ================================== TEACHER MODEL ===========================================================================
-
-
-
 # ======================== CLASS MODEL ================================================================================
 class Class(models.Model):
     """Model for school classes/grades"""
