@@ -6,7 +6,7 @@ from teacher.models import Teacher
 
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator  # Prevents negative Numbers
-from django.db import (models, transaction as db_transaction)  # Use alias to prevent naming conflicts
+from django.db import models, transaction as db_transaction  # Use alias to prevent naming conflicts
 
 from django.db.models import F, Q, Sum
 
