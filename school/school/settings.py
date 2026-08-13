@@ -24,8 +24,9 @@ INSTALLED_APPS = [
     # Third Party Apps
     "django_browser_reload",
     # Local Apps
-    "base.apps.BaseConfig",
-    "accounts.apps.AccountsConfig",
+    "accounts",  
+    "teacher",
+    "base",
 ]
 
 AUTH_USER_MODEL = "accounts.User"

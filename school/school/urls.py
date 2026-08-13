@@ -8,6 +8,8 @@ urlpatterns = [
     path("", include("base.urls")),
     # Include the URL patterns for the accounts app
     path("accounts/", include("accounts.urls")),
+    # Include the URL patterns for the teacher app
+    path("teacher/", include("teacher.urls")),
     # django-browser-reload URL pattern
     path("__reload__/", include("django_browser_reload.urls")),
 ]

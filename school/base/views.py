@@ -3,15 +3,15 @@ from decimal import Decimal
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .forms import (ClassForm, FeeForm, SalaryForm, SectionForm, StudentForm,TransactionForm )
+from .models import Class, Fee, Salary, Section, Student, Teacher, Transaction
+
 from django.db.models import F, Sum
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .decorators import accountant_required, admin_required
-from .forms import (ClassForm, FeeForm, SalaryForm, SectionForm, StudentForm,
-    TeacherForm, TransactionForm )
-from .models import Class, Fee, Salary, Section, Student, Teacher, Transaction
 
 
 @login_required(login_url="loginPage")
@@ -63,55 +63,6 @@ def dashboard(request):
         "now": now,
     }
     return render(request, "dashboard.html", context)
-
-
-# ========================= Teacher Function ===================================================================
-@login_required(login_url="loginPage")
-@admin_required
-def teacher_list(request):
-    teachers = Teacher.objects.all()
-    context = {"teachers": teachers}
-    return render(request, "teachers/all_teacher.html", context)
-
-
-@login_required(login_url="loginPage")
-@admin_required
-def teacher_create(request):
-    form = TeacherForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Teacher created successfully")
-        return redirect("teacher_list")
-    context = {"form": form}
-    return render(request, "teachers/teacher_form.html", context)
-
-
-@login_required(login_url="loginPage")
-@admin_required
-def teacher_update(request, pk):
-    teacher = get_object_or_404(Teacher, pk=pk)
-    form = TeacherForm(request.POST or None, request.FILES or None, instance=teacher)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Teacher updated successfully")
-        return redirect("teacher_list")
-    context = {"form": form}
-    return render(request, "teachers/teacher_form.html", context)
-
-
-@login_required(login_url="loginPage")
-@admin_required
-def teacher_delete(request, pk):
-    teacher = get_object_or_404(Teacher, pk=pk)
-
-    # Only delete on POST to prevent accidental/malicious URL hits
-    if request.method == "POST":
-        teacher.delete()
-        messages.success(request, "Teacher deleted successfully.")
-        return redirect("teacher_list")
-
-    context = {"teacher": teacher}
-    return render(request, "teachers/teacher_confirm_delete.html", context)
 
 
 # ========================= Class Function =======================================================================================
