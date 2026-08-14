@@ -4,11 +4,6 @@ from . import views
 
 urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
-    # ===================== CLASS URLS =====================
-    path("classes/", views.class_list, name="class_list"),
-    path("classes/create/", views.class_create, name="class_create"),
-    path("classes/update/<int:pk>/", views.class_update, name="class_update"),
-    path("classes/delete/<int:pk>/", views.class_delete, name="class_delete"),
     # ===================== Sections URLS =====================
     path("sections/", views.section_list, name="section_list"),
     path("sections/create/", views.section_create, name="section_create"),
@@ -49,6 +44,8 @@ urlpatterns = [
     path("", include("accounts.urls")),
     # Include teacher app (teacher management)
     path("", include("teacher.urls")),
+    # Include class_room app (class_room Management)
+    path("", include("class_room.urls"))
 ]
 
 from django.conf import settings
