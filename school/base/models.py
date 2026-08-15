@@ -17,8 +17,6 @@ from django.db.models import F, Q, Sum
 from django.db.models.functions import Coalesce,TruncMonth # Coalesce to prevent 'None' values in charts
 from django.utils import timezone
 
-
-
 # ========================== STUDENT MODEL =================================================================================
 class Student(models.Model):
     """Student model for School Management System"""
