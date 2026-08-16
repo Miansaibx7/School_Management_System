@@ -4,7 +4,6 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from class_room.models import Class
 from section.models import Section
-from base.models import Fee
 
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator  # Prevents negative Numbers
@@ -127,6 +126,8 @@ class Student(models.Model):
     def update_fee_status(self):
         """Update fee status - calculate total paid and due amounts"""
         # Calculate total fees paid by student
+        from base.models import Fee
+        
         total_paid = Fee.objects.filter(student=self).aggregate(total=Sum("amount"))[
             "total"
         ] or Decimal("0.00")
