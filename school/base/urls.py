@@ -4,11 +4,6 @@ from . import views
 
 urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
-    # ===================== Sudents URLS =====================
-    path("students/", views.student_list, name="student_list"),
-    path("students/create/", views.student_create, name="student_create"),
-    path("students/update/<int:pk>/", views.student_update, name="student_update"),
-    path("students/delete/<int:pk>/", views.student_delete, name="student_delete"),
     # ===================== Transactions URLS =====================
     path("transactions/", views.transaction_list, name="transaction_list"),
     path("transactions/create/", views.transaction_create, name="transaction_create"),
@@ -42,7 +37,9 @@ urlpatterns = [
     # Include class_room app (class_room Management)
     path("", include("class_room.urls")),
     # Include section app (section Management)
-    path("", include("section.urls"))
+    path("", include("section.urls")),
+    # Include student app (student Management)
+    path("", include("students.urls"))
 ]
 
 from django.conf import settings

@@ -3,16 +3,18 @@ from decimal import Decimal
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import (FeeForm, SalaryForm, StudentForm,TransactionForm )
-from .models import  Fee, Salary, Student, Teacher, Transaction
+from .forms import (FeeForm, SalaryForm,TransactionForm )
+from .models import  Fee, Salary, Teacher, Transaction
+
 from class_room.models import Class
+from students.models import Student
 
 from django.db.models import F, Sum
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from .decorators import accountant_required, admin_required
+from .decorators import accountant_required
 
 
 @login_required(login_url="loginPage")
@@ -64,53 +66,6 @@ def dashboard(request):
         "now": now,
     }
     return render(request, "dashboard.html", context)
-
-
-
-# ========================= Student Function =======================================================================================
-@login_required(login_url="loginPage")
-@admin_required
-def student_list(request):
-    student = Student.objects.all()
-    return render(request, "students/all_student.html", {"student": student})
-
-
-@login_required(login_url="loginPage")
-@admin_required
-def student_create(request):
-    form = StudentForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Student created successfully")
-        return redirect("student_list")
-    return render(request, "students/student_form.html", {"form": form})
-
-
-@login_required(login_url="loginPage")
-@admin_required
-def student_update(request, pk):
-    student_obj = get_object_or_404(Student, pk=pk)
-    form = StudentForm(
-        request.POST or None, request.FILES or None, instance=student_obj
-    )
-    if form.is_valid():
-        form.save()
-        messages.success(request, "Student updated successfully")
-        return redirect("student_list")
-    return render(request, "students/student_form.html", {"form": form})
-
-
-@login_required(login_url="loginPage")
-@admin_required
-def student_delete(request, pk):
-    student_obj = get_object_or_404(Student, pk=pk)
-    if request.method == "POST":
-        student_obj.delete()
-        messages.success(request, "Student deleted successfully.")
-        return redirect("student_list")
-
-    context = {"student_obj": student_obj}
-    return render(request, "students/student_confirm_delete.html", context)
 
 
 # ========================= Transaction Function =======================================================================================

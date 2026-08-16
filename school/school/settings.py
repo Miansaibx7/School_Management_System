@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "teacher",
     "class_room",
     "section",
+    "students",
     "base",
 ]
 
