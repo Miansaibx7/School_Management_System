@@ -3,15 +3,12 @@ from decimal import Decimal
 from django.conf import settings
 from teacher.models import Teacher
 from students.models import Student
+from transaction.models import Transaction
 
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator  # Prevents negative Numbers
 from django.db import models, transaction as db_transaction  # Use alias to prevent naming conflicts
 
-from django.db.models import F, Q, Sum
-# TruncMonth converts a date into the first day of its month
-# Example: 2026-03-15 → 2026-03-01
-from django.db.models.functions import Coalesce,TruncMonth # Coalesce to prevent 'None' values in charts
 from django.utils import timezone
 
 
@@ -194,14 +191,10 @@ class Fee(models.Model):
     )
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="paid")
-    amount = models.DecimalField(
-        max_digits=10, decimal_places=2, validators=[MinValueValidator(0)]
-    )
+    amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     month_for = models.DateField(help_text="Fee for which month/year", db_index=True)
     payment_date = models.DateField(default=timezone.now)
-    payment_method = models.CharField(
-        max_length=20, choices=PAYMENT_METHODS, default="cash"
-    )
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS, default="cash")
     notes = models.TextField(blank=True)
 
     # Staff member who received the payment
@@ -244,7 +237,7 @@ class Fee(models.Model):
             }
 
             if self.transaction:
-                # FIXED: This ensures that if you change the Fee amount, the Transaction record also updates
+                # This ensures that if you change the Fee amount, the Transaction record also updates
                 Transaction.objects.filter(id=self.transaction.id).update(
                     **transaction_data
                 )
@@ -285,14 +278,10 @@ class Salary(models.Model):
         null=True,
         blank=True,
     )
-    amount = models.DecimalField(
-        max_digits=10, decimal_places=2, validators=[MinValueValidator(0)]
-    )
+    amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     month_for = models.DateField(help_text="Salary for which month/year", db_index=True)
     payment_date = models.DateField(default=timezone.now, db_index=True)
-    payment_method = models.CharField(
-        max_length=20, choices=PAYMENT_METHODS, default="bank"
-    )
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS, default="bank")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     bank_reference = models.CharField(max_length=100, blank=True)
     notes = models.TextField(blank=True)
@@ -357,7 +346,7 @@ class Salary(models.Model):
             }
 
             if self.transaction:
-                # FIXED: Updates the expense record if salary amount/date changes
+                # Updates the expense record if salary amount/date changes
                 Transaction.objects.filter(id=self.transaction.id).update(
                     **transaction_data
                 )
