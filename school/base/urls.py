@@ -24,14 +24,19 @@ urlpatterns = [
 
     # Include accounts app (authentication + user management)
     path("", include("accounts.urls")),
+
     # Include teacher app (teacher management)
     path("", include("teacher.urls")),
+
     # Include class_room app (class_room Management)
     path("", include("class_room.urls")),
+
     # Include section app (section Management)
     path("", include("section.urls")),
+
     # Include student app (student Management)
-    path("", include("students.urls"))
+    path("", include("students.urls")),
+    
 ]
 
 from django.conf import settings
