@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'
@@ -29,6 +28,7 @@ INSTALLED_APPS = [
     "class_room",
     "section",
     "students",
+    "transaction",
     "base",
 ]
 
