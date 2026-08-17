@@ -48,7 +48,7 @@ class Transaction(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="recorded_transactions",
+        related_name="recorded_transactions"
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
