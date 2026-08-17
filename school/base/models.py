@@ -39,9 +39,7 @@ class Transaction(models.Model):
     title = models.CharField(max_length=200)
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
     category = models.CharField(max_length=20, choices=CATEGORIES)
-    amount = models.DecimalField(
-        max_digits=12, decimal_places=2, validators=[MinValueValidator(0)]
-    )
+    amount = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     date = models.DateField(default=timezone.now)
     description = models.TextField(blank=True)
     receipt_number = models.CharField(max_length=50, blank=True)
