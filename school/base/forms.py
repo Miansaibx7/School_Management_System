@@ -15,6 +15,7 @@ class FeeForm(forms.ModelForm):
         }
 
 
+
 # ================= SALARY FORM ===================================================
 class SalaryForm(forms.ModelForm):
 

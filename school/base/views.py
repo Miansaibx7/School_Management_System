@@ -4,10 +4,12 @@ from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import FeeForm, SalaryForm 
-from .models import  Fee, Salary, Teacher, Transaction
+from .models import  Fee, Salary
 
+from teacher.models import Teacher
 from class_room.models import Class
 from students.models import Student
+from transaction.models import Transaction
 
 from django.db.models import F, Sum
 from django.db.models.functions import Coalesce

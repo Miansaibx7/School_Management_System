@@ -6,13 +6,12 @@ from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from base.decorators import accountant_required
 
-
 # ========================= Transaction Function =======================================================================================
 @login_required(login_url="loginPage")
 @accountant_required
 def all_transactions(request):
     transactions = Transaction.objects.all().order_by("-date", "-created_at")
-
+    
     total_income = Transaction.objects.filter(transaction_type="income").aggregate(total=Sum("amount"))["total"] or 0
     total_expense = Transaction.objects.filter(transaction_type="expense").aggregate(total=Sum("amount"))["total"] or 0
     
