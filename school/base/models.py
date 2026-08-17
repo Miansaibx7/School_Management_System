@@ -9,7 +9,6 @@ from django.core.validators import MinValueValidator  # Prevents negative Number
 from django.db import models, transaction as db_transaction  # Use alias to prevent naming conflicts
 
 from django.db.models import F, Q, Sum
-
 # TruncMonth converts a date into the first day of its month
 # Example: 2026-03-15 → 2026-03-01
 from django.db.models.functions import Coalesce,TruncMonth # Coalesce to prevent 'None' values in charts
