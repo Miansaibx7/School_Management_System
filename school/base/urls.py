@@ -33,7 +33,7 @@ urlpatterns = [
     path("", include("students.urls")),
 
     # Include transaction app (transaction Management)
-    path("", include("transactions.urls")),
+    path("", include("transaction.urls")),
     
 ]
 
