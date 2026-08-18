@@ -99,6 +99,7 @@ class Fee(models.Model):
                 self.student.update_fee_status()
 
 
+
 # ========================== SALARY MODEL ================================================================================
 class Salary(models.Model):
     """Teacher salary payment records"""
@@ -106,13 +107,13 @@ class Salary(models.Model):
     PAYMENT_METHODS = (
         ("cash", "Cash"),
         ("bank", "Bank Transfer"),
-        ("check", "Check"),
+        ("check", "Check")
     )
 
     STATUS_CHOICES = (
         ("paid", "Paid"),
         ("pending", "Pending"),
-        ("cancelled", "Cancelled"),
+        ("cancelled", "Cancelled")
     )
     # One Teacher can have multiple monthly Salary payments
     teacher = models.ForeignKey(
