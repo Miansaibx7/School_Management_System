@@ -23,7 +23,7 @@ class Fee(models.Model):
     STATUS_CHOICES = (
         ("paid", "Paid"),
         ("pending", "Pending"),
-        ("partial", "Partial"),
+        ("partial", "Partial")
     )
 
     # One student can have multiple monthly fee payments
