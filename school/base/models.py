@@ -1,5 +1,3 @@
-
-
 from django.conf import settings
 from teacher.models import Teacher
 from students.models import Student
