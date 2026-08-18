@@ -69,9 +69,8 @@ class Fee(models.Model):
         return f"{self.student.full_name} - {self.amount} ({self.month_for.strftime('%B %Y')})"
 
     def save(self, *args, **kwargs):
-        with (
-            db_transaction.atomic()
-        ):  # Ensure fee save and student fee status update happen in a single database transaction
+        with (db_transaction.atomic()):# Ensure fee save and student fee status update happen in a single database transaction
+
             # ( Use the aliased db_transaction )
             # Check transaction_id to safely see if the relationship exists yet
             # Logic now updates the existing transaction if the Fee is edited
