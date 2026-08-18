@@ -1,4 +1,4 @@
-from decimal import Decimal
+
 
 from django.conf import settings
 from teacher.models import Teacher
@@ -10,6 +10,7 @@ from django.core.validators import MinValueValidator  # Prevents negative Number
 from django.db import models, transaction as db_transaction  # Use alias to prevent naming conflicts
 
 from django.utils import timezone
+
 # ======================= FEE MODEL =======================================================================================
 class Fee(models.Model):
     """Student fee payment records"""
