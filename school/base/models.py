@@ -17,7 +17,7 @@ class Fee(models.Model):
         ("cash", "Cash"),
         ("bank", "Bank Transfer"),
         ("check", "Check"),
-        ("online", "Online Payment"),
+        ("online", "Online Payment")
     )
 
     STATUS_CHOICES = (
