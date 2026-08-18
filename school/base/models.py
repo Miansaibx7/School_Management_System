@@ -74,7 +74,7 @@ class Fee(models.Model):
         ):  # Ensure fee save and student fee status update happen in a single database transaction
             # ( Use the aliased db_transaction )
             # Check transaction_id to safely see if the relationship exists yet
-            # CHANGED: Logic now updates the existing transaction if the Fee is edited
+            # Logic now updates the existing transaction if the Fee is edited
             transaction_data = {
                 "title": f"Fee Payment - {self.student.full_name}",
                 "transaction_type": "income",
