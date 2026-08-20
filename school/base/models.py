@@ -27,9 +27,8 @@ class Fee(models.Model):
     )
 
     # One student can have multiple monthly fee payments
-    student = models.ForeignKey(
-        Student, on_delete=models.CASCADE, related_name="fee_payments"
-    )
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="fee_payments")
+    
     transaction = models.OneToOneField(
         Transaction,
         on_delete=models.CASCADE,
@@ -85,9 +84,7 @@ class Fee(models.Model):
 
             if self.transaction:
                 # This ensures that if you change the Fee amount, the Transaction record also updates
-                Transaction.objects.filter(id=self.transaction.id).update(
-                    **transaction_data
-                )
+                Transaction.objects.filter(id=self.transaction.id).update(**transaction_data)
             else:
                 new_trans = Transaction.objects.create(**transaction_data)
                 self.transaction = new_trans
@@ -116,9 +113,8 @@ class Salary(models.Model):
         ("cancelled", "Cancelled")
     )
     # One Teacher can have multiple monthly Salary payments
-    teacher = models.ForeignKey(
-        Teacher, on_delete=models.CASCADE, related_name="salary_payments"
-    )
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="salary_payments")
+
     transaction = models.OneToOneField(
         Transaction,
         on_delete=models.CASCADE,
@@ -179,11 +175,10 @@ class Salary(models.Model):
         # Forces validation to run even when saving via script (not just forms)
         self.full_clean()
 
-        with (
-            db_transaction.atomic()
-        ):  # Ensure salary save and teacher salary status update happen in a single database transaction
+        with (db_transaction.atomic()):# Ensure salary save and teacher salary status update happen in a single database transaction
+
             # Check transaction_id to safely see if the relationship exists yet
-            # CHANGED: Logic now updates the existing transaction if the Salary is edited
+            # Logic now updates the existing transaction if the Salary is edited
             transaction_data = {
                 "title": f"Salary Payment - {self.teacher.full_name}",
                 "transaction_type": "expense",
@@ -195,9 +190,7 @@ class Salary(models.Model):
 
             if self.transaction:
                 # Updates the expense record if salary amount/date changes
-                Transaction.objects.filter(id=self.transaction.id).update(
-                    **transaction_data
-                )
+                Transaction.objects.filter(id=self.transaction.id).update(**transaction_data)
             else:
                 new_trans = Transaction.objects.create(**transaction_data)
                 self.transaction = new_trans
