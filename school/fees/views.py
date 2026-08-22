@@ -7,8 +7,8 @@ from .models import  Fee
 
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect, render
-
 from base.decorators import accountant_required
+
 # ========================= Fee Function =======================================================================================
 @login_required(login_url="loginPage")
 @accountant_required
