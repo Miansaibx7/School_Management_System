@@ -8,7 +8,7 @@ urlpatterns = [
     path("salaries/create/", views.salary_create, name="salary_create"),
     path("salaries/update/<int:pk>/", views.salary_update, name="salary_update"),
     path("salaries/delete/<int:pk>/", views.salary_delete, name="salary_delete"),
-    # ===================== Financial Reports URLS ====================================
+    # ===================== Financial Reports URLS ===============================
     path("financial-reports/", views.financial_reports, name="financial_reports"),
 
     # Include accounts app (authentication + user management)
