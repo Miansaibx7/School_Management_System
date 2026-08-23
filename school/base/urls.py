@@ -3,11 +3,6 @@ from . import views
 
 urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
-    # ===================== Fees URLS ====================================
-    path("fees/", views.fee_list, name="fee_list"),
-    path("fees/create/", views.fee_create, name="fee_create"),
-    path("fees/update/<int:pk>/", views.fee_update, name="fee_update"),
-    path("fees/delete/<int:pk>/", views.fee_delete, name="fee_delete"),
     # ===================== Salary URLS ====================================
     path("salaries/", views.salary_list, name="salary_list"),
     path("salaries/create/", views.salary_create, name="salary_create"),
