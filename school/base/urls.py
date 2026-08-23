@@ -28,6 +28,9 @@ urlpatterns = [
 
     # Include transaction app (transaction Management)
     path("", include("transaction.urls")),
+
+    # Include fee app (fee Management)
+    path("", include("fees.urls")),
     
 ]
 

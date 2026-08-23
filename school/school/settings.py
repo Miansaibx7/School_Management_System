@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "section",
     "students",
     "transaction",
+    "fees",
     "base",
 ]
 
