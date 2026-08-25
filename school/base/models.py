@@ -8,7 +8,7 @@ from django.db import models, transaction as db_transaction  # Use alias to prev
 
 from django.utils import timezone
 
-# ========================== SALARY MODEL ===========================================================
+# ========================== SALARY MODEL ========================================================
 class Salary(models.Model):
     """Teacher salary payment records"""
 
