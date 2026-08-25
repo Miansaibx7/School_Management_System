@@ -10,7 +10,7 @@ from django.utils import timezone
 # ================================== FEE MODEL ===================================================
 class Fee(models.Model):
     """Student fee payment records"""
-
+    
     PAYMENT_METHODS = (
         ("cash", "Cash"),
         ("bank", "Bank Transfer"),
