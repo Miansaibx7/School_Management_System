@@ -61,7 +61,7 @@ class Salary(models.Model):
                     "teacher",
                     "month_for",
                 ],  # Prevent duplicate salary records for the same teacher and month
-                name="unique_teacher_salary_month",
+                name="unique_teacher_salary_month"
             )
         ]
         verbose_name = "Salary Payment"
