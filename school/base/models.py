@@ -23,7 +23,7 @@ class Salary(models.Model):
         ("pending", "Pending"),
         ("cancelled", "Cancelled")
     )
-    # One Teacher can have multiple monthly Salary payments
+    # One Teacher can have Multiple monthly Salary payments
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name="salary_payments")
 
     transaction = models.OneToOneField(
