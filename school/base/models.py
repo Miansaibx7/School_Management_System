@@ -31,8 +31,9 @@ class Salary(models.Model):
         on_delete=models.CASCADE,
         related_name="salary_record",
         null=True,
-        blank=True,
+        blank=True
     )
+
     amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     month_for = models.DateField(help_text="Salary for which month/year", db_index=True)
     payment_date = models.DateField(default=timezone.now, db_index=True)
