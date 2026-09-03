@@ -97,7 +97,7 @@ class Salary(models.Model):
                 "category": "salary",
                 "amount": self.amount,
                 "date": self.payment_date,
-                "recorded_by": self.paid_by,
+                "recorded_by": self.paid_by
             }
 
             if self.transaction:
